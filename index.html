@@ -19,7 +19,12 @@
     </video>
 
     <section class="main-menu" hidden>
-        <h1>THE BRANSONVERSE</h1>
+        <div class="main-menu-heading">
+            <button type="button" class="mode-menu-back" aria-label="Volver al menú principal" hidden>
+                <span aria-hidden="true">&larr;</span>
+            </button>
+            <h1>THE BRANSONVERSE</h1>
+        </div>
 
         <nav class="primary-menu" aria-label="Menú principal">
             <ul>
@@ -61,7 +66,7 @@
         </header>
 
         <p class="custom-game-instructions">
-            Escribe entre 11 y 15 nombres: cada uno se esconderá en secreto dentro de un muñeco de la máquina.
+            Escribe entre 9 y 15 nombres: cada uno se esconderá en secreto dentro de un muñeco de la máquina.
         </p>
         <p class="custom-game-warning">
             Solo sabrás quién es quién cuando lo atrapes. Sin nombres repetidos ni campos vacíos.
@@ -72,7 +77,7 @@
                 <h2>NOMBRES</h2>
                 <div class="name-progress" aria-hidden="true"></div>
                 <output class="name-count" aria-live="polite">0/15</output>
-                <p class="name-limit">Mínimo 11 · Máximo 15</p>
+                <p class="name-limit">Mínimo 9 · Máximo 15</p>
             </div>
 
             <div class="name-columns">

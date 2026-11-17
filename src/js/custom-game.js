@@ -7,7 +7,7 @@ if (customGameForm) {
     const addNameButton = customGameForm.querySelector(".add-name-button");
     const feedback = customGameForm.querySelector(".custom-game-feedback");
     const maximumNames = 15;
-    const minimumNames = 11;
+    const minimumNames = 9;
     let names = Array(minimumNames).fill("");
     let hasSubmitted = false;
 

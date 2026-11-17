@@ -2,6 +2,7 @@ const menuSection = document.querySelector(".main-menu");
 const introVideo = document.querySelector(".intro-video");
 const primaryMenu = document.querySelector(".primary-menu");
 const playMenu = document.querySelector(".play-menu");
+const modeMenuBack = document.querySelector(".mode-menu-back");
 const customGameScreen = document.querySelector(".custom-game-screen");
 
 if (menuSection && introVideo) {
@@ -14,7 +15,7 @@ if (menuSection && introVideo) {
     }
 }
 
-if (menuSection && primaryMenu && playMenu && customGameScreen) {
+if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) {
     const menus = [primaryMenu, playMenu];
     const selectedIndexes = menus.map((menu) =>
         Array.from(menu.querySelectorAll("button")).findIndex(
@@ -51,9 +52,18 @@ if (menuSection && primaryMenu && playMenu && customGameScreen) {
     function returnToModeMenu() {
         customGameScreen.hidden = true;
         menuSection.hidden = false;
+        modeMenuBack.hidden = false;
         primaryMenu.hidden = true;
         playMenu.hidden = false;
         activeMenuIndex = 1;
+        selectOption(selectedIndexes[activeMenuIndex], true);
+    }
+
+    function returnToPrimaryMenu() {
+        playMenu.hidden = true;
+        modeMenuBack.hidden = true;
+        primaryMenu.hidden = false;
+        activeMenuIndex = 0;
         selectOption(selectedIndexes[activeMenuIndex], true);
     }
 
@@ -66,6 +76,7 @@ if (menuSection && primaryMenu && playMenu && customGameScreen) {
 
         if (activeMenuIndex === 0 && selectedOption.classList.contains("play-button")) {
             primaryMenu.hidden = true;
+            modeMenuBack.hidden = false;
             playMenu.hidden = false;
             activeMenuIndex = 1;
             selectOption(selectedIndexes[activeMenuIndex], true);
@@ -78,6 +89,12 @@ if (menuSection && primaryMenu && playMenu && customGameScreen) {
         if (!customGameScreen.hidden && event.key === "Escape") {
             event.preventDefault();
             returnToModeMenu();
+            return;
+        }
+
+        if (!menuSection.hidden && !playMenu.hidden && event.target === modeMenuBack && event.key === "Enter") {
+            event.preventDefault();
+            returnToPrimaryMenu();
             return;
         }
 
@@ -127,5 +144,6 @@ if (menuSection && primaryMenu && playMenu && customGameScreen) {
         });
     });
 
+    modeMenuBack.addEventListener("click", returnToPrimaryMenu);
     customGameScreen.querySelector(".custom-game-back").addEventListener("click", returnToModeMenu);
 }
