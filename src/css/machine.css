@@ -1,6 +1,7 @@
 .machine {
     position: relative;
     width: 100%;
+    max-width: calc(100vh * 1440 / 1034);
     margin: 0 auto;
     aspect-ratio: 1440 / 1034;
     background-image: url("https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/v1794918657/pantallaJuego_ctoxml.png");
@@ -275,10 +276,6 @@
 }
 
 @media (min-width: 768px) {
-    .machine {
-        width: 90%;
-    }
-
     .joystick::before,
     .joystick::after {
         font-size: 1.6rem;
@@ -286,14 +283,8 @@
 }
 
 @media (min-width: 1024px) {
-    .machine {
-        max-width: 900px;
-    }
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-    .machine {
-        width: auto;
-        height: 95vh;
+    .joystick::before,
+    .joystick::after {
+        font-size: 2rem;
     }
 }
