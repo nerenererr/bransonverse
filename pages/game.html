@@ -13,13 +13,29 @@
         <header class="gameHeader">
             <div class="gameAttempts">
                 <span>Intentos</span>
-                <span id="attemptsCount">0</span>
+                <span id="attemptsCount">3</span>
             </div>
             <div class="gameTimer">
                 <span>Tiempo</span>
                 <span id="timeCount">90</span>
             </div>
         </header>
+
+        <section id="gameFailure" class="gameFailure" hidden>
+            <h3>Oh... ¡Se ha caído!</h3>
+            <p>Inténtalo de nuevo</p>
+        </section>
+        <section class="gameResult" id="gameResult" hidden>
+            <h3>Has obtenido a</h3>
+            <p id="obtainedBrandon"></p>
+            <img id="obtainedBrandonImage" src="" alt="Brandon obtenido">
+            <button id="playAgainBtn" type="button">Jugar otra vez</button>
+        </section>
+        <section id="gameOver" class="gameOver" hidden>
+            <h3>¡Te has quedado sin intentos!</h3>
+            <button id="playAgainBtn" type="button">Jugar otra vez</button>
+            <a href="../index.html">Volver al inicio</a>
+        </section>
     </main>
 </body>
 </html>
