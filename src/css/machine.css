@@ -9,7 +9,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 1440 / 1034;
-    background-image: url("https://res.cloudinary.com/TU_CLOUD/image/upload/bransonverse/machine.png");
+    background-image: url("https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/v1794918657/pantallaJuego_ctoxml.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
@@ -25,39 +25,25 @@
 
 .claw {
     position: absolute;
-    top: 0;
+    top: -34%;
     left: 50%;
     z-index: 2;
     width: 20%;
     transform: translateX(-50%);
+    transition: left 0.1s linear, top 0.9s ease-in-out;
+}
+
+.claw--auto {
     transition: left 0.6s ease-in-out, top 0.9s ease-in-out;
 }
 
-.claw::before {
-    content: "";
-    position: absolute;
-    bottom: 95%;
-    left: 52%;
-    width: 9%;
-    height: 300%;
-    background-color: #cdb8a8;
-    border-left: 2px solid #9c8577;
-    border-right: 2px solid #9c8577;
-    transform: translateX(-50%);
-}
-
 .claw--down {
-    top: 33%;
+    top: 0;
 }
 
 .claw__image {
     display: block;
     width: 100%;
-    transition: transform 0.4s ease;
-}
-
-.claw--closed .claw__image {
-    transform: scaleX(0.85);
 }
 
 .machine__dolls {
@@ -69,11 +55,12 @@
     justify-content: center;
     align-items: flex-end;
     width: 78%;
+    padding-bottom: 15%;
 }
 
 .doll {
     width: 24%;
-    margin: 0 -6% -4%;
+    margin: 0 -6% -20%;
     transition: transform 0.2s ease;
 }
 
@@ -88,7 +75,7 @@
 
 .doll--grabbed {
     position: absolute;
-    top: 55%;
+    top: 72%;
     left: 50%;
     z-index: 3;
     width: 90%;
@@ -119,7 +106,6 @@
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    transition: box-shadow 0.15s ease, transform 0.1s ease;
 }
 
 .joystick {
@@ -137,15 +123,9 @@
     height: 12%;
 }
 
-.joystick:hover,
-.machine__button:hover {
-    box-shadow: 0 0 20px 4px rgba(255, 214, 102, 0.6);
-}
-
-.joystick:focus-visible,
-.machine__button:focus-visible {
-    outline: 3px solid #d0a629;
-    outline-offset: 2px;
+.joystick:focus,
+.machine__button:focus {
+    outline: none;
 }
 
 .joystick::before,
@@ -173,10 +153,60 @@
     opacity: 1;
 }
 
-.machine__button:active,
-.machine__button--pressed {
-    transform: scale(0.9);
-    box-shadow: 0 0 25px 8px rgba(255, 214, 102, 0.9);
+.machine__button::before,
+.machine__button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.machine__button::before {
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, rgba(255, 240, 180, 0.9) 0%, rgba(255, 200, 80, 0.4) 35%, rgba(255, 200, 80, 0) 65%);
+}
+
+.machine__button::after {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 5px rgba(255, 220, 120, 0.8);
+}
+
+.machine__button--pressed::before {
+    animation: button-flash 0.5s ease-out;
+}
+
+.machine__button--pressed::after {
+    animation: button-wave 0.5s ease-out;
+}
+
+@keyframes button-flash {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes button-wave {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.4);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2);
+    }
 }
 
 @media (min-width: 768px) {
