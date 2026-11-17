@@ -1,10 +1,9 @@
-/* persona 3 - Tests de la máquina */
-
 const {
     clampPosition,
     getNextPosition,
     getPercentPosition,
-    getDollInitial,
+    getDollImage,
+    DOLL_IMAGES,
     MIN_POSITION,
     MAX_POSITION,
     MOVE_STEP
@@ -61,17 +60,14 @@ describe("getPercentPosition", () => {
     });
 });
 
-describe("getDollInitial", () => {
-    test("devuelve la primera letra en mayúscula", () => {
-        expect(getDollInitial("nerea")).toBe("N");
+describe("getDollImage", () => {
+    test("devuelve la imagen que toca según la posición", () => {
+        expect(getDollImage(0)).toBe(DOLL_IMAGES[0]);
+        expect(getDollImage(3)).toBe(DOLL_IMAGES[3]);
     });
 
-    test("ignora los espacios del principio", () => {
-        expect(getDollInitial("   carlos")).toBe("C");
-    });
-
-    test("si no hay nombre devuelve una interrogación", () => {
-        expect(getDollInitial("")).toBe("?");
-        expect(getDollInitial(undefined)).toBe("?");
+    test("si hay más nombres que imágenes vuelve a empezar", () => {
+        expect(getDollImage(DOLL_IMAGES.length)).toBe(DOLL_IMAGES[0]);
+        expect(getDollImage(DOLL_IMAGES.length + 1)).toBe(DOLL_IMAGES[1]);
     });
 });

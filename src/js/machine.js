@@ -1,44 +1,37 @@
-/* persona 3 - Máquina de gancho (garra, joystick, animaciones y sonidos)
+const CLOUDINARY_IMAGES = "https://res.cloudinary.com/TU_CLOUD/image/upload/bransonverse/";
+const CLOUDINARY_SOUNDS = "https://res.cloudinary.com/TU_CLOUD/video/upload/bransonverse/sounds/";
 
-   Cómo se usa desde game.js (persona 1):
-   1. Al empezar la partida: renderDolls(listaDeNombres)
-   2. Escuchar cuando el jugador pulsa el botón:
-        document.addEventListener("machine:button-pressed", function () {
-            const nombre = ...tu algoritmo aleatorio...
-            grabDoll(nombre);
-        });
-   3. Escuchar cuando el muñeco ya ha caído para enseñar el aviso:
-        document.addEventListener("machine:prize", function (event) {
-            console.log(event.detail.name);
-        });
-   4. Al reiniciar: resetMachine(listaDeNombres)
-*/
+const DOLL_IMAGES = [
+    CLOUDINARY_IMAGES + "doll-branson-cei.png",
+    CLOUDINARY_IMAGES + "doll-devil.png",
+    CLOUDINARY_IMAGES + "doll-cap.png",
+    CLOUDINARY_IMAGES + "doll-pikachu.png",
+    CLOUDINARY_IMAGES + "doll-cat.png",
+    CLOUDINARY_IMAGES + "doll-bullfighter.png",
+    CLOUDINARY_IMAGES + "doll-cupid.png",
+    CLOUDINARY_IMAGES + "doll-reindeer.png"
+];
 
-// Límites de la garra (en % del ancho del cristal) y lo que avanza en cada paso
+const SOUNDS = {
+    move: CLOUDINARY_SOUNDS + "claw-move.mp3",
+    button: CLOUDINARY_SOUNDS + "button.mp3",
+    drop: CLOUDINARY_SOUNDS + "claw-drop.mp3",
+    grab: CLOUDINARY_SOUNDS + "claw-grab.mp3",
+    prize: CLOUDINARY_SOUNDS + "prize.mp3"
+};
+
 const MIN_POSITION = 10;
 const MAX_POSITION = 90;
 const MOVE_STEP = 5;
-const PRIZE_DOOR_POSITION = 12;
+const PRIZE_DOOR_POSITION = 88;
 
-// Tiempos de las animaciones (en milisegundos). Tienen que coincidir con machine.css
 const MOVE_TIME = 600;
 const DROP_TIME = 900;
 const GRAB_TIME = 400;
 
-// Rutas de los sonidos
-const SOUNDS = {
-    move: "../assets/sounds/claw-move.mp3",
-    button: "../assets/sounds/button.mp3",
-    drop: "../assets/sounds/claw-drop.mp3",
-    grab: "../assets/sounds/claw-grab.mp3",
-    prize: "../assets/sounds/prize.mp3"
-};
-
 let clawPosition = 50;
 let isMachineBusy = false;
 let moveInterval = null;
-
-/* ---------- Funciones puras (se pueden testear sin el DOM) ---------- */
 
 function clampPosition(position) {
     if (position < MIN_POSITION) {
@@ -68,11 +61,8 @@ function getPercentPosition(elementCenter, containerWidth) {
     return clampPosition(Math.round(percent));
 }
 
-function getDollInitial(name) {
-    if (!name || name.trim() === "") {
-        return "?";
-    }
-    return name.trim().charAt(0).toUpperCase();
+function getDollImage(index) {
+    return DOLL_IMAGES[index % DOLL_IMAGES.length];
 }
 
 function wait(milliseconds) {
@@ -81,31 +71,22 @@ function wait(milliseconds) {
     });
 }
 
-/* ---------- Sonidos ---------- */
-
 function playSound(soundName) {
     const sound = new Audio(SOUNDS[soundName]);
     sound.volume = 0.5;
-    // Si el archivo no existe o el navegador bloquea el sonido, no rompemos el juego
     sound.play().catch(function () {});
 }
-
-/* ---------- Muñecos ---------- */
 
 function renderDolls(names) {
     const dollsContainer = document.querySelector(".machine__dolls");
     dollsContainer.innerHTML = "";
 
     names.forEach(function (name, index) {
-        const doll = document.createElement("div");
-        doll.classList.add("doll", "doll--color-" + (index % 6));
+        const doll = document.createElement("img");
+        doll.classList.add("doll", "doll--tilt-" + (index % 4));
+        doll.src = getDollImage(index);
+        doll.alt = "Muñeco sorpresa";
         doll.dataset.name = name;
-
-        const face = document.createElement("span");
-        face.classList.add("doll__face");
-        face.textContent = getDollInitial(name);
-
-        doll.appendChild(face);
         dollsContainer.appendChild(doll);
     });
 }
@@ -119,8 +100,6 @@ function findDoll(name) {
     }
     return null;
 }
-
-/* ---------- Movimiento de la garra ---------- */
 
 function updateClawPosition(newPosition) {
     const claw = document.querySelector(".claw");
@@ -162,10 +141,6 @@ function stopMoving() {
     tiltJoystick(null);
 }
 
-/* ---------- Coger un muñeco ----------
-   Esta función la llama game.js (persona 1) con el nombre que ha salido
-   en su algoritmo aleatorio. Aquí NO se hace ningún sorteo. */
-
 async function grabDoll(name) {
     const doll = findDoll(name);
     if (!doll || isMachineBusy) {
@@ -176,39 +151,32 @@ async function grabDoll(name) {
     stopMoving();
 
     const claw = document.querySelector(".claw");
-    const clawHead = document.querySelector(".claw__head");
-    const glass = document.querySelector(".machine__glass");
-    const glassBox = glass.getBoundingClientRect();
+    const playArea = document.querySelector(".machine__play-area");
+    const playAreaBox = playArea.getBoundingClientRect();
     const dollBox = doll.getBoundingClientRect();
 
-    // 1. La garra va hasta encima del muñeco
-    const dollCenter = dollBox.left - glassBox.left + dollBox.width / 2;
-    updateClawPosition(getPercentPosition(dollCenter, glassBox.width));
+    const dollCenter = dollBox.left - playAreaBox.left + dollBox.width / 2;
+    updateClawPosition(getPercentPosition(dollCenter, playAreaBox.width));
     playSound("move");
     await wait(MOVE_TIME);
 
-    // 2. Baja
     claw.classList.add("claw--down");
     playSound("drop");
     await wait(DROP_TIME);
 
-    // 3. Cierra y coge el muñeco
     claw.classList.add("claw--closed");
     playSound("grab");
     doll.classList.add("doll--grabbed");
-    clawHead.appendChild(doll);
+    claw.appendChild(doll);
     await wait(GRAB_TIME);
 
-    // 4. Sube
     claw.classList.remove("claw--down");
     await wait(DROP_TIME);
 
-    // 5. Va hasta la puerta de premios
     updateClawPosition(PRIZE_DOOR_POSITION);
     playSound("move");
     await wait(MOVE_TIME);
 
-    // 6. Abre y suelta el muñeco
     claw.classList.remove("claw--closed");
     doll.classList.add("doll--falling");
     playSound("prize");
@@ -217,20 +185,21 @@ async function grabDoll(name) {
 
     isMachineBusy = false;
 
-    // Avisamos a game.js de que la animación ha terminado
     document.dispatchEvent(new CustomEvent("machine:prize", { detail: { name: name } }));
 }
 
 function resetMachine(names) {
     const claw = document.querySelector(".claw");
+    const grabbedDoll = claw.querySelector(".doll");
+    if (grabbedDoll) {
+        grabbedDoll.remove();
+    }
     isMachineBusy = false;
     stopMoving();
     claw.classList.remove("claw--down", "claw--closed");
     updateClawPosition(50);
     renderDolls(names);
 }
-
-/* ---------- Eventos ---------- */
 
 function handleButtonClick() {
     if (isMachineBusy) {
@@ -243,7 +212,6 @@ function handleButtonClick() {
     }, 200);
     playSound("button");
 
-    // game.js escucha este evento, hace el sorteo y llama a grabDoll(nombre)
     document.dispatchEvent(new CustomEvent("machine:button-pressed"));
 }
 
@@ -280,7 +248,6 @@ function initMachine() {
     const joystick = document.querySelector(".joystick");
     const button = document.querySelector(".machine__button");
 
-    // Si en esta página no está la máquina, no hacemos nada
     if (!joystick || !button) {
         return;
     }
@@ -299,13 +266,13 @@ if (typeof document !== "undefined") {
     document.addEventListener("DOMContentLoaded", initMachine);
 }
 
-// Para poder usar las funciones en los tests con Jest
 if (typeof module !== "undefined") {
     module.exports = {
         clampPosition,
         getNextPosition,
         getPercentPosition,
-        getDollInitial,
+        getDollImage,
+        DOLL_IMAGES,
         MIN_POSITION,
         MAX_POSITION,
         MOVE_STEP

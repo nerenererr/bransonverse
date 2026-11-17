@@ -10,36 +10,19 @@
     <link rel="stylesheet" href="../src/css/main.css">
 </head>
 <body>
-
-
     <main class="game">
         <section class="machine" aria-label="Máquina de gancho">
-            <div class="machine__glass">
-                <div class="machine__rail"></div>
-
+            <div class="machine__play-area">
                 <div class="claw">
-                    <div class="claw__rope"></div>
-                    <div class="claw__head">
-                        <span class="claw__arm claw__arm--left"></span>
-                        <span class="claw__arm claw__arm--right"></span>
-                    </div>
+                    <img class="claw__image" src="https://res.cloudinary.com/TU_CLOUD/image/upload/bransonverse/claw.png" alt="Garra de la máquina">
                 </div>
-
-                <div class="machine__prize-door"></div>
                 <div class="machine__dolls"></div>
             </div>
 
-            <div class="machine__controls">
-                <button type="button" class="joystick" aria-label="Mover la garra (izquierda o derecha)">
-                    <span class="joystick__stick">
-                        <span class="joystick__ball"></span>
-                    </span>
-                </button>
-                <button type="button" class="machine__button" aria-label="Soltar la garra"></button>
-            </div>
+            <button type="button" class="joystick" aria-label="Mover la garra (izquierda o derecha)"></button>
+            <button type="button" class="machine__button" aria-label="Soltar la garra"></button>
         </section>
     </main>
-
 
     <script src="../src/js/machine.js"></script>
     <script src="../src/js/game.js"></script>
