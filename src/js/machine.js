@@ -1,28 +1,32 @@
-const CLOUDINARY_IMAGES = "https://res.cloudinary.com/TU_CLOUD/image/upload/bransonverse/";
-const CLOUDINARY_SOUNDS = "https://res.cloudinary.com/TU_CLOUD/video/upload/bransonverse/sounds/";
+const CLOUDINARY = "https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/";
+
+const CLAW_OPEN_IMAGE = CLOUDINARY + "v1794919052/extended_claw_qmld36.png";
+const CLAW_CLOSED_IMAGE = CLOUDINARY + "v1794919052/claw_closed_gk492g.png";
 
 const DOLL_IMAGES = [
-    CLOUDINARY_IMAGES + "doll-branson-cei.png",
-    CLOUDINARY_IMAGES + "doll-devil.png",
-    CLOUDINARY_IMAGES + "doll-cap.png",
-    CLOUDINARY_IMAGES + "doll-pikachu.png",
-    CLOUDINARY_IMAGES + "doll-cat.png",
-    CLOUDINARY_IMAGES + "doll-bullfighter.png",
-    CLOUDINARY_IMAGES + "doll-cupid.png",
-    CLOUDINARY_IMAGES + "doll-reindeer.png"
+    CLOUDINARY + "v1794918844/Figura_de_arcilla_con_sudadera_y_zapatillas_1_xbmwkl.png",
+    CLOUDINARY + "v1794918844/Diablillo_de_fieltro_con_tridente_1_b3myuz.png",
+    CLOUDINARY + "v1794918844/Personaje_de_arcilla_con_gorra_rosa_1_pxfjgn.png",
+    CLOUDINARY + "v1794918844/Figura_de_plastilina_con_disfraz_de_Pikachu_1_newyv9.png",
+    CLOUDINARY + "v1794918844/Personaje_gato_de_arcilla_con_campana_1_wkphmv.png",
+    CLOUDINARY + "v1794918843/Torero_Chibi_de_Fieltro_con_Capa_Roja_1_uh8wiw.png",
+    CLOUDINARY + "v1794918843/%C3%81ngel_Cupido_de_fieltro_con_arco_y_flecha_1_dbn5zv.png",
+    CLOUDINARY + "v1794918844/Figura_de_reno_de_plastilina_con_bast%C3%B3n_de_caramelo_3_lm56zq.png",
+    CLOUDINARY + "v1794918844/Joven_vaquero_de_arcilla_con_estrella_amarilla_1_avrv05.png"
 ];
 
 const SOUNDS = {
-    move: CLOUDINARY_SOUNDS + "claw-move.mp3",
-    button: CLOUDINARY_SOUNDS + "button.mp3",
-    drop: CLOUDINARY_SOUNDS + "claw-drop.mp3",
-    grab: CLOUDINARY_SOUNDS + "claw-grab.mp3",
-    prize: CLOUDINARY_SOUNDS + "prize.mp3"
+    move: "",
+    button: "",
+    drop: "",
+    grab: "",
+    prize: ""
 };
 
 const MIN_POSITION = 10;
 const MAX_POSITION = 90;
-const MOVE_STEP = 5;
+const MOVE_STEP = 2;
+const MOVE_INTERVAL = 50;
 const PRIZE_DOOR_POSITION = 88;
 
 const MOVE_TIME = 600;
@@ -72,6 +76,9 @@ function wait(milliseconds) {
 }
 
 function playSound(soundName) {
+    if (!SOUNDS[soundName]) {
+        return;
+    }
     const sound = new Audio(SOUNDS[soundName]);
     sound.volume = 0.5;
     sound.play().catch(function () {});
@@ -107,15 +114,25 @@ function updateClawPosition(newPosition) {
     claw.style.left = clawPosition + "%";
 }
 
+function closeClaw() {
+    const claw = document.querySelector(".claw");
+    const clawImage = document.querySelector(".claw__image");
+    claw.classList.add("claw--closed");
+    clawImage.src = CLAW_CLOSED_IMAGE;
+}
+
+function openClaw() {
+    const claw = document.querySelector(".claw");
+    const clawImage = document.querySelector(".claw__image");
+    claw.classList.remove("claw--closed");
+    clawImage.src = CLAW_OPEN_IMAGE;
+}
+
 function moveClaw(direction) {
     if (isMachineBusy) {
         return;
     }
-    const newPosition = getNextPosition(clawPosition, direction);
-    if (newPosition !== clawPosition) {
-        updateClawPosition(newPosition);
-        playSound("move");
-    }
+    updateClawPosition(getNextPosition(clawPosition, direction));
 }
 
 function tiltJoystick(direction) {
@@ -127,12 +144,16 @@ function tiltJoystick(direction) {
 }
 
 function startMoving(direction) {
+    if (isMachineBusy) {
+        return;
+    }
     stopMoving();
     tiltJoystick(direction);
+    playSound("move");
     moveClaw(direction);
     moveInterval = setInterval(function () {
         moveClaw(direction);
-    }, 150);
+    }, MOVE_INTERVAL);
 }
 
 function stopMoving() {
@@ -147,10 +168,11 @@ async function grabDoll(name) {
         return;
     }
 
-    isMachineBusy = true;
     stopMoving();
+    isMachineBusy = true;
 
     const claw = document.querySelector(".claw");
+    claw.classList.add("claw--auto");
     const playArea = document.querySelector(".machine__play-area");
     const playAreaBox = playArea.getBoundingClientRect();
     const dollBox = doll.getBoundingClientRect();
@@ -164,7 +186,7 @@ async function grabDoll(name) {
     playSound("drop");
     await wait(DROP_TIME);
 
-    claw.classList.add("claw--closed");
+    closeClaw();
     playSound("grab");
     doll.classList.add("doll--grabbed");
     claw.appendChild(doll);
@@ -177,12 +199,13 @@ async function grabDoll(name) {
     playSound("move");
     await wait(MOVE_TIME);
 
-    claw.classList.remove("claw--closed");
+    openClaw();
     doll.classList.add("doll--falling");
     playSound("prize");
     await wait(DROP_TIME);
     doll.remove();
 
+    claw.classList.remove("claw--auto");
     isMachineBusy = false;
 
     document.dispatchEvent(new CustomEvent("machine:prize", { detail: { name: name } }));
@@ -196,7 +219,8 @@ function resetMachine(names) {
     }
     isMachineBusy = false;
     stopMoving();
-    claw.classList.remove("claw--down", "claw--closed");
+    claw.classList.remove("claw--down", "claw--auto");
+    openClaw();
     updateClawPosition(50);
     renderDolls(names);
 }
@@ -209,7 +233,7 @@ function handleButtonClick() {
     button.classList.add("machine__button--pressed");
     setTimeout(function () {
         button.classList.remove("machine__button--pressed");
-    }, 200);
+    }, 500);
     playSound("button");
 
     document.dispatchEvent(new CustomEvent("machine:button-pressed"));
@@ -235,6 +259,9 @@ function handleKeyDown(event) {
         startMoving("left");
     } else if (event.key === "ArrowRight") {
         startMoving("right");
+    } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        handleButtonClick();
     }
 }
 
