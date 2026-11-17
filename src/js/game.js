@@ -1,8 +1,8 @@
 /* persona 1*/
-const MAX_ATTEMTS = 3;
+const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
 
-let attempts = MAX_ATTEMTS;
+let attempts = MAX_ATTEMPTS;
 let timeLeft = GAME_TIME;
 let timerInterval = null;
 let gameFinished = false;
@@ -15,8 +15,8 @@ const gameFailure = document.getElementById('gameFailure');
 const gameResult = document.getElementById('gameResult');
 const gameOver = document.getElementById('gameOver');
 
-const obtainedBranson = document.getElementById('obtainedBransom');
-const obtainedBransonImage = document.getElementById('obtainedBransomImage');
+const obtainedBranson = document.getElementById('obtainedBranson');
+const obtainedBransonImage = document.getElementById('obtainedBransonImage');
 
 const playAgainBtn = document.getElementById('playAgainBtn');
 const restartGameBtn = document.getElementById('restartGameBtn');
@@ -26,6 +26,22 @@ const restartGameBtn = document.getElementById('restartGameBtn');
 function updateCounters() {
     attemptsCount.textContent = attempts;
     timeCount.textContent = timeLeft;
+}
+
+function startGame() {
+    clearInterval(timerInterval);
+
+    attempts = MAX_ATTEMPTS;
+    timeLeft = GAME_TIME;
+    gameFinished = false;
+
+    gameFailure.hidden = true;
+    gameResult.hidden = true;
+    gameOver.hidden = true;
+
+    updateCounters();
+
+    startTimer(); // Temporalmente para probar el tiempo
 }
 
 function startTimer() {
@@ -54,8 +70,30 @@ function useAttempt() {
 }
 
 
+function handleAttemptResult(success, branson = null) {
+    if (gameFinished || attempts <= 0) return;
+
+    useAttempt();
+
+    if (success) {
+        showResult(branson);
+        return;
+    } 
+
+    if (attempts === 0) {
+        endGame();
+    } else {
+        showFailure();
+    }
+}
+
+
 function showFailure() {
     gameFailure.hidden = false;
+
+    setTimeout(() => {
+        gameFailure.hidden = true;
+    }, 3000);
 }
 
 
@@ -80,19 +118,6 @@ function endGame() {
     gameOver.hidden = false;
 }
 
-function startGame() {
-    clearInterval(timerInterval);
-
-    attempts = MAX_ATTEMTS;
-    timeLeft = GAME_TIME;
-    gameFinished = false;
-
-    gameFailure.hidden = true;
-    gameResult.hidden = true;
-    gameOver.hidden = true;
-
-    updateCounters();
-}
 
 
 playAgainBtn.addEventListener('click', startGame);
@@ -103,12 +128,19 @@ startGame();
 // BOTONES TEMPORALES DE PRUEBA
 
 document.getElementById("testWinBtn").addEventListener("click", () => {
-    showResult({
-        name: "Brandon Vaquero",
-        image: "/assets/brandon-vaquero.png"
+    handleAttemptResult(true, {
+        name: "Branson Vaquero",
+        image: "/assets/branson-vaquero.png"
     });
 });
 
 document.getElementById("testLoseBtn").addEventListener("click", () => {
     endGame();
 });
+
+
+
+document.getElementById('testAttemptBtn').addEventListener('click', () => {
+    console.log("Intento fallido pulsado");
+    handleAttemptResult(false);
+}); 
