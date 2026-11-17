@@ -22,6 +22,17 @@ main {
     overflow: hidden;
 }
 
+@media (max-width: 360px) {
+    body {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    main {
+        width: 360px;
+    }
+}
+
 /*.intro-video {
     position: absolute;
     inset: 0;
