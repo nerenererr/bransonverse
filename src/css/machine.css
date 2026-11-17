@@ -1,17 +1,63 @@
-.game {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .machine {
     position: relative;
     width: 100%;
+    margin: 0 auto;
     aspect-ratio: 1440 / 1034;
     background-image: url("https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/v1794918657/pantallaJuego_ctoxml.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
+}
+
+.machine--shake {
+    animation: machine-shake 0.4s ease-in-out;
+}
+
+@keyframes machine-shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px) rotate(-0.5deg); }
+    40% { transform: translateX(6px) rotate(0.5deg); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+.light {
+    position: absolute;
+    width: 7%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 245, 200, 0.95) 0%, rgba(255, 200, 90, 0.5) 30%, rgba(255, 200, 90, 0) 65%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: light-blink 1.2s ease-in-out infinite alternate;
+}
+
+.light:nth-child(even) {
+    animation-delay: 0.6s;
+}
+
+.light:nth-child(1) { top: 9.2%; left: 33.3%; }
+.light:nth-child(2) { top: 9.2%; left: 66.6%; }
+.light:nth-child(3) { top: 15.4%; left: 21.4%; }
+.light:nth-child(4) { top: 15.4%; left: 78.6%; }
+.light:nth-child(5) { top: 19.2%; left: 9%; }
+.light:nth-child(6) { top: 19.2%; left: 91.1%; }
+.light:nth-child(7) { top: 29.6%; left: 9%; }
+.light:nth-child(8) { top: 29.6%; left: 91.1%; }
+.light:nth-child(9) { top: 39.9%; left: 9%; }
+.light:nth-child(10) { top: 39.9%; left: 91.1%; }
+
+@keyframes light-blink {
+    from {
+        opacity: 0.1;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.machine--party .light {
+    animation-duration: 0.15s;
 }
 
 .machine__play-area {
@@ -30,11 +76,30 @@
     z-index: 2;
     width: 20%;
     transform: translateX(-50%);
-    transition: left 0.1s linear, top 0.9s ease-in-out;
+    transform-origin: top center;
+    transition: left 0.1s linear, top 0.9s ease-in-out, transform 0.3s ease;
 }
 
 .claw--auto {
-    transition: left 0.6s ease-in-out, top 0.9s ease-in-out;
+    transition: left 0.6s ease-in-out, top 0.9s ease-in-out, transform 0.3s ease;
+}
+
+.claw--moving-left {
+    transform: translateX(-50%) rotate(4deg);
+}
+
+.claw--moving-right {
+    transform: translateX(-50%) rotate(-4deg);
+}
+
+.claw--swinging {
+    animation: claw-swing 0.6s ease-in-out infinite;
+}
+
+@keyframes claw-swing {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(3deg); }
+    75% { transform: translateX(-50%) rotate(-3deg); }
 }
 
 .claw--down {

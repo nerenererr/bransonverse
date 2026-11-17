@@ -137,10 +137,20 @@ function moveClaw(direction) {
 
 function tiltJoystick(direction) {
     const joystick = document.querySelector(".joystick");
+    const claw = document.querySelector(".claw");
     joystick.classList.remove("joystick--left", "joystick--right");
+    claw.classList.remove("claw--moving-left", "claw--moving-right");
     if (direction) {
         joystick.classList.add("joystick--" + direction);
+        claw.classList.add("claw--moving-" + direction);
     }
+}
+
+function addTemporaryClass(element, className, time) {
+    element.classList.add(className);
+    setTimeout(function () {
+        element.classList.remove(className);
+    }, time);
 }
 
 function startMoving(direction) {
@@ -195,14 +205,21 @@ async function grabDoll(name) {
     claw.classList.remove("claw--down");
     await wait(DROP_TIME);
 
+    claw.classList.add("claw--swinging");
     updateClawPosition(PRIZE_DOOR_POSITION);
     playSound("move");
     await wait(MOVE_TIME);
 
+    claw.classList.remove("claw--swinging");
     openClaw();
     doll.classList.add("doll--falling");
     playSound("prize");
-    await wait(DROP_TIME);
+    await wait(DROP_TIME / 2);
+
+    const machine = document.querySelector(".machine");
+    addTemporaryClass(machine, "machine--shake", 400);
+    addTemporaryClass(machine, "machine--party", 1500);
+    await wait(DROP_TIME / 2);
     doll.remove();
 
     claw.classList.remove("claw--auto");
@@ -219,7 +236,7 @@ function resetMachine(names) {
     }
     isMachineBusy = false;
     stopMoving();
-    claw.classList.remove("claw--down", "claw--auto");
+    claw.classList.remove("claw--down", "claw--auto", "claw--swinging");
     openClaw();
     updateClawPosition(50);
     renderDolls(names);
