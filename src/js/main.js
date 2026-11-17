@@ -2,6 +2,7 @@ const menuSection = document.querySelector(".main-menu");
 const introVideo = document.querySelector(".intro-video");
 const primaryMenu = document.querySelector(".primary-menu");
 const playMenu = document.querySelector(".play-menu");
+const customGameScreen = document.querySelector(".custom-game-screen");
 
 if (menuSection && introVideo) {
     introVideo.addEventListener("ended", () => {
@@ -13,7 +14,7 @@ if (menuSection && introVideo) {
     }
 }
 
-if (menuSection && primaryMenu && playMenu) {
+if (menuSection && primaryMenu && playMenu && customGameScreen) {
     const menus = [primaryMenu, playMenu];
     const selectedIndexes = menus.map((menu) =>
         Array.from(menu.querySelectorAll("button")).findIndex(
@@ -41,20 +42,46 @@ if (menuSection && primaryMenu && playMenu) {
         }
     }
 
+    function openCustomGame() {
+        menuSection.hidden = true;
+        customGameScreen.hidden = false;
+        customGameScreen.querySelector(".name-input")?.focus();
+    }
+
+    function returnToModeMenu() {
+        customGameScreen.hidden = true;
+        menuSection.hidden = false;
+        primaryMenu.hidden = true;
+        playMenu.hidden = false;
+        activeMenuIndex = 1;
+        selectOption(selectedIndexes[activeMenuIndex], true);
+    }
+
     function activateSelectedOption() {
-        const options = getOptions();
-        const selectedOption = options[selectedIndexes[activeMenuIndex]];
+        const selectedOption = getOptions()[selectedIndexes[activeMenuIndex]];
+
+        if (!selectedOption) {
+            return;
+        }
 
         if (activeMenuIndex === 0 && selectedOption.classList.contains("play-button")) {
             primaryMenu.hidden = true;
             playMenu.hidden = false;
             activeMenuIndex = 1;
             selectOption(selectedIndexes[activeMenuIndex], true);
+        } else if (activeMenuIndex === 1 && selectedOption.classList.contains("custom-game-button")) {
+            openCustomGame();
         }
     }
 
     document.addEventListener("keydown", (event) => {
-        if (menuSection?.hidden) {
+        if (!customGameScreen.hidden && event.key === "Escape") {
+            event.preventDefault();
+            returnToModeMenu();
+            return;
+        }
+
+        if (menuSection.hidden) {
             return;
         }
 
@@ -99,4 +126,6 @@ if (menuSection && primaryMenu && playMenu) {
             activateSelectedOption();
         });
     });
+
+    customGameScreen.querySelector(".custom-game-back").addEventListener("click", returnToModeMenu);
 }

@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Barrio&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/css/main.css">
     <script src="src/js/main.js" defer></script>
+    <script src="src/js/custom-game.js" defer></script>
 </head>
 <body>
     <main>
@@ -49,6 +50,45 @@
                 </li>
             </ul>
         </nav>
+    </section>
+
+    <section class="custom-game-screen" aria-labelledby="custom-game-title" hidden>
+        <header class="custom-game-header">
+            <button type="button" class="custom-game-back" aria-label="Volver a los modos de juego">
+                <span aria-hidden="true">&larr;</span>
+            </button>
+            <h1 id="custom-game-title">PARTIDA BRANSONALIZADA</h1>
+        </header>
+
+        <p class="custom-game-instructions">
+            Escribe entre 11 y 15 nombres: cada uno se esconderá en secreto dentro de un muñeco de la máquina.
+        </p>
+        <p class="custom-game-warning">
+            Solo sabrás quién es quién cuando lo atrapes. Sin nombres repetidos ni campos vacíos.
+        </p>
+
+        <form class="custom-game-form" novalidate>
+            <div class="custom-game-summary">
+                <h2>NOMBRES</h2>
+                <div class="name-progress" aria-hidden="true"></div>
+                <output class="name-count" aria-live="polite">0/15</output>
+                <p class="name-limit">Mínimo 11 · Máximo 15</p>
+            </div>
+
+            <div class="name-columns">
+                <div class="name-column" aria-label="Primer grupo de nombres"></div>
+                <div class="name-column" aria-label="Segundo grupo de nombres"></div>
+            </div>
+
+            <div class="custom-game-actions">
+                <button type="button" class="add-name-button">
+                    <span>AÑADIR UN NOMBRE</span>
+                    <span class="add-name-icon" aria-hidden="true">+</span>
+                </button>
+                <button type="submit" class="start-custom-game">COMENZAR PARTIDA</button>
+            </div>
+            <p class="custom-game-feedback" role="status" aria-live="polite"></p>
+        </form>
     </section>
 </main>
 </body>
