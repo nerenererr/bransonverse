@@ -78,6 +78,7 @@ main {
 }
 
 .main-menu button {
+    position: relative;
     padding: 0.2rem 0;
     border: none;
     background: none;
@@ -85,6 +86,49 @@ main {
     font-family: "Barrio", sans-serif;
     font-weight: 400;
     cursor: pointer;
+}
+
+.main-menu button:focus {
+    outline: none;
+}
+
+.primary-menu button[aria-pressed="true"]::before,
+.primary-menu button[aria-pressed="true"]::after,
+.play-menu button[aria-pressed="true"]::before,
+.play-menu button[aria-pressed="true"]::after {
+    position: absolute;
+    top: 50%;
+    width: clamp(4rem, 8vw, 6.5rem);
+    aspect-ratio: 1;
+    content: "";
+    transform: translateY(-50%);
+}
+
+.primary-menu button[aria-pressed="true"]::before,
+.primary-menu button[aria-pressed="true"]::after {
+    background: url("https://res.cloudinary.com/da9tytxsu/image/upload/v1794909672/brandonStandar_cflcns.png") center / contain no-repeat;
+}
+
+.branson-mode-button[aria-pressed="true"]::before,
+.branson-mode-button[aria-pressed="true"]::after {
+    background: url("https://res.cloudinary.com/da9tytxsu/image/upload/v1794911232/brandon_0005_lcpawf.png") center / contain no-repeat;
+}
+
+.custom-game-button[aria-pressed="true"]::before,
+.custom-game-button[aria-pressed="true"]::after {
+    background: url("https://res.cloudinary.com/da9tytxsu/image/upload/v1794911223/brandon_0002_s2bngb.png") center / contain no-repeat;
+}
+
+.primary-menu button[aria-pressed="true"]::before,
+.play-menu button[aria-pressed="true"]::before {
+    right: 100%;
+    margin-right: 0;
+}
+
+.primary-menu button[aria-pressed="true"]::after,
+.play-menu button[aria-pressed="true"]::after {
+    left: 100%;
+    margin-left: 0;
 }
 
 .play-button {
@@ -95,3 +139,10 @@ main {
     font-size: clamp(1.2rem, 1.9vw, 1.9rem);
 }
 
+.branson-mode-button {
+    font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+}
+
+.custom-game-button {
+    font-size: clamp(1.2rem, 1.9vw, 1.9rem);
+}

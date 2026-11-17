@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barrio&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/css/main.css">
+    <script src="src/js/main.js" defer></script>
 </head>
 <body>
     <main>
@@ -16,19 +17,34 @@
         <source src="https://res.cloudinary.com/da9tytxsu/video/upload/v1794908891/intro_upczfb.mp4" type="video/mp4">
     </video>
 
-    <section class="main-menu">
+    <section class="main-menu" hidden>
         <h1>THE BRANSONVERSE</h1>
 
-        <nav aria-label="Menú principal">
+        <nav class="primary-menu" aria-label="Menú principal">
             <ul>
                 <li>
-                    <button type="button" class="play-button">
+                    <button type="button" class="play-button" aria-pressed="true" tabindex="0">
                         PLAY
                     </button>
                 </li>
                 <li>
-                    <button type="button" class="collection-button">
+                    <button type="button" class="collection-button" aria-pressed="false" tabindex="-1">
                         VER COLECCIÓN
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <nav class="play-menu" aria-label="Modos de juego" hidden>
+            <ul>
+                <li>
+                    <button type="button" class="branson-mode-button" aria-pressed="true" tabindex="0">
+                        MODO BRANSON
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="custom-game-button" aria-pressed="false" tabindex="-1">
+                        PARTIDA BRANSONALIZADA
                     </button>
                 </li>
             </ul>
