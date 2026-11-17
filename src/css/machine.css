@@ -66,15 +66,35 @@
     top: 14%;
     left: 8%;
     width: 84%;
-    height: 73%;
-    overflow: hidden;
+    height: 62%;
+    clip-path: inset(0 0 -18% 0);
+}
+
+.machine__front-bar,
+.machine__joystick-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: inherit;
+    background-size: inherit;
+    pointer-events: none;
+}
+
+.machine__front-bar {
+    clip-path: inset(76% 5.5% 19.5% 5.5%);
+}
+
+.machine__joystick-cover {
+    clip-path: ellipse(2.6% 3.6% at 44.1% 86.1%);
 }
 
 .claw {
     position: absolute;
-    top: -34%;
+    top: -40%;
     left: 50%;
-    z-index: 2;
+    z-index: 20;
     width: 20%;
     transform: translateX(-50%);
     transform-origin: top center;
@@ -114,39 +134,24 @@
 
 .machine__dolls {
     position: absolute;
-    bottom: 0;
-    left: 1%;
-    display: flex;
-    flex-wrap: wrap-reverse;
-    justify-content: center;
-    align-items: flex-end;
-    width: 78%;
-    padding-bottom: 15%;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .doll {
-    width: 24%;
-    margin: 0 -6% -20%;
-    transition: transform 0.2s ease;
-}
-
-.doll--tilt-0 { transform: rotate(0deg); }
-.doll--tilt-1 { transform: rotate(-12deg); }
-.doll--tilt-2 { transform: rotate(10deg); }
-.doll--tilt-3 { transform: rotate(-25deg); }
-
-.machine__dolls .doll:hover {
-    transform: scale(1.08);
+    position: absolute;
+    height: 45%;
 }
 
 .doll--grabbed {
     position: absolute;
-    top: 72%;
+    top: 68%;
     left: 50%;
     z-index: 3;
-    width: 90%;
-    margin: 0;
-    transform: translateX(-50%);
+    height: 52%;
+    translate: -50% 0;
 }
 
 .doll--falling {
@@ -155,11 +160,11 @@
 
 @keyframes doll-fall {
     from {
-        transform: translate(-50%, 0) rotate(0deg);
+        transform: translateY(0);
         opacity: 1;
     }
     to {
-        transform: translate(-50%, 250%) rotate(90deg);
+        transform: translateY(250%);
         opacity: 0;
     }
 }
