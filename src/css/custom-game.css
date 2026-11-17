@@ -2,7 +2,7 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    overflow-y: auto;
+    overflow: hidden;
     padding: clamp(0.75rem, 2.5vh, 1.5rem) clamp(1rem, 5vw, 4rem) 1.5rem;
     background: linear-gradient(180deg, rgb(0 0 0 / 94%) 0%, rgb(0 0 0 / 75%) 45%, rgb(0 0 0 / 42%) 100%);
     color: #fff;
@@ -137,22 +137,28 @@
 .name-column {
     display: grid;
     align-content: start;
-    gap: 0.45rem;
+    gap: 0.3rem;
 }
 
 .name-row {
     display: grid;
     grid-template-columns: 2.2rem minmax(0, 1fr) 2.2rem;
     align-items: center;
-    min-height: 3.2rem;
-    padding: 0.35rem 0.45rem;
+    min-height: 2.5rem;
+    padding: 0.2rem 0.35rem;
     border: 2px solid #bd9000;
     border-radius: 0.75rem;
     background: rgb(0 0 0 / 50%);
+    transition: background-color 120ms ease, border-color 120ms ease;
 }
 
 .name-row.is-invalid {
     border-color: #df6969;
+}
+
+.name-row:focus-within {
+    border-color: #d0a629;
+    background: #d0a629;
 }
 
 .name-number {
@@ -187,7 +193,15 @@
 
 .name-input:focus-visible {
     border-radius: 0.2rem;
-    box-shadow: 0 0 0 2px #d0a629;
+    box-shadow: none;
+}
+
+.name-row:focus-within .name-input {
+    color: #111;
+}
+
+.name-row:focus-within .name-input::placeholder {
+    color: #332800;
 }
 
 .remove-name-button,
@@ -210,31 +224,43 @@
 
 .custom-game-actions {
     display: grid;
-    width: calc((100% - clamp(1rem, 6vw, 4rem)) / 2);
-    gap: 0.7rem;
-    margin: 0.45rem 0 0 auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    width: 100%;
+    gap: clamp(1rem, 6vw, 4rem);
+    margin: 0.45rem 0 0;
 }
 
 .add-name-button {
     display: flex;
     align-items: center;
-    justify-content: center;
-    min-height: 3.2rem;
-    padding: 0.35rem 0.45rem 0.35rem 2.5rem;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.35rem 0.45rem 0.35rem 0.5rem;
     border: 2px solid #bd9000;
     border-radius: 0.75rem;
-    background: rgb(0 0 0 / 50%);
+    background: linear-gradient(110deg, rgb(189 144 0 / 12%), rgb(0 0 0 / 60%));
     color: #fff;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: clamp(0.65rem, 0.9vw, 0.78rem);
     font-weight: 700;
+    white-space: nowrap;
+    gap: 0.35rem;
+    transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
 }
 
 .add-name-icon {
-    margin-left: auto;
-    background: #bd9000;
+    flex: 0 0 auto;
+    background: #d0a629;
     color: #111;
     font-size: 1.5rem;
+}
+
+.add-name-button:hover:not(:disabled) {
+    border-color: #e2bd43;
+    background: #bd9000;
+    color: #111;
 }
 
 .add-name-button:disabled {
@@ -251,11 +277,12 @@
     cursor: pointer;
     font-family: "Barrio", sans-serif;
     font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    white-space: nowrap;
 }
 
 .custom-game-feedback {
-    min-height: 1.25rem;
-    margin: 0.25rem 0 0;
+    min-height: 1rem;
+    margin: 0.1rem 0 0;
     color: #fff;
     font-size: 0.85rem;
     font-weight: 700;
@@ -267,38 +294,70 @@
     outline-offset: 3px;
 }
 
+.custom-game-screen .add-name-button:focus-visible,
+.custom-game-screen .start-custom-game:focus-visible {
+    outline-color: #d0a629;
+}
+
 @media (max-width: 640px) {
     .custom-game-screen {
-        padding-inline: 1rem;
+        padding: 0.5rem 0.75rem;
     }
 
     .custom-game-header {
-        grid-template-columns: 2.5rem 1fr 2.5rem;
+        grid-template-columns: 2rem 1fr 2rem;
     }
 
-    .custom-game-instructions {
-        margin-top: 0.75rem;
+    .custom-game-header h1 {
+        font-size: clamp(1.25rem, 6vw, 2rem);
+    }
+
+    .custom-game-back {
+        font-size: 2rem;
+    }
+
+    .custom-game-instructions,
+    .custom-game-warning {
+        margin-top: 0.4rem;
+        font-size: 0.72rem;
+        line-height: 1.2;
     }
 
     .custom-game-form {
-        margin-top: 1rem;
+        margin-top: 0.6rem;
     }
 
     .custom-game-summary {
         grid-template-columns: auto minmax(0, 1fr);
         column-gap: 0.75rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .custom-game-summary h2 {
+        font-size: 1rem;
+    }
+
+    .name-progress {
+        gap: 0.12rem;
+    }
+
+    .name-progress span {
+        height: 1rem;
+        border-width: 1px;
+        border-radius: 0.3rem;
     }
 
     .name-count {
         grid-column: 2;
         grid-row: 2;
         justify-self: end;
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     .name-limit {
         grid-column: 1;
         grid-row: 2;
+        font-size: 0.58rem;
     }
 
     .name-progress {
@@ -307,15 +366,171 @@
     }
 
     .name-columns {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 0.45rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
     }
 
     .name-row {
-        min-height: 2.9rem;
+        grid-template-columns: 1.45rem minmax(0, 1fr) 1.45rem;
+        min-height: 2rem;
+        padding: 0.15rem;
+        border-width: 1px;
+        border-radius: 0.5rem;
+    }
+
+    .name-column {
+        gap: 0.25rem;
+    }
+
+    .name-number,
+    .remove-name-button {
+        width: 1.35rem;
+        height: 1.35rem;
+    }
+
+    .name-number {
+        font-size: 0.72rem;
+    }
+
+    .remove-name-button {
+        font-size: 1rem;
+    }
+
+    .name-input {
+        padding: 0.15rem;
+        font-size: 0.68rem;
     }
 
     .custom-game-actions {
-        width: 100%;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+    }
+
+    .add-name-button {
+        min-height: 2rem;
+        padding: 0.15rem 0.25rem 0.15rem 0.5rem;
+        border-width: 1px;
+        border-radius: 0.5rem;
+        font-size: clamp(0.5rem, 2.4vw, 0.65rem);
+    }
+
+    .add-name-icon {
+        width: 1.35rem;
+        height: 1.35rem;
+        font-size: 1rem;
+    }
+
+    .start-custom-game {
+        font-size: clamp(0.9rem, 3.5vw, 1.3rem);
+    }
+
+    .custom-game-feedback {
+        min-height: 0.9rem;
+        margin-top: 0.1rem;
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-height: 600px) {
+    .custom-game-screen {
+        padding: 0.15rem 1rem;
+    }
+
+    .custom-game-header h1 {
+        font-size: 1.35rem;
+    }
+
+    .custom-game-back {
+        font-size: 1.8rem;
+    }
+
+    .custom-game-instructions,
+    .custom-game-warning {
+        margin-top: 0.12rem;
+        font-size: 0.62rem;
+        line-height: 1.1;
+    }
+
+    .custom-game-form {
+        margin-top: 0.2rem;
+    }
+
+    .custom-game-summary {
+        margin-bottom: 0.2rem;
+    }
+
+    .custom-game-summary h2,
+    .name-count {
+        font-size: 0.95rem;
+    }
+
+    .name-limit {
+        margin-top: 0.1rem;
+        font-size: 0.55rem;
+    }
+
+    .name-row,
+    .add-name-button {
+        min-height: 1.2rem;
+    }
+
+    .name-row {
+        grid-template-columns: 1.05rem minmax(0, 1fr) 1.05rem;
+        padding: 0;
+    }
+
+    .name-number,
+    .remove-name-button,
+    .add-name-icon {
+        width: 0.95rem;
+        height: 0.95rem;
+    }
+
+    .name-column {
+        gap: 0.12rem;
+    }
+
+    .custom-game-actions {
+        margin-top: 0.25rem;
+    }
+
+    .add-name-button {
+        min-height: 1.25rem;
+        padding-block: 0;
+        font-size: 0.6rem;
+    }
+
+    .start-custom-game {
+        padding-block: 0;
+        font-size: 0.85rem;
+    }
+
+    .custom-game-feedback {
+        min-height: 0.6rem;
+        margin-top: 0;
+        font-size: 0.55rem;
+    }
+
+    .name-number,
+    .remove-name-button,
+    .name-input {
+        font-size: 0.65rem;
+    }
+
+    .add-name-button {
+        min-height: 1.25rem;
+        padding-block: 0;
+        font-size: 0.6rem;
+    }
+
+    .start-custom-game {
+        padding-block: 0;
+        font-size: 0.85rem;
+    }
+
+    .custom-game-feedback {
+        min-height: 0.6rem;
+        margin-top: 0;
+        font-size: 0.55rem;
     }
 }
