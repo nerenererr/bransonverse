@@ -1,1 +1,48 @@
-<!--persona 3-->>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Bransonverse - Partida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barrio&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../src/css/main.css">
+</head>
+<body>
+    <main>
+        <!-- persona 1: cabecera (intentos y tiempo) y avisos de resultado -->
+
+        <!-- persona 3: zona de la máquina -->
+        <section class="machine" aria-label="Máquina de gancho">
+            <div class="machine__glass">
+                <div class="machine__rail"></div>
+
+                <div class="claw">
+                    <div class="claw__rope"></div>
+                    <div class="claw__head">
+                        <span class="claw__arm claw__arm--left"></span>
+                        <span class="claw__arm claw__arm--right"></span>
+                    </div>
+                </div>
+
+                <div class="machine__prize-door"></div>
+                <div class="machine__dolls"></div>
+            </div>
+
+            <div class="machine__controls">
+                <button type="button" class="joystick" aria-label="Mover la garra (izquierda o derecha)">
+                    <span class="joystick__stick">
+                        <span class="joystick__ball"></span>
+                    </span>
+                </button>
+                <button type="button" class="machine__button" aria-label="Soltar la garra"></button>
+            </div>
+        </section>
+        <!-- fin persona 3 -->
+    </main>
+
+    <script src="../src/js/machine.js"></script>
+    <script src="../src/js/game.js"></script>
+</body>
+</html>
