@@ -11,12 +11,12 @@ let gameFinished = false;
 const attemptsCount = document.getElementById('attemptsCount');
 const timeCount = document.getElementById('timeCount');
 
-const gameFailure = document.getElementById('gameResult');
+const gameFailure = document.getElementById('gameFailure');
 const gameResult = document.getElementById('gameResult');
 const gameOver = document.getElementById('gameOver');
 
-const obtainedBranson = document.getElementById('obtainedBrandom');
-const obtainedBransonImage = document.getElementById('obtainedBrandomImage');
+const obtainedBranson = document.getElementById('obtainedBransom');
+const obtainedBransonImage = document.getElementById('obtainedBransomImage');
 
 const playAgainBtn = document.getElementById('playAgainBtn');
 const restartGameBtn = document.getElementById('restartGameBtn');
@@ -69,3 +69,46 @@ function showResult(branson) {
     obtainedBranson.textContent = branson.name;
     obtainedBransonImage.src = branson.image;
 }
+
+function endGame() {
+    if (gameFinished) return;
+
+    gameFinished = true;
+    clearInterval(timerInterval);
+
+    gameFailure.hidden = true;
+    gameOver.hidden = false;
+}
+
+function startGame() {
+    clearInterval(timerInterval);
+
+    attempts = MAX_ATTEMTS;
+    timeLeft = GAME_TIME;
+    gameFinished = false;
+
+    gameFailure.hidden = true;
+    gameResult.hidden = true;
+    gameOver.hidden = true;
+
+    updateCounters();
+}
+
+
+playAgainBtn.addEventListener('click', startGame);
+restartGameBtn.addEventListener('click', startGame);
+
+startGame();
+
+// BOTONES TEMPORALES DE PRUEBA
+
+document.getElementById("testWinBtn").addEventListener("click", () => {
+    showResult({
+        name: "Brandon Vaquero",
+        image: "/assets/brandon-vaquero.png"
+    });
+});
+
+document.getElementById("testLoseBtn").addEventListener("click", () => {
+    endGame();
+});
