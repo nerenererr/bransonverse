@@ -154,6 +154,25 @@
     translate: -50% 0;
 }
 
+.doll--dropped {
+    animation: doll-drop-back 0.6s ease-in;
+}
+
+@keyframes doll-drop-back {
+    0% {
+        transform: translateY(-70%);
+    }
+    70% {
+        transform: translateY(0);
+    }
+    85% {
+        transform: translateY(-8%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
 .doll--falling {
     animation: doll-fall 0.9s ease-in forwards;
 }
