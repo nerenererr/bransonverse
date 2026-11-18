@@ -2,6 +2,72 @@
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
 
+const bransons = [
+    {
+        id: 1,
+        name: "Standard Branson",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 48,
+        fallProbability: 15
+    },
+    {
+        id: 2,
+        name: "Brenda",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 48,
+        fallProbability: 15
+    },
+    {
+        id: 3,
+        name: "Branson especial de Halloween",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 32,
+        fallProbability: 30
+    },
+    {
+        id: 4,
+        name: "Pokebranson",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 32,
+        fallProbability: 30
+    },
+    {
+        id: 5,
+        name: "Nekobranson",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 12,
+        fallProbability: 55
+    },
+    {
+        id: 6,
+        name: "Branjosé Tomás",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 32,
+        fallProbability: 30
+    },
+    {
+        id: 7,
+        name: "Branson especial de San Valentín",
+        image: "https://res.cloudinary.com/dbtuho5h0/image/upload/v1794398491/%C3%81ngel_Cupido_de_fieltro_con_arco_y_flecha_eow7bo.png",
+        spawnWeight: 32,
+        fallProbability: 30
+    },
+    {
+        id: 8,
+        name: "Brokeback Branson",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 32,
+        fallProbability: 30
+    },
+    {
+        id: 9,
+        name: "Branson especial de Navidad",
+        image: "URL_DEL_BRANSON_VAQUERO",
+        spawnWeight: 32,
+        fallProbability: 30
+    }
+];
+
 let attempts = MAX_ATTEMPTS;
 let timeLeft = GAME_TIME;
 let timerInterval = null;
@@ -73,12 +139,12 @@ function useAttempt() {
 function handleAttemptResult(success, branson = null) {
     if (gameFinished || attempts <= 0) return;
 
-    useAttempt();
-
     if (success) {
         showResult(branson);
         return;
     } 
+
+    useAttempt();
 
     if (attempts === 0) {
         endGame();
@@ -137,8 +203,6 @@ document.getElementById("testWinBtn").addEventListener("click", () => {
 document.getElementById("testLoseBtn").addEventListener("click", () => {
     endGame();
 });
-
-
 
 document.getElementById('testAttemptBtn').addEventListener('click', () => {
     console.log("Intento fallido pulsado");
