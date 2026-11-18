@@ -3,6 +3,8 @@ const {
     getNextPosition,
     getPercentPosition,
     getDollImage,
+    getDollPlace,
+    DOLL_PILE,
     DOLL_IMAGES,
     MIN_POSITION,
     MAX_POSITION,
@@ -57,6 +59,23 @@ describe("getPercentPosition", () => {
 
     test("si el contenedor no tiene ancho devuelve el centro", () => {
         expect(getPercentPosition(100, 0)).toBe(50);
+    });
+});
+
+describe("getDollPlace", () => {
+    test("devuelve el hueco del montón que toca", () => {
+        const place = getDollPlace(0);
+        expect(place.left).toBe(DOLL_PILE[0].left);
+        expect(place.bottom).toBe(DOLL_PILE[0].bottom);
+        expect(place.tilt).toBe(DOLL_PILE[0].tilt);
+        expect(place.zIndex).toBe(DOLL_PILE[0].zIndex);
+    });
+
+    test("si hay más muñecos que huecos, los nuevos van un poco más arriba", () => {
+        const first = getDollPlace(0);
+        const repeated = getDollPlace(DOLL_PILE.length);
+        expect(repeated.left).toBe(first.left);
+        expect(repeated.bottom).toBeGreaterThan(first.bottom);
     });
 });
 
