@@ -3,6 +3,7 @@
     width: 100%;
     max-width: calc(100vh * 1440 / 1034);
     margin: 0 auto;
+    overflow: hidden;
     aspect-ratio: 1440 / 1034;
     background-image: url("https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/v1794918657/pantallaJuego_ctoxml.png");
     background-size: 100% 100%;
@@ -123,6 +124,16 @@
     75% { transform: translateX(-50%) rotate(-3deg); }
 }
 
+.claw--gripping {
+    animation: claw-grip 0.3s ease-in-out;
+}
+
+@keyframes claw-grip {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    25% { transform: translateX(-50%) rotate(-3deg); }
+    75% { transform: translateX(-50%) rotate(3deg); }
+}
+
 .claw--down {
     top: 0;
 }
@@ -152,6 +163,91 @@
     z-index: 3;
     height: 52%;
     translate: -50% 0;
+}
+
+.laugh-text {
+    position: absolute;
+    z-index: 16;
+    font-family: "Barrio", sans-serif;
+    font-size: clamp(0.9rem, 2.2vw, 1.8rem);
+    color: #ffd23f;
+    text-shadow: 2px 2px 0 #111111;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: laugh-float 1.6s ease-out both;
+}
+
+.laugh-text--1 {
+    animation-delay: 0.2s;
+}
+
+.laugh-text--2 {
+    animation-delay: 0.4s;
+}
+
+@keyframes laugh-float {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-30%) scale(1.2) rotate(-10deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-250%) scale(1) rotate(10deg);
+    }
+}
+
+.laugh-emoji {
+    position: absolute;
+    z-index: 17;
+    font-size: clamp(1.4rem, 3.5vw, 2.8rem);
+    pointer-events: none;
+    translate: -50% -50%;
+    animation: laugh-emoji-pop 1.5s ease-out forwards;
+}
+
+@keyframes laugh-emoji-pop {
+    0% {
+        opacity: 0;
+        transform: scale(0.2);
+    }
+    15% {
+        opacity: 1;
+        transform: scale(1.3) rotate(-10deg);
+    }
+    30% {
+        transform: scale(1) rotate(10deg);
+    }
+    45% {
+        transform: scale(1.1) rotate(-10deg);
+    }
+    60% {
+        transform: scale(1) rotate(10deg);
+    }
+    85% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40%) scale(0.8);
+    }
+}
+
+.doll--laughing {
+    animation: doll-laughing 0.15s ease-in-out 10 alternate;
+}
+
+@keyframes doll-laughing {
+    from {
+        transform: translateX(-3%) rotate(-3deg);
+    }
+    to {
+        transform: translateX(3%) rotate(3deg);
+    }
 }
 
 .doll--dropped {

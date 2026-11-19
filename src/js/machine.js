@@ -22,7 +22,8 @@ const SOUNDS = {
     drop: "",
     grab: "",
     prize: "",
-    fail: ""
+    fail: "",
+    laugh: ""
 };
 
 const MIN_POSITION = 10;
@@ -30,6 +31,8 @@ const MAX_POSITION = 90;
 const MOVE_STEP = 2;
 const MOVE_INTERVAL = 50;
 const PRIZE_DOOR_POSITION = 88;
+const GRAB_DISTANCE = 8;
+const LAUGH_DISTANCE = 18;
 
 const DOLL_PILE = [
     { left: 2, bottom: -6, tilt: -8, zIndex: 5 },
@@ -56,6 +59,8 @@ const GRAB_TIME = 400;
 let clawPosition = 50;
 let isMachineBusy = false;
 let moveInterval = null;
+let grabbedDoll = null;
+let grabbedDollOldPlace = null;
 
 function clampPosition(position) {
     if (position < MIN_POSITION) {
@@ -77,16 +82,41 @@ function getNextPosition(position, direction) {
     return position;
 }
 
-function getPercentPosition(elementCenter, containerWidth) {
-    if (containerWidth <= 0) {
-        return 50;
-    }
-    const percent = (elementCenter / containerWidth) * 100;
-    return clampPosition(Math.round(percent));
-}
-
 function getDollImage(index) {
     return DOLL_IMAGES[index % DOLL_IMAGES.length];
+}
+
+function getDollName(item) {
+    if (typeof item === "string") {
+        return item;
+    }
+    return item.name;
+}
+
+function getDollSource(item, index) {
+    if (typeof item === "object" && item.image && item.image.startsWith("http")) {
+        return item.image;
+    }
+    return getDollImage(index);
+}
+
+function isDollNear(dollPosition, position) {
+    return Math.abs(dollPosition - position) < LAUGH_DISTANCE;
+}
+
+function findClosestDoll(dollPositions, position) {
+    let closestIndex = -1;
+    let closestDistance = GRAB_DISTANCE;
+
+    dollPositions.forEach(function (dollPosition, index) {
+        const distance = Math.abs(dollPosition - position);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+        }
+    });
+
+    return closestIndex;
 }
 
 function getDollPlace(index) {
@@ -116,16 +146,19 @@ function playSound(soundName) {
     sound.play().catch(function () {});
 }
 
-function renderDolls(names) {
+function renderDolls(items) {
     const dollsContainer = document.querySelector(".machine__dolls");
     dollsContainer.innerHTML = "";
 
-    names.forEach(function (name, index) {
+    items.forEach(function (item, index) {
         const doll = document.createElement("img");
         doll.classList.add("doll");
-        doll.src = getDollImage(index);
+        doll.src = getDollSource(item, index);
         doll.alt = "Muñeco sorpresa";
-        doll.dataset.name = name;
+        doll.dataset.name = getDollName(item);
+        if (item.id !== undefined) {
+            doll.dataset.id = item.id;
+        }
 
         const place = getDollPlace(index);
         doll.style.left = place.left + "%";
@@ -145,20 +178,98 @@ function renderDefaultDolls() {
     renderDolls(names);
 }
 
-function findDoll(name) {
+function getDollsWithPosition() {
+    const playAreaBox = document.querySelector(".machine__play-area").getBoundingClientRect();
     const dolls = document.querySelectorAll(".machine__dolls .doll");
-    for (let i = 0; i < dolls.length; i++) {
-        if (dolls[i].dataset.name === name) {
-            return dolls[i];
-        }
+    const list = [];
+
+    dolls.forEach(function (doll) {
+        const dollBox = doll.getBoundingClientRect();
+        const dollCenter = dollBox.left - playAreaBox.left + dollBox.width / 2;
+        list.push({
+            doll: doll,
+            position: (dollCenter / playAreaBox.width) * 100
+        });
+    });
+
+    return list;
+}
+
+function findDollUnderClaw() {
+    const list = getDollsWithPosition();
+    const positions = list.map(function (item) {
+        return item.position;
+    });
+
+    const index = findClosestDoll(positions, clawPosition);
+    if (index === -1) {
+        return null;
     }
-    return null;
+    return list[index].doll;
 }
 
 function updateClawPosition(newPosition) {
     const claw = document.querySelector(".claw");
     clawPosition = newPosition;
     claw.style.left = clawPosition + "%";
+}
+
+function placeAboveDoll(element, doll, leftFactor, topFactor) {
+    const containerBox = document.querySelector(".machine__dolls").getBoundingClientRect();
+    const dollBox = doll.getBoundingClientRect();
+    const left = dollBox.left - containerBox.left + dollBox.width * leftFactor;
+    const top = dollBox.top - containerBox.top + dollBox.height * topFactor;
+
+    element.style.left = (left / containerBox.width) * 100 + "%";
+    element.style.top = (top / containerBox.height) * 100 + "%";
+}
+
+function showLaughText(doll) {
+    const dollsContainer = document.querySelector(".machine__dolls");
+
+    for (let i = 0; i < 3; i++) {
+        const text = document.createElement("span");
+        text.classList.add("laugh-text", "laugh-text--" + i);
+        text.textContent = "JA";
+        placeAboveDoll(text, doll, 0.2 + i * 0.3, 0.1);
+        dollsContainer.appendChild(text);
+        setTimeout(function () {
+            text.remove();
+        }, 2000);
+    }
+}
+
+function showLaughEmoji(doll) {
+    const dollsContainer = document.querySelector(".machine__dolls");
+
+    const emoji = document.createElement("span");
+    emoji.classList.add("laugh-emoji");
+    emoji.textContent = "😂";
+    placeAboveDoll(emoji, doll, 0.5, -0.05);
+    dollsContainer.appendChild(emoji);
+    setTimeout(function () {
+        emoji.remove();
+    }, 1600);
+}
+
+function makeDollLaugh(doll) {
+    playSound("laugh");
+
+    if (Math.random() < 0.5) {
+        showLaughText(doll);
+    } else {
+        showLaughEmoji(doll);
+    }
+
+    addTemporaryClass(doll, "doll--laughing", 1500);
+}
+
+function makeNearDollsLaugh() {
+    getDollsWithPosition().forEach(function (item) {
+        if (isDollNear(item.position, clawPosition)) {
+            makeDollLaugh(item.doll);
+        }
+    });
 }
 
 function closeClaw() {
@@ -221,6 +332,8 @@ function stopMoving() {
 
 function dropDollBack(doll, dollsContainer, oldPlace) {
     doll.classList.remove("doll--grabbed");
+    doll.style.transition = "";
+    doll.style.transform = "";
     doll.style.left = oldPlace.left;
     doll.style.bottom = oldPlace.bottom;
     doll.style.rotate = oldPlace.rotate;
@@ -231,48 +344,97 @@ function dropDollBack(doll, dollsContainer, oldPlace) {
     addTemporaryClass(doll, "doll--dropped", 600);
 }
 
-async function grabDoll(name, isSuccess = true) {
-    const doll = findDoll(name);
-    if (!doll || isMachineBusy) {
-        return;
-    }
+function moveDollIntoClaw(doll, claw) {
+    const before = doll.getBoundingClientRect();
+    const oldRotate = doll.style.rotate;
 
-    const dollsContainer = document.querySelector(".machine__dolls");
-    const oldPlace = {
-        left: doll.style.left,
-        bottom: doll.style.bottom,
-        rotate: doll.style.rotate,
-        zIndex: doll.style.zIndex
-    };
-
-    stopMoving();
-    isMachineBusy = true;
-
-    const claw = document.querySelector(".claw");
-    claw.classList.add("claw--auto");
-    const playArea = document.querySelector(".machine__play-area");
-    const playAreaBox = playArea.getBoundingClientRect();
-    const dollBox = doll.getBoundingClientRect();
-
-    const dollCenter = dollBox.left - playAreaBox.left + dollBox.width / 2;
-    updateClawPosition(getPercentPosition(dollCenter, playAreaBox.width));
-    playSound("move");
-    await wait(MOVE_TIME);
-
-    claw.classList.add("claw--down");
-    playSound("drop");
-    await wait(DROP_TIME);
-
-    closeClaw();
-    playSound("grab");
     doll.style.left = "";
     doll.style.bottom = "";
     doll.style.rotate = "";
     doll.style.zIndex = "";
     doll.classList.add("doll--grabbed");
     claw.appendChild(doll);
+
+    const after = doll.getBoundingClientRect();
+    const moveX = (before.left + before.width / 2) - (after.left + after.width / 2);
+    const moveY = (before.top + before.height / 2) - (after.top + after.height / 2);
+
+    doll.style.transition = "none";
+    doll.style.transform = "translate(" + moveX + "px, " + moveY + "px)";
+    doll.style.rotate = oldRotate;
+    doll.getBoundingClientRect();
+
+    doll.style.transition = "transform 0.4s ease-out, rotate 0.4s ease-out";
+    doll.style.transform = "";
+    doll.style.rotate = "0deg";
+}
+
+function getDollInfo(doll) {
+    let id = null;
+    if (doll.dataset.id !== undefined) {
+        id = Number(doll.dataset.id);
+    }
+    return { id: id, name: doll.dataset.name };
+}
+
+async function dropClaw() {
+    if (isMachineBusy) {
+        return;
+    }
+
+    stopMoving();
+    isMachineBusy = true;
+
+    const claw = document.querySelector(".claw");
+    claw.classList.add("claw--auto");
+    claw.classList.add("claw--down");
+    playSound("drop");
+    await wait(DROP_TIME);
+
+    const doll = findDollUnderClaw();
+
+    closeClaw();
+    addTemporaryClass(claw, "claw--gripping", 300);
+    playSound("grab");
+
+    if (!doll) {
+        await wait(GRAB_TIME);
+        claw.classList.remove("claw--down");
+        await wait(DROP_TIME);
+        openClaw();
+        claw.classList.remove("claw--auto");
+        isMachineBusy = false;
+        makeNearDollsLaugh();
+        document.dispatchEvent(new CustomEvent("machine:empty"));
+        return;
+    }
+
+    grabbedDollOldPlace = {
+        left: doll.style.left,
+        bottom: doll.style.bottom,
+        rotate: doll.style.rotate,
+        zIndex: doll.style.zIndex
+    };
+    grabbedDoll = doll;
+    moveDollIntoClaw(doll, claw);
     await wait(GRAB_TIME);
 
+    document.dispatchEvent(new CustomEvent("machine:doll-grabbed", { detail: getDollInfo(doll) }));
+}
+
+async function finishGrab(isSuccess) {
+    if (!grabbedDoll) {
+        return;
+    }
+
+    const doll = grabbedDoll;
+    const oldPlace = grabbedDollOldPlace;
+    const dollInfo = getDollInfo(doll);
+    grabbedDoll = null;
+    grabbedDollOldPlace = null;
+
+    const claw = document.querySelector(".claw");
+    const dollsContainer = document.querySelector(".machine__dolls");
     claw.classList.remove("claw--down");
 
     if (!isSuccess) {
@@ -282,7 +444,8 @@ async function grabDoll(name, isSuccess = true) {
         openClaw();
         claw.classList.remove("claw--auto");
         isMachineBusy = false;
-        document.dispatchEvent(new CustomEvent("machine:fail", { detail: { name: name } }));
+        makeDollLaugh(doll);
+        document.dispatchEvent(new CustomEvent("machine:fail", { detail: dollInfo }));
         return;
     }
 
@@ -308,21 +471,23 @@ async function grabDoll(name, isSuccess = true) {
     claw.classList.remove("claw--auto");
     isMachineBusy = false;
 
-    document.dispatchEvent(new CustomEvent("machine:prize", { detail: { name: name } }));
+    document.dispatchEvent(new CustomEvent("machine:prize", { detail: dollInfo }));
 }
 
-function resetMachine(names) {
+function resetMachine(items) {
     const claw = document.querySelector(".claw");
-    const grabbedDoll = claw.querySelector(".doll");
-    if (grabbedDoll) {
-        grabbedDoll.remove();
+    const dollInClaw = claw.querySelector(".doll");
+    if (dollInClaw) {
+        dollInClaw.remove();
     }
+    grabbedDoll = null;
+    grabbedDollOldPlace = null;
     isMachineBusy = false;
     stopMoving();
     claw.classList.remove("claw--down", "claw--auto", "claw--swinging");
     openClaw();
     updateClawPosition(50);
-    renderDolls(names);
+    renderDolls(items);
 }
 
 function handleButtonClick() {
@@ -337,6 +502,7 @@ function handleButtonClick() {
     playSound("button");
 
     document.dispatchEvent(new CustomEvent("machine:button-pressed"));
+    dropClaw();
 }
 
 function handleJoystickDown(event) {
@@ -352,6 +518,9 @@ function handleJoystickDown(event) {
 }
 
 function handleKeyDown(event) {
+    if (event.key === "ArrowDown") {
+        event.preventDefault();
+    }
     if (event.repeat) {
         return;
     }
@@ -360,7 +529,6 @@ function handleKeyDown(event) {
     } else if (event.key === "ArrowRight") {
         startMoving("right");
     } else if (event.key === "ArrowDown") {
-        event.preventDefault();
         handleButtonClick();
     }
 }
@@ -398,9 +566,14 @@ if (typeof module !== "undefined") {
     module.exports = {
         clampPosition,
         getNextPosition,
-        getPercentPosition,
         getDollImage,
+        getDollName,
+        getDollSource,
+        findClosestDoll,
         getDollPlace,
+        isDollNear,
+        GRAB_DISTANCE,
+        LAUGH_DISTANCE,
         DOLL_PILE,
         DOLL_IMAGES,
         MIN_POSITION,
