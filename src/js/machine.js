@@ -21,7 +21,8 @@ const SOUNDS = {
     button: "",
     drop: "",
     grab: "",
-    prize: ""
+    prize: "",
+    fail: ""
 };
 
 const MIN_POSITION = 10;
@@ -218,11 +219,31 @@ function stopMoving() {
     tiltJoystick(null);
 }
 
-async function grabDoll(name) {
+function dropDollBack(doll, dollsContainer, oldPlace) {
+    doll.classList.remove("doll--grabbed");
+    doll.style.left = oldPlace.left;
+    doll.style.bottom = oldPlace.bottom;
+    doll.style.rotate = oldPlace.rotate;
+    doll.style.zIndex = oldPlace.zIndex;
+    dollsContainer.appendChild(doll);
+
+    playSound("fail");
+    addTemporaryClass(doll, "doll--dropped", 600);
+}
+
+async function grabDoll(name, isSuccess = true) {
     const doll = findDoll(name);
     if (!doll || isMachineBusy) {
         return;
     }
+
+    const dollsContainer = document.querySelector(".machine__dolls");
+    const oldPlace = {
+        left: doll.style.left,
+        bottom: doll.style.bottom,
+        rotate: doll.style.rotate,
+        zIndex: doll.style.zIndex
+    };
 
     stopMoving();
     isMachineBusy = true;
@@ -253,6 +274,18 @@ async function grabDoll(name) {
     await wait(GRAB_TIME);
 
     claw.classList.remove("claw--down");
+
+    if (!isSuccess) {
+        await wait(DROP_TIME / 3);
+        dropDollBack(doll, dollsContainer, oldPlace);
+        await wait(DROP_TIME);
+        openClaw();
+        claw.classList.remove("claw--auto");
+        isMachineBusy = false;
+        document.dispatchEvent(new CustomEvent("machine:fail", { detail: { name: name } }));
+        return;
+    }
+
     await wait(DROP_TIME);
 
     claw.classList.add("claw--swinging");
