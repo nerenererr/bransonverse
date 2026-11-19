@@ -67,7 +67,7 @@ const bransons = [
 
 
 function getBransonById(id) {
-    return.find(branson => branson.id === Number(id));
+    return bransons.find(branson => branson.id === Number(id));
 }
 
 
