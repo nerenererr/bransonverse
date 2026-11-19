@@ -1,1 +1,509 @@
-/*persona 3*/
+
+/* ==========================================
+   BRANSONVERSE - PANTALLA DE COLECCIÓN
+   Diseño basado en Figma
+========================================== */
+
+:root {
+  --gold: #c69f2a;
+  --gold-selected: #d0a533;
+  --card-background: #d9d9d9;
+  --white: #ffffff;
+}
+
+/* ==========================================
+   RESETEO
+========================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #050505;
+}
+
+/* ==========================================
+   FONDO DE LA COLECCIÓN
+========================================== */
+
+.collection {
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  background-color: #050505;
+
+  background-image: url(
+    "https://res.cloudinary.com/da9tytxsu/image/upload/v1795023127/bg-collection_ujfvwu.png"
+  );
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  color: var(--white);
+}
+
+/* ==========================================
+   CABECERA
+========================================== */
+
+.collection__header {
+  position: relative;
+  height: 138px;
+}
+
+/* Título COLECCIÓN */
+
+.collection__title {
+  position: absolute;
+
+  top: 64px;
+  left: calc(50% + 49px);
+
+  transform: translateX(-50%);
+
+  margin: 0;
+
+  color: var(--gold);
+
+  font-family: "Barrio", cursive;
+  font-size: 66px;
+  font-weight: 400;
+
+  line-height: 1.12;
+
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* ==========================================
+   BOTÓN VOLVER
+========================================== */
+
+.collection__back {
+  position: absolute;
+
+  top: 87px;
+  left: 90px;
+
+  width: 53px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--gold);
+
+  text-decoration: none;
+
+  transition: transform 0.15s ease;
+}
+
+.collection__back svg {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+.collection__back:hover {
+  transform: translateX(-5px);
+}
+
+.collection__back:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* ==========================================
+   CONTENIDO DE LA COLECCIÓN
+========================================== */
+
+.collection__content {
+  display: grid;
+
+  grid-template-columns: 405px 431px;
+  column-gap: 129px;
+
+  align-items: start;
+
+  width: min(1244px, calc(100% - 64px));
+
+  margin: 169px auto 0;
+}
+
+/* ==========================================
+   INFORMACIÓN DEL PERSONAJE
+========================================== */
+
+.collection__information {
+  width: 100%;
+}
+
+/* NOMBRE */
+
+.collection__information h2 {
+  margin: 0 0 19px;
+
+  color: var(--gold);
+
+  font-family: "Barrio", cursive;
+  font-size: 36px;
+  font-weight: 400;
+
+  line-height: 41px;
+
+  overflow-wrap: break-word;
+}
+
+/* DESCRIPCIÓN */
+
+.collection__information p {
+  margin: 0;
+
+  width: 100%;
+
+  color: var(--white);
+
+  font-family: "Baloo Da 2", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+
+  line-height: 40px;
+
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+/* ==========================================
+   CUADRÍCULA DE 9 PERSONAJES
+========================================== */
+
+.collection__grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 119px);
+  grid-template-rows: repeat(3, 119px);
+
+  column-gap: 37px;
+  row-gap: 23px;
+}
+
+/* ==========================================
+   FICHAS DE LOS PERSONAJES
+========================================== */
+
+.collection__card {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 119px;
+  height: 119px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  border-radius: 16px;
+
+  background-color: var(--card-background);
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: background-color 0.12s ease;
+}
+
+/* Ficha seleccionada */
+
+.collection__card.is-selected {
+  background-color: var(--gold-selected);
+}
+
+/* Foco al navegar con teclado */
+
+.collection__card:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+/* ==========================================
+   IMÁGENES DE PERSONAJES
+========================================== */
+
+.collection__sprite {
+  display: block;
+
+  width: var(--sprite-width);
+  height: var(--sprite-height);
+
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+
+  pointer-events: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+}
+
+/* ==========================================
+   PERSONAJES BLOQUEADOS
+========================================== */
+
+/*
+  Mantiene la imagen original pero la convierte
+  en una silueta negra mientras está bloqueada.
+*/
+
+.collection__card.is-locked .collection__sprite {
+  filter: brightness(0);
+}
+
+/* Personaje desbloqueado */
+
+.collection__card:not(.is-locked) .collection__sprite {
+  filter: none;
+}
+
+/* ==========================================
+   PANTALLAS MEDIANAS
+========================================== */
+
+@media (max-width: 1300px) and (min-width: 901px) {
+
+  .collection__content {
+    grid-template-columns: minmax(0, 405px) 431px;
+
+    column-gap: clamp(24px, 5vw, 100px);
+  }
+
+  .collection__back {
+    left: 45px;
+  }
+
+}
+
+/* ==========================================
+   TABLETS Y MÓVILES
+========================================== */
+
+@media (max-width: 900px) {
+
+  .collection {
+    min-height: 100dvh;
+
+    padding-bottom: 55px;
+  }
+
+  .collection__header {
+    height: 120px;
+  }
+
+  .collection__title {
+    top: 44px;
+    left: 50%;
+
+    font-size: clamp(40px, 7vw, 60px);
+  }
+
+  .collection__back {
+    top: 48px;
+    left: 26px;
+
+    width: 42px;
+    height: 36px;
+  }
+
+  .collection__content {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    width: min(540px, calc(100% - 48px));
+
+    margin: 50px auto 0;
+
+    gap: 35px;
+  }
+
+  .collection__information {
+    min-height: 160px;
+  }
+
+  .collection__information h2 {
+    font-size: 33px;
+    line-height: 1.15;
+
+    margin-bottom: 16px;
+  }
+
+  .collection__information p {
+    font-size: 20px;
+    line-height: 1.55;
+  }
+
+  .collection__grid {
+    width: min(431px, 100%);
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: none;
+
+    gap: 14px;
+  }
+
+  .collection__card {
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: 1 / 1;
+  }
+
+}
+
+/* ==========================================
+   MÓVILES PEQUEÑOS
+========================================== */
+
+@media (max-width: 480px) {
+
+  .collection__header {
+    height: 105px;
+  }
+
+  .collection__title {
+    top: 35px;
+    font-size: 39px;
+  }
+
+  .collection__back {
+    top: 37px;
+    left: 15px;
+
+    width: 34px;
+    height: 30px;
+  }
+
+  .collection__content {
+    margin-top: 40px;
+
+    width: calc(100% - 32px);
+
+    gap: 25px;
+  }
+
+  .collection__information {
+    min-height: 170px;
+  }
+
+  .collection__information h2 {
+    font-size: 29px;
+  }
+
+  .collection__information p {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .collection__grid {
+    gap: 10px;
+  }
+
+  .collection__card {
+    border-radius: 12px;
+  }
+
+  .collection__sprite {
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+}
+
+/* ==========================================
+   AGRANDAR LOS 9 PERSONAJES
+   DE LA COLECCIÓN
+========================================== */
+
+/* Mantener los personajes centrados */
+.collection__sprite {
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+/* 1. STANDARD BRANSON */
+.collection__card[data-character-id="standard"]
+.collection__sprite {
+  transform: scale(3.8);
+}
+
+/* 2. BRENDA */
+.collection__card[data-character-id="brenda"]
+.collection__sprite {
+  transform: scale(2.7);
+}
+
+/* 3. POKEBRANSON */
+.collection__card[data-character-id="pokebranson"]
+.collection__sprite {
+  transform: scale(1.65);
+}
+
+/* 4. BRANJOSÉ TOMÁS */
+.collection__card[data-character-id="branjose"]
+.collection__sprite {
+  transform: scale(2.15);
+}
+
+/* 5. BRANSON SAN VALENTÍN */
+.collection__card[data-character-id="valentin"]
+.collection__sprite {
+  transform: scale(1.9);
+}
+
+/* 6. BRANSON HALLOWEEN */
+.collection__card[data-character-id="halloween"]
+.collection__sprite {
+  transform: scale(1.75);
+}
+
+/* 7. NEKOBRANSON */
+.collection__card[data-character-id="neko"]
+.collection__sprite {
+  transform: scale(2.1);
+}
+
+/* 8. BRANSON NAVIDAD */
+.collection__card[data-character-id="navidad"]
+.collection__sprite {
+  transform: scale(1.8);
+}
+
+/* 9. BROKEBACK BRANSON */
+.collection__card[data-character-id="brokeback"]
+.collection__sprite {
+  transform: scale(2.05);
+}
