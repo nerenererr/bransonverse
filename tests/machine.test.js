@@ -1,9 +1,14 @@
 const {
     clampPosition,
     getNextPosition,
-    getPercentPosition,
     getDollImage,
+    getDollName,
+    getDollSource,
+    findClosestDoll,
     getDollPlace,
+    isDollNear,
+    GRAB_DISTANCE,
+    LAUGH_DISTANCE,
     DOLL_PILE,
     DOLL_IMAGES,
     MIN_POSITION,
@@ -47,18 +52,60 @@ describe("getNextPosition", () => {
     });
 });
 
-describe("getPercentPosition", () => {
-    test("calcula el porcentaje del centro del muñeco", () => {
-        expect(getPercentPosition(150, 300)).toBe(50);
+describe("findClosestDoll", () => {
+    test("devuelve el muñeco que está justo debajo de la garra", () => {
+        expect(findClosestDoll([10, 50, 80], 50)).toBe(1);
     });
 
-    test("respeta los límites de la garra", () => {
-        expect(getPercentPosition(0, 300)).toBe(MIN_POSITION);
-        expect(getPercentPosition(300, 300)).toBe(MAX_POSITION);
+    test("si hay dos cerca coge el más cercano", () => {
+        expect(findClosestDoll([45, 52], 50)).toBe(1);
     });
 
-    test("si el contenedor no tiene ancho devuelve el centro", () => {
-        expect(getPercentPosition(100, 0)).toBe(50);
+    test("si no hay ningún muñeco cerca devuelve -1", () => {
+        expect(findClosestDoll([10, 80], 50)).toBe(-1);
+        expect(findClosestDoll([50 + GRAB_DISTANCE], 50)).toBe(-1);
+    });
+
+    test("si no hay muñecos devuelve -1", () => {
+        expect(findClosestDoll([], 50)).toBe(-1);
+    });
+});
+
+describe("isDollNear", () => {
+    test("un muñeco al lado de la garra está cerca", () => {
+        expect(isDollNear(50, 50)).toBe(true);
+        expect(isDollNear(50, 50 + LAUGH_DISTANCE - 1)).toBe(true);
+    });
+
+    test("un muñeco lejos de la garra no está cerca", () => {
+        expect(isDollNear(50, 50 + LAUGH_DISTANCE)).toBe(false);
+        expect(isDollNear(10, 90)).toBe(false);
+    });
+});
+
+describe("getDollName", () => {
+    test("si recibe un texto lo devuelve tal cual", () => {
+        expect(getDollName("Nerea")).toBe("Nerea");
+    });
+
+    test("si recibe un Branson devuelve su nombre", () => {
+        expect(getDollName({ id: 4, name: "Pokebranson" })).toBe("Pokebranson");
+    });
+});
+
+describe("getDollSource", () => {
+    test("usa la imagen del Branson si es una URL", () => {
+        const branson = { name: "Pokebranson", image: "https://res.cloudinary.com/pokebranson.png" };
+        expect(getDollSource(branson, 0)).toBe(branson.image);
+    });
+
+    test("si la imagen no es una URL usa la de la máquina", () => {
+        const branson = { name: "Brenda", image: "URL_DEL_BRANSON_VAQUERO" };
+        expect(getDollSource(branson, 2)).toBe(DOLL_IMAGES[2]);
+    });
+
+    test("si recibe un texto usa la imagen de la máquina", () => {
+        expect(getDollSource("Nerea", 0)).toBe(DOLL_IMAGES[0]);
     });
 });
 
