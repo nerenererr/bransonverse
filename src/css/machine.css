@@ -200,43 +200,6 @@
     }
 }
 
-.laugh-emoji {
-    position: absolute;
-    z-index: 17;
-    font-size: clamp(1.4rem, 3.5vw, 2.8rem);
-    pointer-events: none;
-    translate: -50% -50%;
-    animation: laugh-emoji-pop 1.5s ease-out forwards;
-}
-
-@keyframes laugh-emoji-pop {
-    0% {
-        opacity: 0;
-        transform: scale(0.2);
-    }
-    15% {
-        opacity: 1;
-        transform: scale(1.3) rotate(-10deg);
-    }
-    30% {
-        transform: scale(1) rotate(10deg);
-    }
-    45% {
-        transform: scale(1.1) rotate(-10deg);
-    }
-    60% {
-        transform: scale(1) rotate(10deg);
-    }
-    85% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-40%) scale(0.8);
-    }
-}
-
 .doll--laughing {
     animation: doll-laughing 0.15s ease-in-out 10 alternate;
 }
@@ -250,22 +213,16 @@
     }
 }
 
-.doll--dropped {
-    animation: doll-drop-back 0.6s ease-in;
+.doll--landed {
+    animation: doll-land 0.3s ease-out;
 }
 
-@keyframes doll-drop-back {
-    0% {
-        transform: translateY(-70%);
+@keyframes doll-land {
+    0%, 100% {
+        translate: 0 0;
     }
-    70% {
-        transform: translateY(0);
-    }
-    85% {
-        transform: translateY(-8%);
-    }
-    100% {
-        transform: translateY(0);
+    50% {
+        translate: 0 -6%;
     }
 }
 

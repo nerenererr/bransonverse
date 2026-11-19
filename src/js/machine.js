@@ -239,28 +239,9 @@ function showLaughText(doll) {
     }
 }
 
-function showLaughEmoji(doll) {
-    const dollsContainer = document.querySelector(".machine__dolls");
-
-    const emoji = document.createElement("span");
-    emoji.classList.add("laugh-emoji");
-    emoji.textContent = "😂";
-    placeAboveDoll(emoji, doll, 0.5, -0.05);
-    dollsContainer.appendChild(emoji);
-    setTimeout(function () {
-        emoji.remove();
-    }, 1600);
-}
-
 function makeDollLaugh(doll) {
     playSound("laugh");
-
-    if (Math.random() < 0.5) {
-        showLaughText(doll);
-    } else {
-        showLaughEmoji(doll);
-    }
-
+    showLaughText(doll);
     addTemporaryClass(doll, "doll--laughing", 1500);
 }
 
@@ -331,17 +312,34 @@ function stopMoving() {
 }
 
 function dropDollBack(doll, dollsContainer, oldPlace) {
+    const before = doll.getBoundingClientRect();
+
     doll.classList.remove("doll--grabbed");
-    doll.style.transition = "";
-    doll.style.transform = "";
+    doll.style.transition = "none";
+    doll.style.translate = "";
     doll.style.left = oldPlace.left;
     doll.style.bottom = oldPlace.bottom;
     doll.style.rotate = oldPlace.rotate;
     doll.style.zIndex = oldPlace.zIndex;
     dollsContainer.appendChild(doll);
 
+    const after = doll.getBoundingClientRect();
+    const moveX = (before.left + before.width / 2) - (after.left + after.width / 2);
+    const moveY = (before.top + before.height / 2) - (after.top + after.height / 2);
+
+    doll.style.translate = moveX + "px " + moveY + "px";
+    doll.style.rotate = "0deg";
+    doll.getBoundingClientRect();
+
+    doll.style.transition = "translate 0.5s ease-in, rotate 0.5s ease-in";
+    doll.style.translate = "";
+    doll.style.rotate = oldPlace.rotate;
+
     playSound("fail");
-    addTemporaryClass(doll, "doll--dropped", 600);
+    setTimeout(function () {
+        doll.style.transition = "";
+        addTemporaryClass(doll, "doll--landed", 300);
+    }, 500);
 }
 
 function moveDollIntoClaw(doll, claw) {
@@ -360,12 +358,12 @@ function moveDollIntoClaw(doll, claw) {
     const moveY = (before.top + before.height / 2) - (after.top + after.height / 2);
 
     doll.style.transition = "none";
-    doll.style.transform = "translate(" + moveX + "px, " + moveY + "px)";
+    doll.style.translate = "calc(-50% + " + moveX + "px) " + moveY + "px";
     doll.style.rotate = oldRotate;
     doll.getBoundingClientRect();
 
-    doll.style.transition = "transform 0.4s ease-out, rotate 0.4s ease-out";
-    doll.style.transform = "";
+    doll.style.transition = "translate 0.4s ease-out, rotate 0.4s ease-out";
+    doll.style.translate = "";
     doll.style.rotate = "0deg";
 }
 
