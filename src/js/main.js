@@ -5,9 +5,18 @@ const playMenu = document.querySelector(".play-menu");
 const modeMenuBack = document.querySelector(".mode-menu-back");
 const customGameScreen = document.querySelector(".custom-game-screen");
 
+const startScreen = document.querySelector(".start-screen");
+
+const menuNavigation = performance.getEntriesByType("navigation")[0];
+if (menuNavigation && menuNavigation.type === "reload") {
+    sessionStorage.removeItem("introSeen");
+}
+const hasSeenIntro = sessionStorage.getItem("introSeen") === "true";
+
 if (menuSection && introVideo) {
     introVideo.addEventListener("ended", () => {
         menuSection.hidden = false;
+        sessionStorage.setItem("introSeen", "true");
     }, { once: true });
 
     if (introVideo.ended) {
@@ -15,9 +24,22 @@ if (menuSection && introVideo) {
     }
 }
 
-const startScreen = document.querySelector(".start-screen");
+if (hasSeenIntro && startScreen && introVideo && menuSection) {
+    startScreen.hidden = true;
+    menuSection.hidden = false;
+    function showLastIntroFrame() {
+        introVideo.currentTime = introVideo.duration;
+    }
 
-if (startScreen && introVideo) {
+    if (introVideo.readyState >= 1) {
+        showLastIntroFrame();
+    } else {
+        introVideo.addEventListener("loadedmetadata", showLastIntroFrame, { once: true });
+    }
+    autoStartMusic();
+}
+
+if (!hasSeenIntro && startScreen && introVideo) {
     function startExperience() {
         document.removeEventListener("keydown", startExperience);
         document.removeEventListener("pointerdown", startExperience);
@@ -75,6 +97,16 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
         selectOption(selectedIndexes[activeMenuIndex], true);
     }
 
+    function openCollection() {
+        window.location.href = "pages/collection.html";
+    }
+
+    function startBransonMode() {
+        sessionStorage.setItem("gameMode", "branson");
+        sessionStorage.removeItem("customNames");
+        window.location.href = "pages/game.html";
+    }
+
     function returnToPrimaryMenu() {
         playMenu.hidden = true;
         modeMenuBack.hidden = true;
@@ -96,6 +128,10 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
             playMenu.hidden = false;
             activeMenuIndex = 1;
             selectOption(selectedIndexes[activeMenuIndex], true);
+        } else if (activeMenuIndex === 0 && selectedOption.classList.contains("collection-button")) {
+            openCollection();
+        } else if (activeMenuIndex === 1 && selectedOption.classList.contains("branson-mode-button")) {
+            startBransonMode();
         } else if (activeMenuIndex === 1 && selectedOption.classList.contains("custom-game-button")) {
             openCustomGame();
         }

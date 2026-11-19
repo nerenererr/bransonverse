@@ -161,12 +161,19 @@ if (customGameForm) {
         } else if (duplicateIndexes.size) {
             feedback.textContent = "No puede haber nombres repetidos.";
         } else {
-            feedback.textContent = "Nombres validados. La pantalla de juego todavía no está implementada.";
+            startCustomGame();
             return;
         }
 
         const invalidInput = customGameForm.querySelectorAll(".name-input")[invalidIndexes[0]];
         invalidInput?.focus();
+    }
+
+    function startCustomGame() {
+        const cleanNames = names.map((name) => name.trim());
+        sessionStorage.setItem("gameMode", "custom");
+        sessionStorage.setItem("customNames", JSON.stringify(cleanNames));
+        window.location.href = "pages/game.html";
     }
 
     addNameButton.addEventListener("click", () => {

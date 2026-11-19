@@ -27,12 +27,16 @@ function startMusicOnFirstInteraction() {
     document.addEventListener("touchstart", startMusic, { once: true });
 }
 
-const hasStartScreen = document.querySelector(".start-screen") !== null;
-
-if (!hasStartScreen) {
+function autoStartMusic() {
     backgroundMusic.play().catch(() => {
         startMusicOnFirstInteraction();
     });
+}
+
+const hasStartScreen = document.querySelector(".start-screen") !== null;
+
+if (!hasStartScreen) {
+    autoStartMusic();
 }
 
 window.addEventListener("pagehide", () => {
