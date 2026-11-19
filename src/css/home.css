@@ -51,6 +51,35 @@ main {
     object-fit: contain;
 }
 
+.start-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1rem;
+    color: #d0a629;
+    font-family: "Barrio", sans-serif;
+    font-size: clamp(1.2rem, 3vw, 2.4rem);
+    text-align: center;
+    cursor: pointer;
+    animation: start-blink 1.4s ease-in-out infinite;
+}
+
+.start-screen[hidden] {
+    display: none;
+}
+
+@keyframes start-blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
 .main-menu {
     position: absolute;
     inset: 0;

@@ -15,6 +15,22 @@ if (menuSection && introVideo) {
     }
 }
 
+const startScreen = document.querySelector(".start-screen");
+
+if (startScreen && introVideo) {
+    function startExperience() {
+        document.removeEventListener("keydown", startExperience);
+        document.removeEventListener("pointerdown", startExperience);
+
+        startScreen.hidden = true;
+        introVideo.play().catch(() => {});
+        startMusic();
+    }
+
+    document.addEventListener("keydown", startExperience);
+    document.addEventListener("pointerdown", startExperience);
+}
+
 if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) {
     const menus = [primaryMenu, playMenu];
     const selectedIndexes = menus.map((menu) =>
