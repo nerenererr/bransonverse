@@ -14,6 +14,7 @@ let attempts = MAX_ATTEMPTS;
 let timeLeft = GAME_TIME;
 let timerInterval = null;
 let gameFinished = false;
+let failureTimeout = null;
 
 
 const attemptsCount = document.getElementById('attemptsCount');
@@ -38,6 +39,8 @@ function updateCounters() {
 
 function startGame() {
     clearInterval(timerInterval);
+    clearTimeout(failureTimeout);
+    failureTimeout = null;
 
     attempts = MAX_ATTEMPTS;
     timeLeft = GAME_TIME;
@@ -100,10 +103,13 @@ function handleAttemptResult() {
 
 
 function showFailure() {
+    clearTimeout(failureTimeout);
+
     gameFailure.hidden = false;
 
-    setTimeout(() => {
+    failureTimeout = setTimeout(() => {
         gameFailure.hidden = true;
+        failureTimeout = null;
     }, 3000);
 }
 
@@ -150,3 +156,16 @@ document.getElementById("testLoseBtn").addEventListener("click", () => {
 document.getElementById('testAttemptBtn').addEventListener('click', () => {
     handleAttemptResult();
 }); 
+
+
+
+export {
+    updateCounters,
+    startGame,
+    startTimer,
+    useAttempt,
+    handleAttemptResult,
+    showFailure,
+    showResult,
+    endGame
+};
