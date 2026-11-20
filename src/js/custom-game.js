@@ -10,6 +10,7 @@ if (customGameForm) {
     const minimumNames = 9;
     let names = Array(minimumNames).fill("");
     let hasSubmitted = false;
+    let suppressNextNameFocusSound = false;
 
     nameProgress.replaceChildren(...Array.from({ length: maximumNames }, () => {
         const slot = document.createElement("span");
@@ -56,6 +57,14 @@ if (customGameForm) {
         input.placeholder = "Escribe un nombre";
         input.setAttribute("aria-label", `Nombre ${index + 1}`);
         input.value = names[index];
+        input.addEventListener("focus", () => {
+            if (suppressNextNameFocusSound) {
+                suppressNextNameFocusSound = false;
+                return;
+            }
+
+            playMenuSelectionSound();
+        });
         input.setAttribute("aria-invalid", String(
             hasSubmitted && (!names[index].trim() || duplicateIndexes.has(index))
         ));
@@ -73,6 +82,7 @@ if (customGameForm) {
         removeButton.textContent = "×";
         removeButton.setAttribute("aria-label", `Eliminar nombre ${index + 1}`);
         removeButton.addEventListener("click", () => {
+            playBackOrRemoveSound();
             if (names.length > minimumNames) {
                 names.splice(index, 1);
             } else {
@@ -83,7 +93,7 @@ if (customGameForm) {
             renderNames();
             updateNameSummary();
             const nextInputIndex = Math.min(index, names.length - 1);
-            focusNameInput(nextInputIndex);
+            focusNameInput(nextInputIndex, false);
         });
 
         row.classList.toggle(
@@ -94,11 +104,17 @@ if (customGameForm) {
         return row;
     }
 
-    function focusNameInput(index) {
+    function focusNameInput(index, playSound = true) {
         const leftColumnCount = Math.ceil(names.length / 2);
         const columnIndex = index < leftColumnCount ? 0 : 1;
         const inputIndex = columnIndex === 0 ? index : index - leftColumnCount;
-        nameColumns[columnIndex].querySelectorAll(".name-input")[inputIndex]?.focus();
+        const input = nameColumns[columnIndex].querySelectorAll(".name-input")[inputIndex];
+
+        if (input && !playSound) {
+            suppressNextNameFocusSound = true;
+        }
+
+        input?.focus();
     }
 
     function renderNames() {

@@ -66,8 +66,9 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
         return Array.from(menus[activeMenuIndex].querySelectorAll("button"));
     }
 
-    function selectOption(index, focus = false) {
+    function selectOption(index, focus = false, playSound = false) {
         const options = getOptions();
+        const selectionChanged = selectedIndexes[activeMenuIndex] !== index;
         selectedIndexes[activeMenuIndex] = index;
 
         options.forEach((option, optionIndex) => {
@@ -75,6 +76,10 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
             option.setAttribute("aria-pressed", String(isSelected));
             option.tabIndex = isSelected ? 0 : -1;
         });
+
+        if (selectionChanged || playSound) {
+            playMenuSelectionSound();
+        }
 
         if (focus) {
             options[index].focus();
@@ -88,6 +93,7 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
     }
 
     function returnToModeMenu() {
+        playBackOrRemoveSound();
         customGameScreen.hidden = true;
         menuSection.hidden = false;
         modeMenuBack.hidden = false;
@@ -108,6 +114,7 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
     }
 
     function returnToPrimaryMenu() {
+        playBackOrRemoveSound();
         playMenu.hidden = true;
         modeMenuBack.hidden = true;
         primaryMenu.hidden = false;
@@ -138,6 +145,26 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
     }
 
     document.addEventListener("keydown", (event) => {
+        const isTextEntry = ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName);
+
+        if (
+            event.key === "Backspace"
+            && !event.target.isContentEditable
+            && !isTextEntry
+        ) {
+            if (!customGameScreen.hidden) {
+                event.preventDefault();
+                returnToModeMenu();
+                return;
+            }
+
+            if (!menuSection.hidden && !playMenu.hidden) {
+                event.preventDefault();
+                returnToPrimaryMenu();
+                return;
+            }
+        }
+
         if (!customGameScreen.hidden && event.key === "Escape") {
             event.preventDefault();
             returnToModeMenu();
@@ -154,13 +181,13 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
             return;
         }
 
-        const isTextEntry = ["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName);
         if (event.target.isContentEditable || isTextEntry) {
             return;
         }
 
         if (event.key === "Enter") {
             event.preventDefault();
+            playConfirmSelectionSound();
             activateSelectedOption();
             return;
         }
@@ -191,7 +218,7 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
             }
 
             activeMenuIndex = menuIndex;
-            selectOption(optionIndex);
+            selectOption(optionIndex, false, true);
             activateSelectedOption();
         });
     });
