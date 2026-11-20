@@ -22,17 +22,6 @@ main {
     overflow: hidden;
 }
 
-@media (max-width: 360px) {
-    body {
-        overflow-x: auto;
-        overflow-y: hidden;
-    }
-
-    main {
-        width: 360px;
-    }
-}
-
 /*.intro-video {
     position: absolute;
     inset: 0;
@@ -124,8 +113,39 @@ main {
 }
 
 @media (max-width: 640px) {
+    .main-menu-heading {
+        width: 100%;
+        max-width: none;
+        padding-inline: 0.5rem;
+    }
+
+    .main-menu h1 {
+        padding-inline: 2.25rem;
+        font-size: clamp(1.35rem, 6vw, 1.8rem);
+    }
+
     .main-menu .mode-menu-back {
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        right: auto;
+        left: 0.5rem;
+        margin-right: 0;
         font-size: 2rem;
+    }
+
+    .primary-menu button[aria-pressed="true"]::before,
+    .primary-menu button[aria-pressed="true"]::after,
+    .play-menu button[aria-pressed="true"]::before,
+    .play-menu button[aria-pressed="true"]::after {
+        width: clamp(2.25rem, 10vw, 3.5rem);
+    }
+
+    .collection-button,
+    .branson-mode-button,
+    .custom-game-button {
+        font-size: clamp(0.85rem, 3.5vw, 1.2rem);
     }
 }
 
