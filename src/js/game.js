@@ -51,8 +51,6 @@ function startGame() {
     gameOver.hidden = true;
 
     updateCounters();
-
-    startTimer(); // quitar despues
 }
 
 function startTimer() {
@@ -141,23 +139,6 @@ playAgainBtn.addEventListener('click', startGame);
 restartGameBtn.addEventListener('click', startGame);
 
 startGame();
-
-// BOTONES TEMPORALES DE PRUEBA
-
-document.getElementById("testWinBtn").addEventListener("click", () => {
-    const selectedBranson = selectRandomBranson();
-    showResult(selectedBranson);
-});
-
-document.getElementById("testLoseBtn").addEventListener("click", () => {
-    endGame();
-});
-
-document.getElementById('testAttemptBtn').addEventListener('click', () => {
-    handleAttemptResult();
-}); 
-
-
 
 export {
     updateCounters,
