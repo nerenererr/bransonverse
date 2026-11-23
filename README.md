@@ -1,4 +1,4 @@
-## Claw machine (Person 3 · Dani C)
+## Claw machine
 
 The claw machine is the visual and interactive part of the game screen. The player moves the claw, drops it on top of a Branson and the machine tries to grab it. The machine **does not run any random draw**: it only takes care of the animations, the controls and the sounds. What happens on each attempt is decided by the game logic (Person 1).
 

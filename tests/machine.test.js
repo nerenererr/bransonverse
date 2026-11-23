@@ -4,6 +4,7 @@ import {
     getBransonImage,
     getBransonName,
     getBransonSource,
+    trimCloudinaryImage,
     findClosestBranson,
     getBransonPlace,
     isBransonNear,
@@ -93,9 +94,25 @@ describe("getBransonName", () => {
     });
 });
 
+describe("trimCloudinaryImage", () => {
+    test("añade el recorte a una imagen de Cloudinary", () => {
+        expect(trimCloudinaryImage("https://res.cloudinary.com/demo/image/upload/v1/gato.png"))
+            .toBe("https://res.cloudinary.com/demo/image/upload/e_trim/f_auto,q_auto/v1/gato.png");
+    });
+
+    test("no recorta dos veces una imagen que ya está recortada", () => {
+        expect(trimCloudinaryImage(BRANSON_IMAGES[0])).toBe(BRANSON_IMAGES[0]);
+    });
+});
+
 describe("getBransonSource", () => {
-    test("usa la imagen del Branson si es una URL", () => {
-        const branson = { name: "Pokebranson", image: "https://res.cloudinary.com/pokebranson.png" };
+    test("usa la imagen del Branson recortada si es de Cloudinary", () => {
+        const branson = { name: "Pokebranson", image: "https://res.cloudinary.com/demo/image/upload/v1/pokebranson.png" };
+        expect(getBransonSource(branson, 0)).toBe("https://res.cloudinary.com/demo/image/upload/e_trim/f_auto,q_auto/v1/pokebranson.png");
+    });
+
+    test("usa la imagen del Branson tal cual si no es de Cloudinary", () => {
+        const branson = { name: "Pokebranson", image: "https://example.com/pokebranson.png" };
         expect(getBransonSource(branson, 0)).toBe(branson.image);
     });
 
