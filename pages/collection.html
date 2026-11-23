@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +6,6 @@
 
   <title>Colección | Bransonverse</title>
 
-  <!-- Fuentes originales de Figma -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -16,10 +14,8 @@
     rel="stylesheet"
   >
 
-  <!-- CSS de la colección -->
   <link rel="stylesheet" href="../src/css/collection.css">
 
-  <!-- JavaScript -->
   <script defer src="../src/js/music.js"></script>
   <script defer src="../src/js/collection-store.js"></script>
   <script defer src="../src/js/collection.js"></script>
@@ -29,10 +25,10 @@
 
   <main class="collection">
 
-    <!-- CABECERA -->
+    <div class="collection__frame">
+
     <header class="collection__header">
 
-      <!-- Volver al menú principal -->
       <a
         class="collection__back"
         href="../index.html"
@@ -51,20 +47,17 @@
         </svg>
       </a>
 
-      <!-- Título -->
       <h1 class="collection__title">
         COLECCIÓN
       </h1>
 
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <section
       class="collection__content"
       aria-label="Colección de personajes"
     >
 
-      <!-- Nombre y descripción -->
       <div
         class="collection__information"
         aria-live="polite"
@@ -82,7 +75,6 @@ cualquier CEI.</p>
 
       </div>
 
-      <!-- Las 9 fichas se crean con JavaScript -->
       <div
         id="characters-grid"
         class="collection__grid"
@@ -91,6 +83,8 @@ cualquier CEI.</p>
       ></div>
 
     </section>
+
+    </div>
 
   </main>
 

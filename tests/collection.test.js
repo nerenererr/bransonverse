@@ -2,18 +2,12 @@
  * @jest-environment jsdom
  */
 
-/* persona 4 */
-
 import { readFileSync } from "node:fs";
 
 const storeScript = readFileSync(
   new URL("../src/js/collection-store.js", import.meta.url),
   "utf8"
 );
-
-/* ==========================================
-   CARGAR EL SISTEMA DE LA COLECCIÓN
-========================================== */
 
 function loadStore() {
 
@@ -22,10 +16,6 @@ function loadStore() {
   return window.BransonCollection;
 
 }
-
-/* ==========================================
-   PERSONAJES INICIALES
-========================================== */
 
 describe("personajes iniciales", () => {
 
@@ -48,10 +38,6 @@ describe("personajes iniciales", () => {
   });
 
 });
-
-/* ==========================================
-   DESBLOQUEAR PERSONAJES
-========================================== */
 
 describe("unlock", () => {
 
@@ -113,10 +99,6 @@ describe("unlock", () => {
   });
 
 });
-
-/* ==========================================
-   GUARDADO
-========================================== */
 
 describe("guardado", () => {
 

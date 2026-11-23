@@ -1,27 +1,7 @@
-
-/* ==========================================
-   BRANSONVERSE - COLECCIÓN
-   Textos originales del Figma
-========================================== */
-
 (function () {
   "use strict";
 
-  /* ========================================
-     PERSONAJES DE LA COLECCIÓN
-
-     Orden visual:
-     1  2  3
-     4  5  6
-     7  8  9
-  ======================================== */
-
   const characters = [
-
-    // ======================================
-    // 1. STANDARD BRANSON
-    // Desbloqueado inicialmente
-    // ======================================
 
     {
       id: "standard",
@@ -35,16 +15,8 @@
         "cualquier CEI.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794909672/brandonStandar_cflcns.png",
-
-      width: 45,
-      height: 81
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794909672/brandonStandar_cflcns.png"
     },
-
-    // ======================================
-    // 2. BRENDA
-    // Desbloqueada inicialmente
-    // ======================================
 
     {
       id: "brenda",
@@ -56,16 +28,8 @@
         "Es puntual, le encantan los perros y habla por los codos.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918716/brandon_0001_biare4.png",
-
-      width: 54,
-      height: 87
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794918716/brandon_0001_biare4.png"
     },
-
-    // ======================================
-    // 3. POKEBRANSON
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "pokebranson",
@@ -77,16 +41,8 @@
         "¡Pokebranson¡ ¡Int-pact Trueno!",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918715/brandon_0004_zregty.png",
-
-      width: 81,
-      height: 93
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794918715/brandon_0004_zregty.png"
     },
-
-    // ======================================
-    // 4. BRANJOSÉ TOMÁS
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "branjose",
@@ -100,16 +56,8 @@
         "Su única forma de salir de la máquina es por la puerta grande.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918715/brandon_0006_vhqdhm.png",
-
-      width: 57,
-      height: 90
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794918715/brandon_0006_vhqdhm.png"
     },
-
-    // ======================================
-    // 5. BRANSON ESPECIAL SAN VALENTÍN
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "valentin",
@@ -121,16 +69,8 @@
         "porque su única arma es el amor... y la IA.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794911232/brandon_0005_lcpawf.png",
-
-      width: 87,
-      height: 81
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794911232/brandon_0005_lcpawf.png"
     },
-
-    // ======================================
-    // 6. BRANSON ESPECIAL HALLOWEEN
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "halloween",
@@ -141,16 +81,8 @@
         "¡¡El diablo!!",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794911223/brandon_0002_s2bngb.png",
-
-      width: 66,
-      height: 90
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794911223/brandon_0002_s2bngb.png"
     },
-
-    // ======================================
-    // 7. NEKOBRANSON
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "neko",
@@ -163,16 +95,8 @@
         "Un branson como debería ser un Branson.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918715/brandonNeko_xzxatk.png",
-
-      width: 69,
-      height: 84
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794918715/brandonNeko_xzxatk.png"
     },
-
-    // ======================================
-    // 8. BRANSON ESPECIAL NAVIDAD
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "navidad",
@@ -184,16 +108,8 @@
         "con la lista de los Bransons buenos y los Bransons malos.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918715/brandonEspecialNavidad_prgkh2.png",
-
-      width: 63,
-      height: 105
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794918715/brandonEspecialNavidad_prgkh2.png"
     },
-
-    // ======================================
-    // 9. BROKEBACK BRANSON
-    // Bloqueado inicialmente
-    // ======================================
 
     {
       id: "brokeback",
@@ -206,17 +122,10 @@
         "de la 63ª edición del festival de Branson de Venecia.",
 
       image:
-        "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918715/brandon-vaquero_oqo9bz.png",
-
-      width: 69,
-      height: 96
+        "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/v1794918715/brandon-vaquero_oqo9bz.png"
     }
 
   ];
-
-  /* ========================================
-     ELEMENTOS DEL HTML
-  ======================================== */
 
   const grid = document.getElementById(
     "characters-grid"
@@ -230,12 +139,10 @@
     "character-description"
   );
 
-  // Comprobar que existe la página
   if (!grid || !nameElement || !descriptionElement) {
     return;
   }
 
-  // Comprobar que el sistema de guardado está cargado
   if (!window.BransonCollection) {
 
     console.error(
@@ -245,19 +152,9 @@
     return;
   }
 
-  /* ========================================
-     ESTADO DE SELECCIÓN
-  ======================================== */
-
-  // Primer personaje seleccionado por defecto
   let selectedIndex = 0;
 
-  // Array de fichas HTML
   const cards = [];
-
-  /* ========================================
-     CREAR FICHAS
-  ======================================== */
 
   function createCards() {
 
@@ -265,7 +162,6 @@
 
     characters.forEach((character, index) => {
 
-      // Crear la ficha
       const card = document.createElement("button");
 
       card.type = "button";
@@ -274,7 +170,6 @@
 
       card.dataset.characterId = character.id;
 
-      // Crear imagen
       const image = document.createElement("img");
 
       image.className = "collection__sprite";
@@ -285,25 +180,7 @@
 
       image.draggable = false;
 
-      image.width = character.width;
-      image.height = character.height;
-
-      // Tamaños de los sprites obtenidos del Figma
-      card.style.setProperty(
-        "--sprite-width",
-        character.width + "px"
-      );
-
-      card.style.setProperty(
-        "--sprite-height",
-        character.height + "px"
-      );
-
       card.appendChild(image);
-
-      /* ====================================
-         SELECCIONAR CON RATÓN
-      ==================================== */
 
       card.addEventListener("mouseenter", () => {
 
@@ -311,19 +188,11 @@
 
       });
 
-      /* ====================================
-         SELECCIONAR CON CLIC O TOQUE
-      ==================================== */
-
       card.addEventListener("click", () => {
 
         selectCharacter(index);
 
       });
-
-      /* ====================================
-         SELECCIONAR CON TABULADOR
-      ==================================== */
 
       card.addEventListener("focus", () => {
 
@@ -331,19 +200,21 @@
 
       });
 
-      // Guardar ficha
       cards.push(card);
 
-      // Insertar en pantalla
       grid.appendChild(card);
 
     });
 
   }
 
-  /* ========================================
-     SELECCIONAR UN PERSONAJE
-  ======================================== */
+  function isCharacterUnlocked(index) {
+
+    return window.BransonCollection.isUnlocked(
+      characters[index].id
+    );
+
+  }
 
   function selectCharacter(index) {
 
@@ -354,15 +225,15 @@
       return;
     }
 
+    if (!isCharacterUnlocked(index)) {
+      return;
+    }
+
     selectedIndex = index;
 
     render();
 
   }
-
-  /* ========================================
-     DIBUJAR ESTADO DE LA COLECCIÓN
-  ======================================== */
 
   function render() {
 
@@ -370,7 +241,6 @@
       window.BransonCollection.getUnlocked()
     );
 
-    // Recorrer todas las fichas
     cards.forEach((card, index) => {
 
       const character = characters[index];
@@ -381,19 +251,16 @@
 
       const selected = index === selectedIndex;
 
-      // Fondo amarillo si está seleccionado
       card.classList.toggle(
         "is-selected",
         selected
       );
 
-      // Silueta negra si está bloqueado
       card.classList.toggle(
         "is-locked",
         !unlocked
       );
 
-      // Accesibilidad
       card.setAttribute(
         "aria-label",
         unlocked
@@ -402,48 +269,28 @@
       );
 
       card.setAttribute(
+        "aria-disabled",
+        String(!unlocked)
+      );
+
+      card.setAttribute(
         "aria-pressed",
         String(selected)
       );
 
-      // Control del tabulador
       card.tabIndex = selected ? 0 : -1;
 
     });
 
-    /* ====================================
-       DESCRIPCIÓN DEL PERSONAJE
-    ==================================== */
-
     const activeCharacter = characters[selectedIndex];
 
-    const activeUnlocked = unlockedCharacters.has(
-      activeCharacter.id
-    );
+    nameElement.textContent =
+      activeCharacter.name;
 
-    // Si está bloqueado no se desvela quién es
-    if (activeUnlocked) {
-
-      nameElement.textContent =
-        activeCharacter.name;
-
-      descriptionElement.textContent =
-        activeCharacter.description;
-
-    } else {
-
-      nameElement.textContent = "???";
-
-      descriptionElement.textContent =
-        "Atrápalo en la máquina para descubrir quién es.";
-
-    }
+    descriptionElement.textContent =
+      activeCharacter.description;
 
   }
-
-  /* ========================================
-     NAVEGACIÓN CON TECLADO
-  ======================================== */
 
   function moveSelection(key) {
 
@@ -460,47 +307,62 @@
     let nextRow = currentRow;
     let nextColumn = currentColumn;
 
-    switch (key) {
+    for (let step = 0; step < columns * rows; step++) {
 
-      case "ArrowRight":
-        nextColumn = (currentColumn + 1) % columns;
-        break;
+      switch (key) {
 
-      case "ArrowLeft":
-        nextColumn = (currentColumn + columns - 1) % columns;
-        break;
+        case "ArrowRight":
+          nextColumn = (nextColumn + 1) % columns;
+          break;
 
-      case "ArrowDown":
-        nextRow = (currentRow + 1) % rows;
-        break;
+        case "ArrowLeft":
+          nextColumn = (nextColumn + columns - 1) % columns;
+          break;
 
-      case "ArrowUp":
-        nextRow = (currentRow + rows - 1) % rows;
-        break;
+        case "ArrowDown":
+          nextRow = (nextRow + 1) % rows;
+          break;
 
-      default:
+        case "ArrowUp":
+          nextRow = (nextRow + rows - 1) % rows;
+          break;
+
+        default:
+          return;
+
+      }
+
+      const nextIndex =
+        nextRow * columns + nextColumn;
+
+      if (isCharacterUnlocked(nextIndex)) {
+
+        selectCharacter(nextIndex);
+
+        cards[nextIndex].focus({
+          preventScroll: true
+        });
+
         return;
+
+      }
 
     }
 
-    const nextIndex =
-      nextRow * columns + nextColumn;
-
-    // Seleccionar personaje
-    selectCharacter(nextIndex);
-
-    // Mover foco de teclado a su ficha
-    cards[nextIndex].focus({
-      preventScroll: true
-    });
-
   }
 
-  /* ========================================
-     DETECTAR FLECHAS DEL TECLADO
-  ======================================== */
-
   document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Backspace") {
+
+      event.preventDefault();
+
+      window.location.href =
+        document.querySelector(".collection__back").href;
+
+      return;
+
+    }
 
     const validKeys = [
       "ArrowUp",
@@ -513,7 +375,6 @@
       return;
     }
 
-    // Evitar interferencias con otros controles
     if (event.altKey || event.ctrlKey || event.metaKey) {
       return;
     }
@@ -526,16 +387,11 @@
       return;
     }
 
-    // Evitar desplazamiento de página
     event.preventDefault();
 
     moveSelection(event.key);
 
   });
-
-  /* ========================================
-     ACTUALIZAR DESPUÉS DE UNA CAPTURA
-  ======================================== */
 
   window.addEventListener(
     "branson:collection-updated",
@@ -545,10 +401,6 @@
 
     }
   );
-
-  /* ========================================
-     SINCRONIZACIÓN ENTRE PESTAÑAS
-  ======================================== */
 
   window.addEventListener("storage", (event) => {
 
@@ -562,10 +414,6 @@
     }
 
   });
-
-  /* ========================================
-     INICIAR LA COLECCIÓN
-  ======================================== */
 
   createCards();
 
