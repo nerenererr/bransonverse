@@ -189,7 +189,7 @@ if (customGameForm) {
         const cleanNames = names.map((name) => name.trim());
         sessionStorage.setItem("gameMode", "custom");
         sessionStorage.setItem("customNames", JSON.stringify(cleanNames));
-        window.location.href = "pages/game.html";
+        window.dispatchEvent(new Event("branson:start-game"));
     }
 
     addNameButton.addEventListener("click", () => {

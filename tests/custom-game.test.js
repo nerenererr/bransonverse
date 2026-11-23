@@ -129,6 +129,9 @@ describe("Formulario de partida personalizada", () => {
     });
 
     test("guarda los nombres recortados y el modo cuando todos son válidos", () => {
+        const startGame = jest.fn();
+        window.addEventListener("branson:start-game", startGame);
+
         for (let index = 0; index < 9; index += 1) {
             setName(index, `  Nombre ${index + 1}  `);
         }
@@ -144,5 +147,7 @@ describe("Formulario de partida personalizada", () => {
         expect(JSON.parse(sessionStorage.getItem("customNames"))).toEqual(
             Array.from({ length: 9 }, (_, index) => `Nombre ${index + 1}`)
         );
+        expect(startGame).toHaveBeenCalledTimes(1);
+        window.removeEventListener("branson:start-game", startGame);
     });
 });

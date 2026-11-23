@@ -4,6 +4,8 @@ const primaryMenu = document.querySelector(".primary-menu");
 const playMenu = document.querySelector(".play-menu");
 const modeMenuBack = document.querySelector(".mode-menu-back");
 const customGameScreen = document.querySelector(".custom-game-screen");
+const collectionFrame = document.querySelector(".collection-frame");
+const gameFrame = document.querySelector(".game-frame");
 
 const startScreen = document.querySelector(".start-screen");
 
@@ -104,13 +106,42 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
     }
 
     function openCollection() {
-        window.location.href = "pages/collection.html";
+        if (!collectionFrame) {
+            window.location.href = "pages/collection.html";
+            return;
+        }
+
+        menuSection.hidden = true;
+        collectionFrame.hidden = false;
+
+        if (!collectionFrame.dataset.loaded) {
+            collectionFrame.src = "pages/collection.html";
+            collectionFrame.dataset.loaded = "true";
+        }
+
+        collectionFrame.focus();
     }
 
     function startBransonMode() {
         sessionStorage.setItem("gameMode", "branson");
         sessionStorage.removeItem("customNames");
-        window.location.href = "pages/game.html";
+        openGame();
+    }
+
+    function openGame() {
+        if (!gameFrame) {
+            window.location.href = "pages/game.html";
+            return;
+        }
+
+        menuSection.hidden = true;
+        customGameScreen.hidden = true;
+        if (collectionFrame) {
+            collectionFrame.hidden = true;
+        }
+        gameFrame.hidden = false;
+        gameFrame.src = "pages/game.html";
+        gameFrame.focus();
     }
 
     function returnToPrimaryMenu() {
@@ -225,4 +256,32 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
 
     modeMenuBack.addEventListener("click", returnToPrimaryMenu);
     customGameScreen.querySelector(".custom-game-back").addEventListener("click", returnToModeMenu);
+    window.addEventListener("branson:start-game", openGame);
+    window.addEventListener("branson:start-game", openGame);
+
+    window.addEventListener("message", (event) => {
+        if (collectionFrame
+            && event.data === "branson:close-collection"
+            && event.source === collectionFrame.contentWindow) {
+            collectionFrame.hidden = true;
+            menuSection.hidden = false;
+            document.querySelector(".collection-button")?.focus();
+            return;
+        }
+
+        if (!gameFrame
+            || event.data !== "branson:close-game"
+            || event.source !== gameFrame.contentWindow) {
+            return;
+        }
+
+        gameFrame.hidden = true;
+        menuSection.hidden = false;
+        primaryMenu.hidden = false;
+        playMenu.hidden = true;
+        modeMenuBack.hidden = true;
+        activeMenuIndex = 0;
+        selectOption(0);
+        document.querySelector(".play-button")?.focus();
+    });
 }

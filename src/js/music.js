@@ -1,44 +1,88 @@
 const MUSIC_URL = "https://res.cloudinary.com/da9tytxsu/video/upload/so_4.5/v1795093252/jonasblakewood-synthwave-vibe-618635_oexfxg.mp3";
 const MUSIC_VOLUME = 0.2;
 
-const backgroundMusic = new Audio(MUSIC_URL);
-backgroundMusic.loop = true;
-backgroundMusic.volume = MUSIC_VOLUME;
+const backgroundMusic = window.parent === window
+    ? new Audio(MUSIC_URL)
+    : null;
+const hasStartScreen = document.querySelector(".start-screen") !== null;
+let hasUserStartedMusic = !hasStartScreen;
+let isLeavingPage = false;
 
-const navigation = performance.getEntriesByType("navigation")[0];
-const isPageReloaded = navigation && navigation.type === "reload";
+if (backgroundMusic) {
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = MUSIC_VOLUME;
 
-if (isPageReloaded) {
-    sessionStorage.removeItem("musicTime");
-}
+    const navigation = performance.getEntriesByType("navigation")[0];
+    const isPageReloaded = navigation && navigation.type === "reload";
 
-const savedMusicTime = sessionStorage.getItem("musicTime");
-if (savedMusicTime) {
-    backgroundMusic.currentTime = Number(savedMusicTime);
+    if (isPageReloaded) {
+        sessionStorage.removeItem("musicTime");
+    }
+
+    const savedMusicTime = sessionStorage.getItem("musicTime");
+    if (savedMusicTime) {
+        backgroundMusic.currentTime = Number(savedMusicTime);
+    }
 }
 
 function startMusic() {
-    backgroundMusic.play().catch(() => {});
-}
+    if (
+        !backgroundMusic
+        || !hasUserStartedMusic
+        || isLeavingPage
+        || (!backgroundMusic.paused && !backgroundMusic.ended)
+    ) {
+        return;
+    }
 
-function startMusicOnFirstInteraction() {
-    document.addEventListener("pointerdown", startMusic, { once: true });
-    document.addEventListener("keydown", startMusic, { once: true });
-    document.addEventListener("touchstart", startMusic, { once: true });
-}
+    if (backgroundMusic.ended) {
+        backgroundMusic.currentTime = 0;
+    }
 
-function autoStartMusic() {
-    backgroundMusic.play().catch(() => {
-        startMusicOnFirstInteraction();
+    backgroundMusic.play().catch((error) => {
+        if (error.name !== "NotAllowedError" && error.name !== "AbortError") {
+            console.error("No se pudo reproducir la música de fondo.", error);
+        }
     });
 }
 
-const hasStartScreen = document.querySelector(".start-screen") !== null;
-
-if (!hasStartScreen) {
-    autoStartMusic();
+function startMusicFromInteraction() {
+    hasUserStartedMusic = true;
+    startMusic();
 }
 
-window.addEventListener("pagehide", () => {
-    sessionStorage.setItem("musicTime", backgroundMusic.currentTime);
-});
+function autoStartMusic() {
+    hasUserStartedMusic = true;
+    startMusic();
+}
+
+if (backgroundMusic) {
+    if (!hasStartScreen) {
+        autoStartMusic();
+    }
+
+    document.addEventListener("pointerdown", startMusicFromInteraction, true);
+    document.addEventListener("keydown", startMusicFromInteraction, true);
+    document.addEventListener("touchstart", startMusicFromInteraction, true);
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            startMusic();
+        }
+    });
+
+    backgroundMusic.addEventListener("pause", () => {
+        if (!isLeavingPage && document.visibilityState === "visible") {
+            window.setTimeout(startMusic, 0);
+        }
+    });
+
+    window.addEventListener("pageshow", () => {
+        isLeavingPage = false;
+        startMusic();
+    });
+
+    window.addEventListener("pagehide", () => {
+        isLeavingPage = true;
+        sessionStorage.setItem("musicTime", backgroundMusic.currentTime);
+    });
+}

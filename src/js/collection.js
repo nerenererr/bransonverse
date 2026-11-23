@@ -130,6 +130,19 @@
   const grid = document.getElementById(
     "characters-grid"
   );
+  const backLink = document.querySelector(".collection__back");
+
+  function returnToMenu() {
+    if (window.parent !== window) {
+      window.parent.postMessage(
+        "branson:close-collection",
+        "*"
+      );
+      return;
+    }
+
+    window.location.href = backLink.href;
+  }
 
   const nameElement = document.getElementById(
     "character-name"
@@ -357,8 +370,7 @@
 
       event.preventDefault();
 
-      window.location.href =
-        document.querySelector(".collection__back").href;
+      returnToMenu();
 
       return;
 
@@ -418,5 +430,14 @@
   createCards();
 
   render();
+
+  backLink.addEventListener("click", (event) => {
+    if (window.parent === window) {
+      return;
+    }
+
+    event.preventDefault();
+    returnToMenu();
+  });
 
 })();

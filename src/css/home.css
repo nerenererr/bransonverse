@@ -21,6 +21,22 @@ main {
     overflow: hidden;
 }
 
+.collection-frame,
+.game-frame {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #050505;
+}
+
+.collection-frame[hidden],
+.game-frame[hidden] {
+    display: none;
+}
+
 /*.intro-video {
     position: absolute;
     inset: 0;

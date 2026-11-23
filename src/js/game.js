@@ -94,11 +94,20 @@ function saveRemainingNames() {
     }));
 }
 
+function returnToMenu() {
+    if (window.parent !== window) {
+        window.parent.postMessage('branson:close-game', '*');
+        return;
+    }
+
+    window.location.href = '../index.html';
+}
+
 function finishCustomGame() {
     sessionStorage.removeItem('gameMode');
     sessionStorage.removeItem('customNames');
     sessionStorage.removeItem(CUSTOM_STATE_KEY);
-    window.location.href = '../index.html';
+    returnToMenu();
 }
 
 function updateCounters() {
@@ -272,6 +281,17 @@ function endGame() {
 
 playAgainBtn.addEventListener('click', startGame);
 restartGameBtn.addEventListener('click', startGame);
+
+document.addEventListener('click', event => {
+    const returnLink = event.target.closest?.('.gameOverActions a');
+
+    if (!returnLink || window.parent === window) {
+        return;
+    }
+
+    event.preventDefault();
+    returnToMenu();
+});
 
 function getCurrentBransonById(id) {
     if (isCustomGame) {
