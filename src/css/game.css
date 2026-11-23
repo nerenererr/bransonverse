@@ -139,7 +139,6 @@
     object-fit: contain;
 }
 
-
 .gameOverActions {
     display: flex;
     flex-direction: row;
@@ -149,9 +148,15 @@
     width: 100%;
 }
 
+.gameOverActions > * {
+    flex: 1;
+    max-width: 220px;
+    min-width: 0;
+}
+
 .gameResult button,
 .gameOver button,
-.gameOver a {
+.gameOverActions a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -172,14 +177,9 @@
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.gameOverActions > * {
-    flex: 1;
-    max-width: 220px;
-}
-
 .gameResult button:hover,
 .gameOver button:hover,
-.gameOver a:hover {
+.gameOverActions a:hover {
     background-color: #ffd45b;
     border-color: #ffd45b;
     color: #17120b;
@@ -188,30 +188,23 @@
 
 .gameResult button:active,
 .gameOver button:active,
-.gameOver a:active {
+.gameOverActions a:active {
     transform: translateY(3px);
     box-shadow: 0 1px 0 #80621c;
 }
 
 .gameResult button:focus-visible,
 .gameOver button:focus-visible,
-.gameOver a:focus-visible {
+.gameOverActions a:focus-visible {
     outline: 3px solid #ffd45b;
     outline-offset: 4px;
 }
 
-@media (max-width: 480px) {
-    .gameOverActions {
-        gap: 0.5rem;
+@media (max-width: 768px) {
+    .gameAttempts {
+        top: 4%;
+        left: 8%;
     }
-
-    .gameOverActions > * {
-        min-width: 0;
-        padding: 0.6rem 0.5rem;
-        font-size: 0.85rem;
-    }
-}
-
 
     .gameTimer {
         top: 4%;
@@ -247,7 +240,7 @@
         width: 40%;
         max-height: 30%;
     }
-
+}
 
 @media (max-width: 480px) {
     .gameAttempts {
@@ -287,16 +280,22 @@
         width: 45%;
     }
 
-    .gameResult button,
-    .gameOver button {
-        font-size: 1rem;
+    .gameOverActions {
+        gap: 0.5rem;
+    }
+
+    .gameOverActions > button,
+    .gameOverActions > a {
+        min-width: 0;
+        padding: 0.6rem 0.5rem;
+        font-size: 0.85rem;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .gameResult button,
     .gameOver button,
-    .gameOver a {
+    .gameOverActions a {
         transition: none;
     }
 }
