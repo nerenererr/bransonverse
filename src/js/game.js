@@ -4,7 +4,7 @@ import {
     checkClawSuccess,
 } from './random-selection.js';
 
-import { renderBransons, finishGrab, resetMachine } from "./machine.js";
+import { finishGrab, resetMachine, setMachineEnabled } from "./machine.js";
 
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
@@ -53,6 +53,7 @@ function startGame() {
 
     currentBransons = generateMachineBransons();
     resetMachine(currentBransons);
+    setMachineEnabled(true);
 
     updateCounters();
 }
@@ -127,6 +128,7 @@ function showFailure() {
 
 function showResult(branson) {
     gameFinished = true;
+    setMachineEnabled(false);
 
     clearInterval(timerInterval);
     clearTimeout(failureTimeout);
@@ -145,6 +147,7 @@ function endGame() {
     if (gameFinished) return;
 
     gameFinished = true;
+    setMachineEnabled(false);
     clearInterval(timerInterval);
     clearTimeout(failureTimeout);
 
@@ -160,7 +163,7 @@ playAgainBtn.addEventListener('click', startGame);
 restartGameBtn.addEventListener('click', startGame);
 
 
-document.addEventListener('machine:button-pressed', () => {
+document.addEventListener('machine:interaction', () => {
     startTimer();
 });
 
