@@ -1,4 +1,4 @@
-const {
+import {
     clampPosition,
     getNextPosition,
     getBransonImage,
@@ -14,7 +14,7 @@ const {
     MIN_POSITION,
     MAX_POSITION,
     MOVE_STEP
-} = require("../src/js/machine.js");
+} from "../src/js/machine.js";
 
 describe("clampPosition", () => {
     test("deja igual una posición que está dentro de los límites", () => {

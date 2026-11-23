@@ -48,9 +48,11 @@ The claw machine is the visual and interactive part of the game screen. The play
 | `machine:fail` | The Branson has fallen from the claw | `{ id, name }` |
 | `machine:empty` | The claw went down without grabbing anything | — |
 
-Example of how to connect it from `game.js`:
+`machine.js` is an ES module, so these functions are imported where they are needed. Example of how to connect it from `game.js`:
 
 ```js
+import { renderBransons, finishGrab } from "./machine.js";
+
 renderBransons(bransons);
 
 document.addEventListener("machine:branson-grabbed", function (event) {
