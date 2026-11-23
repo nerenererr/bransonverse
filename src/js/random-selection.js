@@ -59,7 +59,7 @@ const bransons = [
     {
         id: 9,
         name: "Branson especial de Navidad",
-        image: "https://res.cloudinary.com/da9tytxsu/image/upload/v1794918715/brandonEspecialNavidad_prgkh2.png",
+        image: "https://res.cloudinary.com/dbtuho5h0/image/upload/v1795111012/Figura_de_reno_de_plastilina_con_bast%C3%B3n_de_caramelo_3_htqfkq.png",
         spawnWeight: 32,
         fallProbability: 30
     }
