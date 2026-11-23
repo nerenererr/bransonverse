@@ -1,19 +1,9 @@
-
-/* ==========================================
-   BRANSONVERSE - PANTALLA DE COLECCIÓN
-   Diseño basado en Figma
-========================================== */
-
 :root {
   --gold: #c69f2a;
   --gold-selected: #d0a533;
   --card-background: #d9d9d9;
   --white: #ffffff;
 }
-
-/* ==========================================
-   RESETEO
-========================================== */
 
 * {
   box-sizing: border-box;
@@ -30,13 +20,13 @@ body {
   background: #050505;
 }
 
-/* ==========================================
-   FONDO DE LA COLECCIÓN
-========================================== */
-
 .collection {
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
 
   background-color: #050505;
 
@@ -51,16 +41,22 @@ body {
   color: var(--white);
 }
 
-/* ==========================================
-   CABECERA
-========================================== */
+.collection__frame {
+  position: relative;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
 
 .collection__header {
   position: relative;
   height: 138px;
 }
-
-/* Título COLECCIÓN */
 
 .collection__title {
   position: absolute;
@@ -84,18 +80,14 @@ body {
   text-align: center;
 }
 
-/* ==========================================
-   BOTÓN VOLVER
-========================================== */
-
 .collection__back {
   position: absolute;
 
-  top: 87px;
-  left: 90px;
+  top: 84px;
+  left: 87px;
 
-  width: 53px;
-  height: 40px;
+  width: 59px;
+  height: 46px;
 
   display: flex;
   align-items: center;
@@ -125,10 +117,6 @@ body {
   border-radius: 4px;
 }
 
-/* ==========================================
-   CONTENIDO DE LA COLECCIÓN
-========================================== */
-
 .collection__content {
   display: grid;
 
@@ -139,18 +127,12 @@ body {
 
   width: min(1244px, calc(100% - 64px));
 
-  margin: 169px auto 0;
+  margin: auto;
 }
-
-/* ==========================================
-   INFORMACIÓN DEL PERSONAJE
-========================================== */
 
 .collection__information {
   width: 100%;
 }
-
-/* NOMBRE */
 
 .collection__information h2 {
   margin: 0 0 19px;
@@ -165,8 +147,6 @@ body {
 
   overflow-wrap: break-word;
 }
-
-/* DESCRIPCIÓN */
 
 .collection__information p {
   margin: 0;
@@ -185,10 +165,6 @@ body {
   overflow-wrap: break-word;
 }
 
-/* ==========================================
-   CUADRÍCULA DE 9 PERSONAJES
-========================================== */
-
 .collection__grid {
   display: grid;
 
@@ -198,10 +174,6 @@ body {
   column-gap: 37px;
   row-gap: 23px;
 }
-
-/* ==========================================
-   FICHAS DE LOS PERSONAJES
-========================================== */
 
 .collection__card {
   position: relative;
@@ -232,31 +204,22 @@ body {
   transition: background-color 0.12s ease;
 }
 
-/* Ficha seleccionada */
-
 .collection__card.is-selected {
   background-color: var(--gold-selected);
 }
-
-/* Foco al navegar con teclado */
 
 .collection__card:focus-visible {
   outline: 3px solid #ffffff;
   outline-offset: 4px;
 }
 
-/* ==========================================
-   IMÁGENES DE PERSONAJES
-========================================== */
-
 .collection__sprite {
   display: block;
 
-  width: var(--sprite-width);
-  height: var(--sprite-height);
+  width: auto;
+  height: 66%;
 
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 80%;
 
   object-fit: contain;
 
@@ -269,28 +232,17 @@ body {
   -webkit-user-drag: none;
 }
 
-/* ==========================================
-   PERSONAJES BLOQUEADOS
-========================================== */
-
-/*
-  Mantiene la imagen original pero la convierte
-  en una silueta negra mientras está bloqueada.
-*/
-
 .collection__card.is-locked .collection__sprite {
   filter: brightness(0);
 }
 
-/* Personaje desbloqueado */
+.collection__card.is-locked {
+  cursor: default;
+}
 
 .collection__card:not(.is-locked) .collection__sprite {
   filter: none;
 }
-
-/* ==========================================
-   PANTALLAS MEDIANAS
-========================================== */
 
 @media (max-width: 1300px) and (min-width: 901px) {
 
@@ -306,14 +258,12 @@ body {
 
 }
 
-/* ==========================================
-   TABLETS Y MÓVILES
-========================================== */
-
 @media (max-width: 900px) {
 
   .collection {
+    height: auto;
     min-height: 100dvh;
+    overflow: visible;
 
     padding-bottom: 55px;
   }
@@ -384,10 +334,6 @@ body {
 
 }
 
-/* ==========================================
-   MÓVILES PEQUEÑOS
-========================================== */
-
 @media (max-width: 480px) {
 
   .collection__header {
@@ -441,69 +387,4 @@ body {
     max-height: 90%;
   }
 
-}
-
-/* ==========================================
-   AGRANDAR LOS 9 PERSONAJES
-   DE LA COLECCIÓN
-========================================== */
-
-/* Mantener los personajes centrados */
-.collection__sprite {
-  transform-origin: center center;
-  flex-shrink: 0;
-}
-
-/* 1. STANDARD BRANSON */
-.collection__card[data-character-id="standard"]
-.collection__sprite {
-  transform: scale(3.8);
-}
-
-/* 2. BRENDA */
-.collection__card[data-character-id="brenda"]
-.collection__sprite {
-  transform: scale(2.7);
-}
-
-/* 3. POKEBRANSON */
-.collection__card[data-character-id="pokebranson"]
-.collection__sprite {
-  transform: scale(1.65);
-}
-
-/* 4. BRANJOSÉ TOMÁS */
-.collection__card[data-character-id="branjose"]
-.collection__sprite {
-  transform: scale(2.15);
-}
-
-/* 5. BRANSON SAN VALENTÍN */
-.collection__card[data-character-id="valentin"]
-.collection__sprite {
-  transform: scale(1.9);
-}
-
-/* 6. BRANSON HALLOWEEN */
-.collection__card[data-character-id="halloween"]
-.collection__sprite {
-  transform: scale(1.75);
-}
-
-/* 7. NEKOBRANSON */
-.collection__card[data-character-id="neko"]
-.collection__sprite {
-  transform: scale(2.1);
-}
-
-/* 8. BRANSON NAVIDAD */
-.collection__card[data-character-id="navidad"]
-.collection__sprite {
-  transform: scale(1.8);
-}
-
-/* 9. BROKEBACK BRANSON */
-.collection__card[data-character-id="brokeback"]
-.collection__sprite {
-  transform: scale(2.05);
 }

@@ -1,20 +1,9 @@
-
-/* ==========================================
-   BRANSONVERSE
-   SISTEMA DE DESBLOQUEO DE LA COLECCIÓN
-========================================== */
-
 (function () {
   "use strict";
-
-  /* ========================================
-     CONFIGURACIÓN
-  ======================================== */
 
   const STORAGE_KEY =
     "bransonverse.collection.unlocked.v1";
 
-  // Todos los personajes de la colección
   const ALL_CHARACTERS = [
 
     "standard",
@@ -29,7 +18,6 @@
 
   ];
 
-  // Solo dos personajes desbloqueados al empezar
   const INITIAL_CHARACTERS = [
 
     "standard",
@@ -37,8 +25,6 @@
 
   ];
 
-  // Equivalencia entre el id numérico del juego
-  // (random-selection.js) y el id de la colección
   const GAME_IDS = {
 
     1: "standard",
@@ -55,12 +41,7 @@
 
   const validIds = new Set(ALL_CHARACTERS);
 
-  // Progreso temporal si falla localStorage
   let memoryUnlocked = new Set(INITIAL_CHARACTERS);
-
-  /* ========================================
-     CONVERTIR EL ID DEL JUEGO
-  ======================================== */
 
   function toCollectionId(id) {
 
@@ -73,10 +54,6 @@
     return id;
 
   }
-
-  /* ========================================
-     LEER EL PROGRESO GUARDADO
-  ======================================== */
 
   function readUnlocked() {
 
@@ -102,8 +79,6 @@
 
       }
 
-      // Los dos personajes iniciales siempre estarán
-      // disponibles
       const unlocked = new Set(
         INITIAL_CHARACTERS
       );
@@ -130,10 +105,6 @@
 
   }
 
-  /* ========================================
-     GUARDAR EL PROGRESO
-  ======================================== */
-
   function saveUnlocked(unlocked) {
 
     memoryUnlocked = new Set(unlocked);
@@ -156,17 +127,10 @@
 
   }
 
-  /* ========================================
-     DESBLOQUEAR PERSONAJE
-  ======================================== */
-
   function unlock(id) {
 
-    // Acepta el id de la colección ("neko")
-    // o el id numérico del juego (5)
     const characterId = toCollectionId(id);
 
-    // Comprobar que el personaje existe
     if (!validIds.has(characterId)) {
 
       console.warn(
@@ -180,20 +144,16 @@
 
     const unlocked = readUnlocked();
 
-    // No desbloquear dos veces
     if (unlocked.has(characterId)) {
 
       return false;
 
     }
 
-    // Añadir el personaje capturado
     unlocked.add(characterId);
 
-    // Guardarlo
     saveUnlocked(unlocked);
 
-    // Avisar a la pantalla de colección
     window.dispatchEvent(
       new Event("branson:collection-updated")
     );
@@ -202,29 +162,17 @@
 
   }
 
-  /* ========================================
-     CONSULTAR SI ESTÁ DESBLOQUEADO
-  ======================================== */
-
   function isUnlocked(id) {
 
     return readUnlocked().has(toCollectionId(id));
 
   }
 
-  /* ========================================
-     OBTENER TODOS LOS DESBLOQUEADOS
-  ======================================== */
-
   function getUnlocked() {
 
     return [...readUnlocked()];
 
   }
-
-  /* ========================================
-     REINICIAR PROGRESO PARA PRUEBAS
-  ======================================== */
 
   function resetForTesting() {
 
@@ -247,16 +195,11 @@
 
     }
 
-    // Refrescar colección
     window.dispatchEvent(
       new Event("branson:collection-updated")
     );
 
   }
-
-  /* ========================================
-     EXPONER LAS FUNCIONES AL JUEGO
-  ======================================== */
 
   window.BransonCollection = {
 
