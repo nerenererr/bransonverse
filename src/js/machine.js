@@ -94,9 +94,16 @@ function getBransonName(item) {
     return item.name;
 }
 
+function trimCloudinaryImage(url) {
+    if (!url.includes("res.cloudinary.com") || url.includes("e_trim")) {
+        return url;
+    }
+    return url.replace("/image/upload/", "/image/upload/e_trim/f_auto,q_auto/");
+}
+
 function getBransonSource(item, index) {
     if (typeof item === "object" && item.image && item.image.startsWith("http")) {
-        return item.image;
+        return trimCloudinaryImage(item.image);
     }
     return getBransonImage(index);
 }
@@ -572,6 +579,7 @@ export {
     getBransonImage,
     getBransonName,
     getBransonSource,
+    trimCloudinaryImage,
     findClosestBranson,
     getBransonPlace,
     isBransonNear,
