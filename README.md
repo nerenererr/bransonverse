@@ -44,7 +44,27 @@ Instead of a wheel, **The Bransonverse** is a **claw machine** full of clay figu
 
 The design was made in **Figma** at 1440 × 1024.
 
-<!-- Mockup images will be added here -->
+## Screenshots
+
+### Main menu
+
+![The Bransonverse main menu](https://res.cloudinary.com/dbtuho5h0/image/upload/v1795457934/Captura_de_pantalla_2026-11-23_191213_zwtpoe.png)
+
+### Custom game
+
+![Custom game name selection](https://res.cloudinary.com/dbtuho5h0/image/upload/v1795457933/Captura_de_pantalla_2026-11-23_191309_yfeto5.png)
+
+### Claw machine
+
+![The Bransonverse claw machine](https://res.cloudinary.com/dbtuho5h0/image/upload/v1795457934/Captura_de_pantalla_2026-11-23_191235_bugrf0.png)
+
+### Victory screen
+
+![Branson obtained](https://res.cloudinary.com/dbtuho5h0/image/upload/v1795457933/Captura_de_pantalla_2026-11-23_191255_gcwznf.png)
+
+### Collection
+
+![Branson collection](https://res.cloudinary.com/dbtuho5h0/image/upload/v1795457933/Captura_de_pantalla_2026-11-23_191154_khcfcf.png)
 
 ## Requirements
 
