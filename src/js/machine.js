@@ -560,22 +560,23 @@ if (typeof document !== "undefined") {
     document.addEventListener("DOMContentLoaded", initMachine);
 }
 
-if (typeof module !== "undefined") {
-    module.exports = {
-        clampPosition,
-        getNextPosition,
-        getBransonImage,
-        getBransonName,
-        getBransonSource,
-        findClosestBranson,
-        getBransonPlace,
-        isBransonNear,
-        GRAB_DISTANCE,
-        LAUGH_DISTANCE,
-        BRANSON_PILE,
-        BRANSON_IMAGES,
-        MIN_POSITION,
-        MAX_POSITION,
-        MOVE_STEP
-    };
-}
+export {
+    renderBransons,
+    finishGrab,
+    resetMachine,
+    clampPosition,
+    getNextPosition,
+    getBransonImage,
+    getBransonName,
+    getBransonSource,
+    findClosestBranson,
+    getBransonPlace,
+    isBransonNear,
+    GRAB_DISTANCE,
+    LAUGH_DISTANCE,
+    BRANSON_PILE,
+    BRANSON_IMAGES,
+    MIN_POSITION,
+    MAX_POSITION,
+    MOVE_STEP
+};
