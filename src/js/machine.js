@@ -1,19 +1,19 @@
 const CLOUDINARY = "https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/";
-const DOLLS_CLOUDINARY = "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/f_auto,q_auto/";
+const BRANSONS_CLOUDINARY = "https://res.cloudinary.com/da9tytxsu/image/upload/e_trim/f_auto,q_auto/";
 
 const CLAW_OPEN_IMAGE = CLOUDINARY + "v1794919052/extended_claw_qmld36.png";
 const CLAW_CLOSED_IMAGE = CLOUDINARY + "v1794919052/claw_closed_gk492g.png";
 
-const DOLL_IMAGES = [
-    DOLLS_CLOUDINARY + "v1794918844/Figura_de_arcilla_con_sudadera_y_zapatillas_1_xbmwkl.png",
-    DOLLS_CLOUDINARY + "v1794918844/Diablillo_de_fieltro_con_tridente_1_b3myuz.png",
-    DOLLS_CLOUDINARY + "v1794918844/Personaje_de_arcilla_con_gorra_rosa_1_pxfjgn.png",
-    DOLLS_CLOUDINARY + "v1794918844/Figura_de_plastilina_con_disfraz_de_Pikachu_1_newyv9.png",
-    DOLLS_CLOUDINARY + "v1794918844/Personaje_gato_de_arcilla_con_campana_1_wkphmv.png",
-    DOLLS_CLOUDINARY + "v1794918843/Torero_Chibi_de_Fieltro_con_Capa_Roja_1_uh8wiw.png",
-    DOLLS_CLOUDINARY + "v1794918843/%C3%81ngel_Cupido_de_fieltro_con_arco_y_flecha_1_dbn5zv.png",
-    DOLLS_CLOUDINARY + "v1794918844/Figura_de_reno_de_plastilina_con_bast%C3%B3n_de_caramelo_3_lm56zq.png",
-    DOLLS_CLOUDINARY + "v1794918844/Joven_vaquero_de_arcilla_con_estrella_amarilla_1_avrv05.png"
+const BRANSON_IMAGES = [
+    BRANSONS_CLOUDINARY + "v1794918844/Figura_de_arcilla_con_sudadera_y_zapatillas_1_xbmwkl.png",
+    BRANSONS_CLOUDINARY + "v1794918844/Diablillo_de_fieltro_con_tridente_1_b3myuz.png",
+    BRANSONS_CLOUDINARY + "v1794918844/Personaje_de_arcilla_con_gorra_rosa_1_pxfjgn.png",
+    BRANSONS_CLOUDINARY + "v1794918844/Figura_de_plastilina_con_disfraz_de_Pikachu_1_newyv9.png",
+    BRANSONS_CLOUDINARY + "v1794918844/Personaje_gato_de_arcilla_con_campana_1_wkphmv.png",
+    BRANSONS_CLOUDINARY + "v1794918843/Torero_Chibi_de_Fieltro_con_Capa_Roja_1_uh8wiw.png",
+    BRANSONS_CLOUDINARY + "v1794918843/%C3%81ngel_Cupido_de_fieltro_con_arco_y_flecha_1_dbn5zv.png",
+    BRANSONS_CLOUDINARY + "v1794918844/Figura_de_reno_de_plastilina_con_bast%C3%B3n_de_caramelo_3_lm56zq.png",
+    BRANSONS_CLOUDINARY + "v1794918844/Joven_vaquero_de_arcilla_con_estrella_amarilla_1_avrv05.png"
 ];
 
 const SOUNDS = {
@@ -34,7 +34,7 @@ const PRIZE_DOOR_POSITION = 88;
 const GRAB_DISTANCE = 8;
 const LAUGH_DISTANCE = 18;
 
-const DOLL_PILE = [
+const BRANSON_PILE = [
     { left: 2, bottom: -6, tilt: -8, zIndex: 5 },
     { left: 30, bottom: -5, tilt: 12, zIndex: 5 },
     { left: 55, bottom: -6, tilt: -15, zIndex: 5 },
@@ -59,8 +59,8 @@ const GRAB_TIME = 400;
 let clawPosition = 50;
 let isMachineBusy = false;
 let moveInterval = null;
-let grabbedDoll = null;
-let grabbedDollOldPlace = null;
+let grabbedBranson = null;
+let grabbedBransonOldPlace = null;
 
 function clampPosition(position) {
     if (position < MIN_POSITION) {
@@ -82,34 +82,34 @@ function getNextPosition(position, direction) {
     return position;
 }
 
-function getDollImage(index) {
-    return DOLL_IMAGES[index % DOLL_IMAGES.length];
+function getBransonImage(index) {
+    return BRANSON_IMAGES[index % BRANSON_IMAGES.length];
 }
 
-function getDollName(item) {
+function getBransonName(item) {
     if (typeof item === "string") {
         return item;
     }
     return item.name;
 }
 
-function getDollSource(item, index) {
+function getBransonSource(item, index) {
     if (typeof item === "object" && item.image && item.image.startsWith("http")) {
         return item.image;
     }
-    return getDollImage(index);
+    return getBransonImage(index);
 }
 
-function isDollNear(dollPosition, position) {
-    return Math.abs(dollPosition - position) < LAUGH_DISTANCE;
+function isBransonNear(bransonPosition, position) {
+    return Math.abs(bransonPosition - position) < LAUGH_DISTANCE;
 }
 
-function findClosestDoll(dollPositions, position) {
+function findClosestBranson(bransonPositions, position) {
     let closestIndex = -1;
     let closestDistance = GRAB_DISTANCE;
 
-    dollPositions.forEach(function (dollPosition, index) {
-        const distance = Math.abs(dollPosition - position);
+    bransonPositions.forEach(function (bransonPosition, index) {
+        const distance = Math.abs(bransonPosition - position);
         if (distance < closestDistance) {
             closestDistance = distance;
             closestIndex = index;
@@ -119,9 +119,9 @@ function findClosestDoll(dollPositions, position) {
     return closestIndex;
 }
 
-function getDollPlace(index) {
-    const place = DOLL_PILE[index % DOLL_PILE.length];
-    const round = Math.floor(index / DOLL_PILE.length);
+function getBransonPlace(index) {
+    const place = BRANSON_PILE[index % BRANSON_PILE.length];
+    const round = Math.floor(index / BRANSON_PILE.length);
 
     return {
         left: place.left,
@@ -146,66 +146,66 @@ function playSound(soundName) {
     sound.play().catch(function () {});
 }
 
-function renderDolls(items) {
-    const dollsContainer = document.querySelector(".machine__dolls");
-    dollsContainer.innerHTML = "";
+function renderBransons(items) {
+    const bransonsContainer = document.querySelector(".machine__bransons");
+    bransonsContainer.innerHTML = "";
 
     items.forEach(function (item, index) {
-        const doll = document.createElement("img");
-        doll.classList.add("doll");
-        doll.src = getDollSource(item, index);
-        doll.alt = "Muñeco sorpresa";
-        doll.dataset.name = getDollName(item);
+        const branson = document.createElement("img");
+        branson.classList.add("branson");
+        branson.src = getBransonSource(item, index);
+        branson.alt = "Muñeco sorpresa";
+        branson.dataset.name = getBransonName(item);
         if (item.id !== undefined) {
-            doll.dataset.id = item.id;
+            branson.dataset.id = item.id;
         }
 
-        const place = getDollPlace(index);
-        doll.style.left = place.left + "%";
-        doll.style.bottom = place.bottom + "%";
-        doll.style.rotate = place.tilt + "deg";
-        doll.style.zIndex = place.zIndex;
+        const place = getBransonPlace(index);
+        branson.style.left = place.left + "%";
+        branson.style.bottom = place.bottom + "%";
+        branson.style.rotate = place.tilt + "deg";
+        branson.style.zIndex = place.zIndex;
 
-        dollsContainer.appendChild(doll);
+        bransonsContainer.appendChild(branson);
     });
 }
 
-function renderDefaultDolls() {
+function renderDefaultBransons() {
     const names = [];
-    for (let i = 0; i < DOLL_IMAGES.length; i++) {
+    for (let i = 0; i < BRANSON_IMAGES.length; i++) {
         names.push("Branson " + (i + 1));
     }
-    renderDolls(names);
+    renderBransons(names);
 }
 
-function getDollsWithPosition() {
+function getBransonsWithPosition() {
     const playAreaBox = document.querySelector(".machine__play-area").getBoundingClientRect();
-    const dolls = document.querySelectorAll(".machine__dolls .doll");
+    const bransons = document.querySelectorAll(".machine__bransons .branson");
     const list = [];
 
-    dolls.forEach(function (doll) {
-        const dollBox = doll.getBoundingClientRect();
-        const dollCenter = dollBox.left - playAreaBox.left + dollBox.width / 2;
+    bransons.forEach(function (branson) {
+        const bransonBox = branson.getBoundingClientRect();
+        const bransonCenter = bransonBox.left - playAreaBox.left + bransonBox.width / 2;
         list.push({
-            doll: doll,
-            position: (dollCenter / playAreaBox.width) * 100
+            branson: branson,
+            position: (bransonCenter / playAreaBox.width) * 100
         });
     });
 
     return list;
 }
 
-function findDollUnderClaw() {
-    const list = getDollsWithPosition();
+function findBransonUnderClaw() {
+    const list = getBransonsWithPosition();
     const positions = list.map(function (item) {
         return item.position;
     });
 
-    const index = findClosestDoll(positions, clawPosition);
+    const index = findClosestBranson(positions, clawPosition);
     if (index === -1) {
         return null;
     }
-    return list[index].doll;
+    return list[index].branson;
 }
 
 function updateClawPosition(newPosition) {
@@ -214,41 +214,41 @@ function updateClawPosition(newPosition) {
     claw.style.left = clawPosition + "%";
 }
 
-function placeAboveDoll(element, doll, leftFactor, topFactor) {
-    const containerBox = document.querySelector(".machine__dolls").getBoundingClientRect();
-    const dollBox = doll.getBoundingClientRect();
-    const left = dollBox.left - containerBox.left + dollBox.width * leftFactor;
-    const top = dollBox.top - containerBox.top + dollBox.height * topFactor;
+function placeAboveBranson(element, branson, leftFactor, topFactor) {
+    const containerBox = document.querySelector(".machine__bransons").getBoundingClientRect();
+    const bransonBox = branson.getBoundingClientRect();
+    const left = bransonBox.left - containerBox.left + bransonBox.width * leftFactor;
+    const top = bransonBox.top - containerBox.top + bransonBox.height * topFactor;
 
     element.style.left = (left / containerBox.width) * 100 + "%";
     element.style.top = (top / containerBox.height) * 100 + "%";
 }
 
-function showLaughText(doll) {
-    const dollsContainer = document.querySelector(".machine__dolls");
+function showLaughText(branson) {
+    const bransonsContainer = document.querySelector(".machine__bransons");
 
     for (let i = 0; i < 3; i++) {
         const text = document.createElement("span");
         text.classList.add("laugh-text", "laugh-text--" + i);
         text.textContent = "JA";
-        placeAboveDoll(text, doll, 0.2 + i * 0.3, 0.1);
-        dollsContainer.appendChild(text);
+        placeAboveBranson(text, branson, 0.2 + i * 0.3, 0.1);
+        bransonsContainer.appendChild(text);
         setTimeout(function () {
             text.remove();
         }, 2000);
     }
 }
 
-function makeDollLaugh(doll) {
+function makeBransonLaugh(branson) {
     playSound("laugh");
-    showLaughText(doll);
-    addTemporaryClass(doll, "doll--laughing", 1500);
+    showLaughText(branson);
+    addTemporaryClass(branson, "branson--laughing", 1500);
 }
 
-function makeNearDollsLaugh() {
-    getDollsWithPosition().forEach(function (item) {
-        if (isDollNear(item.position, clawPosition)) {
-            makeDollLaugh(item.doll);
+function makeNearBransonsLaugh() {
+    getBransonsWithPosition().forEach(function (item) {
+        if (isBransonNear(item.position, clawPosition)) {
+            makeBransonLaugh(item.branson);
         }
     });
 }
@@ -311,68 +311,68 @@ function stopMoving() {
     tiltJoystick(null);
 }
 
-function dropDollBack(doll, dollsContainer, oldPlace) {
-    const before = doll.getBoundingClientRect();
+function dropBransonBack(branson, bransonsContainer, oldPlace) {
+    const before = branson.getBoundingClientRect();
 
-    doll.classList.remove("doll--grabbed");
-    doll.style.transition = "none";
-    doll.style.translate = "";
-    doll.style.left = oldPlace.left;
-    doll.style.bottom = oldPlace.bottom;
-    doll.style.rotate = oldPlace.rotate;
-    doll.style.zIndex = oldPlace.zIndex;
-    dollsContainer.appendChild(doll);
+    branson.classList.remove("branson--grabbed");
+    branson.style.transition = "none";
+    branson.style.translate = "";
+    branson.style.left = oldPlace.left;
+    branson.style.bottom = oldPlace.bottom;
+    branson.style.rotate = oldPlace.rotate;
+    branson.style.zIndex = oldPlace.zIndex;
+    bransonsContainer.appendChild(branson);
 
-    const after = doll.getBoundingClientRect();
+    const after = branson.getBoundingClientRect();
     const moveX = (before.left + before.width / 2) - (after.left + after.width / 2);
     const moveY = (before.top + before.height / 2) - (after.top + after.height / 2);
 
-    doll.style.translate = moveX + "px " + moveY + "px";
-    doll.style.rotate = "0deg";
-    doll.getBoundingClientRect();
+    branson.style.translate = moveX + "px " + moveY + "px";
+    branson.style.rotate = "0deg";
+    branson.getBoundingClientRect();
 
-    doll.style.transition = "translate 0.5s ease-in, rotate 0.5s ease-in";
-    doll.style.translate = "";
-    doll.style.rotate = oldPlace.rotate;
+    branson.style.transition = "translate 0.5s ease-in, rotate 0.5s ease-in";
+    branson.style.translate = "";
+    branson.style.rotate = oldPlace.rotate;
 
     playSound("fail");
     setTimeout(function () {
-        doll.style.transition = "";
-        addTemporaryClass(doll, "doll--landed", 300);
+        branson.style.transition = "";
+        addTemporaryClass(branson, "branson--landed", 300);
     }, 500);
 }
 
-function moveDollIntoClaw(doll, claw) {
-    const before = doll.getBoundingClientRect();
-    const oldRotate = doll.style.rotate;
+function moveBransonIntoClaw(branson, claw) {
+    const before = branson.getBoundingClientRect();
+    const oldRotate = branson.style.rotate;
 
-    doll.style.left = "";
-    doll.style.bottom = "";
-    doll.style.rotate = "";
-    doll.style.zIndex = "";
-    doll.classList.add("doll--grabbed");
-    claw.appendChild(doll);
+    branson.style.left = "";
+    branson.style.bottom = "";
+    branson.style.rotate = "";
+    branson.style.zIndex = "";
+    branson.classList.add("branson--grabbed");
+    claw.appendChild(branson);
 
-    const after = doll.getBoundingClientRect();
+    const after = branson.getBoundingClientRect();
     const moveX = (before.left + before.width / 2) - (after.left + after.width / 2);
     const moveY = (before.top + before.height / 2) - (after.top + after.height / 2);
 
-    doll.style.transition = "none";
-    doll.style.translate = "calc(-50% + " + moveX + "px) " + moveY + "px";
-    doll.style.rotate = oldRotate;
-    doll.getBoundingClientRect();
+    branson.style.transition = "none";
+    branson.style.translate = "calc(-50% + " + moveX + "px) " + moveY + "px";
+    branson.style.rotate = oldRotate;
+    branson.getBoundingClientRect();
 
-    doll.style.transition = "translate 0.4s ease-out, rotate 0.4s ease-out";
-    doll.style.translate = "";
-    doll.style.rotate = "0deg";
+    branson.style.transition = "translate 0.4s ease-out, rotate 0.4s ease-out";
+    branson.style.translate = "";
+    branson.style.rotate = "0deg";
 }
 
-function getDollInfo(doll) {
+function getBransonInfo(branson) {
     let id = null;
-    if (doll.dataset.id !== undefined) {
-        id = Number(doll.dataset.id);
+    if (branson.dataset.id !== undefined) {
+        id = Number(branson.dataset.id);
     }
-    return { id: id, name: doll.dataset.name };
+    return { id: id, name: branson.dataset.name };
 }
 
 async function dropClaw() {
@@ -389,61 +389,61 @@ async function dropClaw() {
     playSound("drop");
     await wait(DROP_TIME);
 
-    const doll = findDollUnderClaw();
+    const branson = findBransonUnderClaw();
 
     closeClaw();
     addTemporaryClass(claw, "claw--gripping", 300);
     playSound("grab");
 
-    if (!doll) {
+    if (!branson) {
         await wait(GRAB_TIME);
         claw.classList.remove("claw--down");
         await wait(DROP_TIME);
         openClaw();
         claw.classList.remove("claw--auto");
         isMachineBusy = false;
-        makeNearDollsLaugh();
+        makeNearBransonsLaugh();
         document.dispatchEvent(new CustomEvent("machine:empty"));
         return;
     }
 
-    grabbedDollOldPlace = {
-        left: doll.style.left,
-        bottom: doll.style.bottom,
-        rotate: doll.style.rotate,
-        zIndex: doll.style.zIndex
+    grabbedBransonOldPlace = {
+        left: branson.style.left,
+        bottom: branson.style.bottom,
+        rotate: branson.style.rotate,
+        zIndex: branson.style.zIndex
     };
-    grabbedDoll = doll;
-    moveDollIntoClaw(doll, claw);
+    grabbedBranson = branson;
+    moveBransonIntoClaw(branson, claw);
     await wait(GRAB_TIME);
 
-    document.dispatchEvent(new CustomEvent("machine:doll-grabbed", { detail: getDollInfo(doll) }));
+    document.dispatchEvent(new CustomEvent("machine:branson-grabbed", { detail: getBransonInfo(branson) }));
 }
 
 async function finishGrab(isSuccess) {
-    if (!grabbedDoll) {
+    if (!grabbedBranson) {
         return;
     }
 
-    const doll = grabbedDoll;
-    const oldPlace = grabbedDollOldPlace;
-    const dollInfo = getDollInfo(doll);
-    grabbedDoll = null;
-    grabbedDollOldPlace = null;
+    const branson = grabbedBranson;
+    const oldPlace = grabbedBransonOldPlace;
+    const bransonInfo = getBransonInfo(branson);
+    grabbedBranson = null;
+    grabbedBransonOldPlace = null;
 
     const claw = document.querySelector(".claw");
-    const dollsContainer = document.querySelector(".machine__dolls");
+    const bransonsContainer = document.querySelector(".machine__bransons");
     claw.classList.remove("claw--down");
 
     if (!isSuccess) {
         await wait(DROP_TIME / 3);
-        dropDollBack(doll, dollsContainer, oldPlace);
+        dropBransonBack(branson, bransonsContainer, oldPlace);
         await wait(DROP_TIME);
         openClaw();
         claw.classList.remove("claw--auto");
         isMachineBusy = false;
-        makeDollLaugh(doll);
-        document.dispatchEvent(new CustomEvent("machine:fail", { detail: dollInfo }));
+        makeBransonLaugh(branson);
+        document.dispatchEvent(new CustomEvent("machine:fail", { detail: bransonInfo }));
         return;
     }
 
@@ -456,7 +456,7 @@ async function finishGrab(isSuccess) {
 
     claw.classList.remove("claw--swinging");
     openClaw();
-    doll.classList.add("doll--falling");
+    branson.classList.add("branson--falling");
     playSound("prize");
     await wait(DROP_TIME / 2);
 
@@ -464,28 +464,28 @@ async function finishGrab(isSuccess) {
     addTemporaryClass(machine, "machine--shake", 400);
     addTemporaryClass(machine, "machine--party", 1500);
     await wait(DROP_TIME / 2);
-    doll.remove();
+    branson.remove();
 
     claw.classList.remove("claw--auto");
     isMachineBusy = false;
 
-    document.dispatchEvent(new CustomEvent("machine:prize", { detail: dollInfo }));
+    document.dispatchEvent(new CustomEvent("machine:prize", { detail: bransonInfo }));
 }
 
 function resetMachine(items) {
     const claw = document.querySelector(".claw");
-    const dollInClaw = claw.querySelector(".doll");
-    if (dollInClaw) {
-        dollInClaw.remove();
+    const bransonInClaw = claw.querySelector(".branson");
+    if (bransonInClaw) {
+        bransonInClaw.remove();
     }
-    grabbedDoll = null;
-    grabbedDollOldPlace = null;
+    grabbedBranson = null;
+    grabbedBransonOldPlace = null;
     isMachineBusy = false;
     stopMoving();
     claw.classList.remove("claw--down", "claw--auto", "claw--swinging");
     openClaw();
     updateClawPosition(50);
-    renderDolls(items);
+    renderBransons(items);
 }
 
 function handleButtonClick() {
@@ -553,7 +553,7 @@ function initMachine() {
     document.addEventListener("keyup", handleKeyUp);
 
     updateClawPosition(50);
-    renderDefaultDolls();
+    renderDefaultBransons();
 }
 
 if (typeof document !== "undefined") {
@@ -564,16 +564,16 @@ if (typeof module !== "undefined") {
     module.exports = {
         clampPosition,
         getNextPosition,
-        getDollImage,
-        getDollName,
-        getDollSource,
-        findClosestDoll,
-        getDollPlace,
-        isDollNear,
+        getBransonImage,
+        getBransonName,
+        getBransonSource,
+        findClosestBranson,
+        getBransonPlace,
+        isBransonNear,
         GRAB_DISTANCE,
         LAUGH_DISTANCE,
-        DOLL_PILE,
-        DOLL_IMAGES,
+        BRANSON_PILE,
+        BRANSON_IMAGES,
         MIN_POSITION,
         MAX_POSITION,
         MOVE_STEP
