@@ -1,0 +1,277 @@
+
+.game {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    overflow: hidden;
+    background: #000;
+    font-family: "Baloo Da", sans-serif;
+}
+
+.gameHeader {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+}
+
+.gameAttempts,
+.gameTimer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    color: #d0a629;
+    font-family: "Baloo Da", sans-serif;
+    text-align: center;
+    line-height: 1.1;
+}
+
+.gameAttempts {
+    top: 5%;
+    left: 11%;
+}
+
+.gameTimer {
+    top: 5%;
+    right: 11%;
+}
+
+.gameAttempts span:first-child,
+.gameTimer span:first-child {
+    font-size: clamp(0.75rem, 1.5vw, 1.4rem);
+    font-weight: 600;
+}
+
+#attemptsCount,
+#timeCount {
+    font-size: clamp(1rem, 2.5vw, 2.2rem);
+    font-weight: 700;
+}
+
+.gameFailure {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    z-index: 50;
+    width: min(50%, 450px);
+    padding: 1.5rem;
+    transform: translateX(-50%);
+    background: #080808;
+    border: 3px solid #d0a629;
+    border-radius: 1.5rem;
+    color: #d0a629;
+    font-family: "Baloo Da", sans-serif;
+    text-align: center;
+    pointer-events: none;
+}
+
+.gameFailure h3 {
+    margin: 0;
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    font-weight: 700;
+}
+
+.gameFailure p {
+    margin: 0.5rem 0 0;
+    font-size: clamp(0.9rem, 1.5vw, 1.3rem);
+}
+
+.gameResult,
+.gameOver {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.5rem, 1.5vw, 1.5rem);
+    width: 72%;
+    min-height: 65%;
+    max-height: 90%;
+    padding: 5%;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    background: #080808;
+    border-radius: 12% / 16%;
+    color: #d0a629;
+    font-family: "Baloo Da", sans-serif;
+    text-align: center;
+}
+
+.gameResult[hidden],
+.gameOver[hidden],
+.gameFailure[hidden] {
+    display: none;
+}
+
+.gameResult h3,
+.gameOver h3 {
+    margin: 0;
+    color: #d0a629;
+    font-size: clamp(1.2rem, 2.8vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#obtainedBranson {
+    margin: 0;
+    color: #ffd45b;
+    font-size: clamp(1.4rem, 3.2vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+#obtainedBransonImage {
+    display: block;
+    width: 25%;
+    max-width: 220px;
+    max-height: 35%;
+    object-fit: contain;
+}
+
+.gameResult button,
+.gameOver button {
+    padding: 0.3rem 0.8rem;
+    border: none;
+    background: none;
+    color: #d0a629;
+    font-family: inherit;
+    font-size: clamp(1rem, 2vw, 1.8rem);
+    font-weight: 400;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.gameResult button:hover,
+.gameOver button:hover {
+    color: #ffd45b;
+    transform: scale(1.08);
+}
+
+.gameResult button:active,
+.gameOver button:active {
+    transform: scale(0.96);
+}
+
+.gameResult button:focus-visible,
+.gameOver button:focus-visible,
+.gameOver a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
+.gameOver a {
+    color: #d0a629;
+    font-size: clamp(0.85rem, 1.4vw, 1.2rem);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.2s ease;
+}
+
+.gameOver a:hover {
+    color: #ffd45b;
+}
+
+@media (max-width: 768px) {
+    .gameAttempts {
+        top: 4%;
+        left: 8%;
+    }
+
+    .gameTimer {
+        top: 4%;
+        right: 8%;
+    }
+
+    .gameAttempts span:first-child,
+    .gameTimer span:first-child {
+        font-size: clamp(0.65rem, 2.5vw, 1rem);
+    }
+
+    #attemptsCount,
+    #timeCount {
+        font-size: clamp(0.9rem, 3.5vw, 1.5rem);
+    }
+
+    .gameFailure {
+        top: 25%;
+        width: 70%;
+        padding: 1rem;
+        border-width: 2px;
+    }
+
+    .gameResult,
+    .gameOver {
+        width: 85%;
+        min-height: 55%;
+        padding: 8%;
+        border-radius: 2rem;
+    }
+
+    #obtainedBransonImage {
+        width: 40%;
+        max-height: 30%;
+    }
+}
+
+@media (max-width: 480px) {
+    .gameAttempts {
+        top: 3%;
+        left: 5%;
+    }
+
+    .gameTimer {
+        top: 3%;
+        right: 5%;
+    }
+
+    .gameFailure {
+        top: 22%;
+        width: 80%;
+    }
+
+    .gameResult,
+    .gameOver {
+        width: 90%;
+        min-height: 50%;
+        max-height: 85%;
+        padding: 1.5rem;
+        gap: 0.75rem;
+    }
+
+    .gameResult h3,
+    .gameOver h3 {
+        font-size: clamp(1.1rem, 5vw, 1.6rem);
+    }
+
+    #obtainedBranson {
+        font-size: clamp(1.2rem, 5.5vw, 1.8rem);
+    }
+
+    #obtainedBransonImage {
+        width: 45%;
+    }
+
+    .gameResult button,
+    .gameOver button {
+        font-size: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gameResult button,
+    .gameOver button,
+    .gameOver a {
+        transition: none;
+    }
+}
