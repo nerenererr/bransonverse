@@ -1,4 +1,3 @@
-
 .game {
     position: relative;
     display: flex;
@@ -91,11 +90,11 @@
 
 .gameFailure {
     position: absolute;
-    top: 30%;
+    top: 22%;
     left: 50%;
     z-index: 50;
-    width: min(50%, 450px);
-    padding: 1.5rem;
+    width: 80%;
+    padding: 1rem;
     transform: translateX(-50%);
     background: #080808;
     border: 3px solid #d0a629;
@@ -117,7 +116,29 @@
     font-size: clamp(0.9rem, 1.5vw, 1.3rem);
 }
 
-.gameResult,
+.gameResult {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 90%;
+    min-height: 50%;
+    max-height: 85%;
+    padding: 1.5rem;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    background: #080808;
+    border-radius: 2rem;
+    color: #d0a629;
+    font-family: "Baloo Da 2", sans-serif;
+    text-align: center;
+}
+
 .gameOver {
     position: absolute;
     top: 50%;
@@ -127,15 +148,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: clamp(0.5rem, 1.5vw, 1.5rem);
-    width: 72%;
-    min-height: 65%;
-    max-height: 90%;
-    padding: 5%;
+    gap: 0.75rem;
+    width: 90%;
+    min-height: 50%;
+    max-height: 85%;
+    padding: 1.5rem;
     overflow-y: auto;
     transform: translate(-50%, -50%);
     background: #080808;
-    border-radius: 12% / 16%;
+    border-radius: 2rem;
     color: #d0a629;
     font-family: "Baloo Da 2", sans-serif;
     text-align: center;
@@ -147,11 +168,18 @@
     display: none;
 }
 
-.gameResult h3,
+.gameResult h3 {
+    margin: 0;
+    color: #d0a629;
+    font-size: clamp(1.1rem, 5vw, 1.6rem);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
 .gameOver h3 {
     margin: 0;
     color: #d0a629;
-    font-size: clamp(1.2rem, 2.8vw, 2.5rem);
+    font-size: clamp(1.1rem, 5vw, 1.6rem);
     font-weight: 700;
     line-height: 1.3;
 }
@@ -159,16 +187,16 @@
 #obtainedBranson {
     margin: 0;
     color: #ffd45b;
-    font-size: clamp(1.4rem, 3.2vw, 3rem);
+    font-size: clamp(1.2rem, 5.5vw, 1.8rem);
     font-weight: 700;
     line-height: 1.2;
 }
 
 #obtainedBransonImage {
     display: block;
-    width: 25%;
+    width: 45%;
     max-width: 220px;
-    max-height: 35%;
+    max-height: 30%;
     object-fit: contain;
 }
 
@@ -181,7 +209,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
 }
 
@@ -237,65 +265,97 @@
     outline-offset: 4px;
 }
 
-@media (max-width: 768px) {
+.gameFailure {
+    border-width: 2px;
+}
+
+.gameOverActions > button {
+    min-width: 0;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+.gameOverActions > a {
+    min-width: 0;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+@media (min-width: 481px) {
     .gameFailure {
         top: 25%;
         width: 70%;
-        padding: 1rem;
-        border-width: 2px;
     }
 
-    .gameResult,
+    .gameResult {
+        width: 85%;
+        min-height: 55%;
+        padding: 8%;
+        max-height: 90%;
+        gap: clamp(0.5rem, 1.5vw, 1.5rem);
+    }
+
     .gameOver {
         width: 85%;
         min-height: 55%;
         padding: 8%;
-        border-radius: 2rem;
+        max-height: 90%;
+        gap: clamp(0.5rem, 1.5vw, 1.5rem);
     }
 
     #obtainedBransonImage {
         width: 40%;
-        max-height: 30%;
-    }
-}
-
-@media (max-width: 480px) {
-    .gameFailure {
-        top: 22%;
-        width: 80%;
     }
 
-    .gameResult,
-    .gameOver {
-        width: 90%;
-        min-height: 50%;
-        max-height: 85%;
-        padding: 1.5rem;
-        gap: 0.75rem;
+    .gameResult h3 {
+        font-size: clamp(1.2rem, 2.8vw, 2.5rem);
     }
 
-    .gameResult h3,
     .gameOver h3 {
-        font-size: clamp(1.1rem, 5vw, 1.6rem);
+        font-size: clamp(1.2rem, 2.8vw, 2.5rem);
     }
 
     #obtainedBranson {
-        font-size: clamp(1.2rem, 5.5vw, 1.8rem);
-    }
-
-    #obtainedBransonImage {
-        width: 45%;
+        font-size: clamp(1.4rem, 3.2vw, 3rem);
     }
 
     .gameOverActions {
-        gap: 0.5rem;
+        gap: 1rem;
     }
 
     .gameOverActions > button,
     .gameOverActions > a {
-        min-width: 0;
-        padding: 0.6rem 0.5rem;
-        font-size: 0.85rem;
+        min-width: auto;
+        padding: 0.7rem 1.5rem;
+        font-size: clamp(0.85rem, 1.5vw, 1.2rem);
+    }
+}
+
+@media (min-width: 769px) {
+    .gameFailure {
+        top: 30%;
+        width: min(50%, 450px);
+        padding: 1.5rem;
+        border-width: 3px;
+    }
+
+    .gameResult {
+        width: 72%;
+        min-height: 65%;
+        padding: 5%;
+        border-radius: 12% / 16%;
+    }
+
+    .gameOver {
+        width: 72%;
+        min-height: 65%;
+        padding: 5%;
+        border-radius: 12% / 16%;
+    }
+
+    #obtainedBransonImage {
+        width: 25%;
+        max-height: 35%;
     }
 }
 
