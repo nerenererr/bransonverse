@@ -396,8 +396,9 @@
       // Accesibilidad
       card.setAttribute(
         "aria-label",
-        character.name +
-        (unlocked ? ", desbloqueado" : ", bloqueado")
+        unlocked
+          ? character.name + ", desbloqueado"
+          : "Personaje bloqueado"
       );
 
       card.setAttribute(
@@ -416,11 +417,27 @@
 
     const activeCharacter = characters[selectedIndex];
 
-    nameElement.textContent =
-      activeCharacter.name;
+    const activeUnlocked = unlockedCharacters.has(
+      activeCharacter.id
+    );
 
-    descriptionElement.textContent =
-      activeCharacter.description;
+    // Si está bloqueado no se desvela quién es
+    if (activeUnlocked) {
+
+      nameElement.textContent =
+        activeCharacter.name;
+
+      descriptionElement.textContent =
+        activeCharacter.description;
+
+    } else {
+
+      nameElement.textContent = "???";
+
+      descriptionElement.textContent =
+        "Atrápalo en la máquina para descubrir quién es.";
+
+    }
 
   }
 

@@ -37,10 +37,42 @@
 
   ];
 
+  // Equivalencia entre el id numérico del juego
+  // (random-selection.js) y el id de la colección
+  const GAME_IDS = {
+
+    1: "standard",
+    2: "brenda",
+    3: "halloween",
+    4: "pokebranson",
+    5: "neko",
+    6: "branjose",
+    7: "valentin",
+    8: "brokeback",
+    9: "navidad"
+
+  };
+
   const validIds = new Set(ALL_CHARACTERS);
 
   // Progreso temporal si falla localStorage
   let memoryUnlocked = new Set(INITIAL_CHARACTERS);
+
+  /* ========================================
+     CONVERTIR EL ID DEL JUEGO
+  ======================================== */
+
+  function toCollectionId(id) {
+
+    if (GAME_IDS[id]) {
+
+      return GAME_IDS[id];
+
+    }
+
+    return id;
+
+  }
 
   /* ========================================
      LEER EL PROGRESO GUARDADO
@@ -128,7 +160,11 @@
      DESBLOQUEAR PERSONAJE
   ======================================== */
 
-  function unlock(characterId) {
+  function unlock(id) {
+
+    // Acepta el id de la colección ("neko")
+    // o el id numérico del juego (5)
+    const characterId = toCollectionId(id);
 
     // Comprobar que el personaje existe
     if (!validIds.has(characterId)) {
@@ -170,9 +206,9 @@
      CONSULTAR SI ESTÁ DESBLOQUEADO
   ======================================== */
 
-  function isUnlocked(characterId) {
+  function isUnlocked(id) {
 
-    return readUnlocked().has(characterId);
+    return readUnlocked().has(toCollectionId(id));
 
   }
 
