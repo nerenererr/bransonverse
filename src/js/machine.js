@@ -17,13 +17,13 @@ const BRANSON_IMAGES = [
 ];
 
 const SOUNDS = {
-    move: "",
-    button: "",
-    drop: "",
-    grab: "",
-    prize: "",
-    fail: "",
-    laugh: ""
+    move: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795429652/mixkit-mechanical-robot-moving-1427_u5wee8.mp3",
+    button: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795432233/mixkit-video-game-retro-click-237_m5liro.mp3",
+    drop: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795432233/mixkit-clockwork-mechanism-sound-2822_iawt93.mp3",
+    grab: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795432233/mixkit-quick-jump-arcade-game-239_sikklv.mp3",
+    prize: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795432233/mixkit-melodic-bonus-collect-1938_zptwpd.mp3",
+    fail: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795432233/mixkit-cartoon-toy-whistle-616_fike1k.mp3",
+    laugh: "https://res.cloudinary.com/duzljw2pp/video/upload/v1795432233/mixkit-cartoon-monkey-mocking-laugh-107_izex6u.mp3"
 };
 
 const MIN_POSITION = 10;
@@ -62,6 +62,7 @@ let isMachineEnabled = true;
 let moveInterval = null;
 let grabbedBranson = null;
 let grabbedBransonOldPlace = null;
+let moveSound = null;
 
 function clampPosition(position) {
     if (position < MIN_POSITION) {
@@ -143,6 +144,24 @@ function wait(milliseconds) {
     return new Promise(function (resolve) {
         setTimeout(resolve, milliseconds);
     });
+}
+
+function startMoveSound() {
+    if (!SOUNDS.move || moveSound) {
+        return;
+    }
+    moveSound = new Audio(SOUNDS.move);
+    moveSound.loop = true;
+    moveSound.volume = 0.4;
+    moveSound.play().catch(function () {});
+}
+
+function stopMoveSound() {
+    if (!moveSound) {
+        return;
+    }
+    moveSound.pause();
+    moveSound = null;
 }
 
 function playSound(soundName) {
@@ -299,7 +318,7 @@ function startMoving(direction) {
     stopMoving();
     tiltJoystick(direction);
     document.dispatchEvent(new CustomEvent("machine:interaction"));
-    playSound("move");
+    startMoveSound();
     moveClaw(direction);
     moveInterval = setInterval(function () {
         moveClaw(direction);
@@ -310,6 +329,7 @@ function stopMoving() {
     clearInterval(moveInterval);
     moveInterval = null;
     tiltJoystick(null);
+    stopMoveSound();
 }
 
 function setMachineEnabled(enabled) {
@@ -460,8 +480,9 @@ async function finishGrab(isSuccess) {
 
     claw.classList.add("claw--swinging");
     updateClawPosition(PRIZE_DOOR_POSITION);
-    playSound("move");
+    startMoveSound();
     await wait(MOVE_TIME);
+    stopMoveSound();
 
     claw.classList.remove("claw--swinging");
     openClaw();
