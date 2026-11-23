@@ -143,7 +143,7 @@
     width: 100%;
 }
 
-.machine__dolls {
+.machine__bransons {
     position: absolute;
     top: 10%;
     left: 0;
@@ -151,12 +151,12 @@
     height: 100%;
 }
 
-.doll {
+.branson {
     position: absolute;
     height: 45%;
 }
 
-.doll--grabbed {
+.branson--grabbed {
     position: absolute;
     top: 68%;
     left: 50%;
@@ -200,11 +200,11 @@
     }
 }
 
-.doll--laughing {
-    animation: doll-laughing 0.15s ease-in-out 10 alternate;
+.branson--laughing {
+    animation: branson-laughing 0.15s ease-in-out 10 alternate;
 }
 
-@keyframes doll-laughing {
+@keyframes branson-laughing {
     from {
         transform: translateX(-3%) rotate(-3deg);
     }
@@ -213,11 +213,11 @@
     }
 }
 
-.doll--landed {
-    animation: doll-land 0.3s ease-out;
+.branson--landed {
+    animation: branson-land 0.3s ease-out;
 }
 
-@keyframes doll-land {
+@keyframes branson-land {
     0%, 100% {
         translate: 0 0;
     }
@@ -226,11 +226,11 @@
     }
 }
 
-.doll--falling {
-    animation: doll-fall 0.9s ease-in forwards;
+.branson--falling {
+    animation: branson-fall 0.9s ease-in forwards;
 }
 
-@keyframes doll-fall {
+@keyframes branson-fall {
     from {
         transform: translateY(0);
         opacity: 1;
