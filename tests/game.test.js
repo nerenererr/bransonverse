@@ -36,7 +36,8 @@ beforeAll(async () => {
     });
 
     globalThis.document = {
-        getElementById: jest.fn(id => elements[id] ?? null)
+    getElementById: jest.fn(id => elements[id] ?? null),
+    addEventListener: jest.fn()
     };
 
     jest.useFakeTimers();
