@@ -37,11 +37,13 @@ The claw machine is the visual and interactive part of the game screen. The play
 | `renderBransons(bransons)` | Places the Bransons in the machine. It receives the list of Bransons (`id`, `name`, `image`). It also accepts a list of names. |
 | `finishGrab(isSuccess)` | Finishes the attempt: `true` takes the Branson, `false` drops it. |
 | `resetMachine(bransons)` | Moves the claw back to the center and places the Bransons again. |
+| `setMachineEnabled(enabled)` | Turns the controls on (`true`) or off (`false`), for example while a message is shown or when the time is over. |
 
 ### Events fired by the machine
 
 | Event | When | Data (`event.detail`) |
 |---|---|---|
+| `machine:interaction` | The player moves the claw or presses the button | — |
 | `machine:button-pressed` | The player presses the button | — |
 | `machine:branson-grabbed` | The claw has grabbed a Branson | `{ id, name }` |
 | `machine:prize` | The Branson has fallen into the prize door | `{ id, name }` |
