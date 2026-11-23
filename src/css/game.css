@@ -10,7 +10,7 @@
     margin: 0;
     overflow: hidden;
     background: #000;
-    font-family: "Baloo Da", sans-serif;
+    font-family: "Baloo Da 2", sans-serif;
 }
 
 .gameHeader {
@@ -24,36 +24,69 @@
 .gameTimer {
     position: absolute;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0;
-    color: #d0a629;
-    font-family: "Baloo Da", sans-serif;
-    text-align: center;
-    line-height: 1.1;
+    background-color: #4a3b33;
+    border-radius: 0.6rem;
+    box-shadow: 0 0 0.4rem 0.3rem #4a3b33;
 }
 
 .gameAttempts {
-    top: 5%;
-    left: 11%;
+    top: 6%;
+    left: 10.4%;
+    width: 12.8%;
+    height: 5.6%;
+    justify-content: flex-start;
 }
 
 .gameTimer {
-    top: 5%;
-    right: 11%;
+    top: 5.8%;
+    left: 79.9%;
+    width: 8.5%;
+    height: 5.8%;
 }
 
 .gameAttempts span:first-child,
 .gameTimer span:first-child {
-    font-size: clamp(0.75rem, 1.5vw, 1.4rem);
-    font-weight: 600;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
 }
 
-#attemptsCount,
+#attemptsCount {
+    --dot: radial-gradient(circle, #f4b93a 0 55%, #c58f1c 57% 64%, transparent 66%);
+    --used-dot: radial-gradient(circle, #2e2520 0 55%, #5a4a40 57% 64%, transparent 66%);
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+    background-image: var(--dot), var(--dot), var(--dot);
+    background-position: 0% center, 50% center, 100% center;
+    background-size: 33.33% 100%;
+    background-repeat: no-repeat;
+}
+
+#attemptsCount.attempts--2 {
+    background-image: var(--dot), var(--dot), var(--used-dot);
+}
+
+#attemptsCount.attempts--1 {
+    background-image: var(--dot), var(--used-dot), var(--used-dot);
+}
+
+#attemptsCount.attempts--0 {
+    background-image: var(--used-dot), var(--used-dot), var(--used-dot);
+}
+
 #timeCount {
-    font-size: clamp(1rem, 2.5vw, 2.2rem);
-    font-weight: 700;
+    color: #efe6d2;
+    font-family: "Baloo Da 2", sans-serif;
+    font-size: calc(min(100vw, 100vh * 1440 / 1034) * 0.045);
+    font-weight: 800;
+    line-height: 1;
+    text-shadow: 0.05em 0.05em 0 #2b221d;
 }
 
 .gameFailure {
@@ -68,7 +101,7 @@
     border: 3px solid #d0a629;
     border-radius: 1.5rem;
     color: #d0a629;
-    font-family: "Baloo Da", sans-serif;
+    font-family: "Baloo Da 2", sans-serif;
     text-align: center;
     pointer-events: none;
 }
@@ -104,7 +137,7 @@
     background: #080808;
     border-radius: 12% / 16%;
     color: #d0a629;
-    font-family: "Baloo Da", sans-serif;
+    font-family: "Baloo Da 2", sans-serif;
     text-align: center;
 }
 
@@ -139,6 +172,10 @@
     object-fit: contain;
 }
 
+.gameOverActions[hidden] {
+    display: none;
+}
+
 .gameOverActions {
     display: flex;
     flex-direction: row;
@@ -166,7 +203,7 @@
     border-radius: 999px;
     background-color: #d0a629;
     color: #17120b;
-    font-family: "Baloo Da", sans-serif;
+    font-family: "Baloo Da 2", sans-serif;
     font-size: clamp(0.85rem, 1.5vw, 1.2rem);
     font-weight: 700;
     line-height: 1.2;
@@ -201,26 +238,6 @@
 }
 
 @media (max-width: 768px) {
-    .gameAttempts {
-        top: 4%;
-        left: 8%;
-    }
-
-    .gameTimer {
-        top: 4%;
-        right: 8%;
-    }
-
-    .gameAttempts span:first-child,
-    .gameTimer span:first-child {
-        font-size: clamp(0.65rem, 2.5vw, 1rem);
-    }
-
-    #attemptsCount,
-    #timeCount {
-        font-size: clamp(0.9rem, 3.5vw, 1.5rem);
-    }
-
     .gameFailure {
         top: 25%;
         width: 70%;
@@ -243,16 +260,6 @@
 }
 
 @media (max-width: 480px) {
-    .gameAttempts {
-        top: 3%;
-        left: 5%;
-    }
-
-    .gameTimer {
-        top: 3%;
-        right: 5%;
-    }
-
     .gameFailure {
         top: 22%;
         width: 80%;

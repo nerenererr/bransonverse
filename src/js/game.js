@@ -9,6 +9,8 @@ import { renderBransons, finishGrab, resetMachine, setMachineEnabled } from "./m
 
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
+const LAST_NAME_DELAY = 4000;
+const CUSTOM_STATE_KEY = 'customGameState';
 
 function getCustomNames() {
     if (
@@ -52,6 +54,8 @@ let failureTimeout = null;
 let timerStarted = false;
 let currentBransons = [];
 let isCustomGame = false;
+let allCustomNames = [];
+let remainingNames = [];
 
 
 const attemptsCount = document.getElementById('attemptsCount');
@@ -69,8 +73,37 @@ const restartGameBtn = document.getElementById('restartGameBtn');
 
 
 
+function getRemainingNames(customNames) {
+    try {
+        const state = JSON.parse(sessionStorage.getItem(CUSTOM_STATE_KEY));
+
+        if (state && JSON.stringify(state.all) === JSON.stringify(customNames)) {
+            return state.remaining;
+        }
+    } catch {
+        return [...customNames];
+    }
+
+    return [...customNames];
+}
+
+function saveRemainingNames() {
+    sessionStorage.setItem(CUSTOM_STATE_KEY, JSON.stringify({
+        all: allCustomNames,
+        remaining: remainingNames
+    }));
+}
+
+function finishCustomGame() {
+    sessionStorage.removeItem('gameMode');
+    sessionStorage.removeItem('customNames');
+    sessionStorage.removeItem(CUSTOM_STATE_KEY);
+    window.location.href = '../index.html';
+}
+
 function updateCounters() {
     attemptsCount.textContent = attempts;
+    attemptsCount.className = 'attempts--' + attempts;
     timeCount.textContent = timeLeft;
 }
 
@@ -90,23 +123,33 @@ function startGame() {
     gameOver.hidden = true;
 
     const customNames = getCustomNames();
+    isCustomGame = customNames !== null;
+    const generatedBransons = generateMachineBransons();
 
-isCustomGame = customNames !== null;
+    if (isCustomGame) {
+        allCustomNames = customNames;
+        remainingNames = getRemainingNames(customNames);
 
-const generatedBransons = generateMachineBransons();
+        if (remainingNames.length === 0) {
+            remainingNames = [...customNames];
+        }
 
-if (isCustomGame) {
-    currentBransons = customNames.map((name, index) => ({
-        ...generatedBransons[index],
-        id: 1000 + index,
-        name: name
-    }));
-} else {
-    currentBransons = generatedBransons;
-}
+        saveRemainingNames();
 
-resetMachine(currentBransons);
-setMachineEnabled(true);
+        currentBransons = remainingNames.map((name, index) => ({
+            ...generatedBransons[index],
+            id: 1000 + index,
+            name: name
+        }));
+
+        document.getElementById('resultTitle').textContent = 'Has obtenido a';
+        gameResult.querySelector('.gameOverActions').hidden = false;
+    } else {
+        currentBransons = generatedBransons;
+    }
+
+    resetMachine(currentBransons);
+    setMachineEnabled(true);
 
     updateCounters();
 }
@@ -141,7 +184,6 @@ function useAttempt() {
     if (gameFinished || attempts <= 0) return;
     attempts--;
     updateCounters();
-    console.log("Intentos restantes:", attempts);
 }
 
 
@@ -196,7 +238,19 @@ function showResult(branson) {
     obtainedBransonImage.src = branson.image;
 
     if (!isCustomGame) {
-        window.BransonCollection.unlock(branson.id);
+        if (typeof window !== 'undefined' && window.BransonCollection) {
+            window.BransonCollection.unlock(branson.id);
+        }
+        return;
+    }
+
+    remainingNames = remainingNames.filter(name => name !== branson.name);
+    saveRemainingNames();
+
+    if (remainingNames.length === 0) {
+        document.getElementById('resultTitle').textContent = '¡Era el último!';
+        gameResult.querySelector('.gameOverActions').hidden = true;
+        setTimeout(finishCustomGame, LAST_NAME_DELAY);
     }
 }
 

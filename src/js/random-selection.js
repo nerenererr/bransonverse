@@ -1,4 +1,3 @@
-/*persona 1*/
 const bransons = [
     {
         id: 1,
