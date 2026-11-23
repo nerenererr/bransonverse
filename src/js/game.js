@@ -1,11 +1,10 @@
-/* persona 1*/
 import {
-    bransons,
     getBransonById,
     selectRandomBranson,
     checkClawSuccess,
-    generateMachineBransons
 } from './random-selection.js';
+
+import { renderBransons, finishGrab, resetMachine } from "./machine.js";
 
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
@@ -40,31 +39,44 @@ function updateCounters() {
 function startGame() {
     clearInterval(timerInterval);
     clearTimeout(failureTimeout);
+    timerInterval = null;
     failureTimeout = null;
 
     attempts = MAX_ATTEMPTS;
     timeLeft = GAME_TIME;
     gameFinished = false;
+    timerStarted = false;
 
     gameFailure.hidden = true;
     gameResult.hidden = true;
     gameOver.hidden = true;
 
+    currentBransons = generateMachineBransons();
+    resetMachine(currentBransons);
+
     updateCounters();
 }
 
 function startTimer() {
-    clearInterval(timerInterval);
+    if (timerStarted || gameFinished) {
+        return;
+    }
+
+    timerStarted = true;
 
     timerInterval = setInterval(() => {
         if (gameFinished) {
             clearInterval(timerInterval);
+            timerInterval = null;
             return;
-        } 
+        }
+
         timeLeft--;
         updateCounters();
 
         if (timeLeft <= 0) {
+            timeLeft = 0;
+            updateCounters();
             endGame();
         }
     }, 1000);
@@ -80,15 +92,16 @@ function useAttempt() {
 
 
 function handleAttemptResult() {
-    if (gameFinished || attempts <= 0) return;
-
-    const selectedBranson = selectRandomBranson();
-    const success = checkClawSuccess(selectedBranson);
+    if (gameFinished) {
+        return;
+    }
 
     if (success) {
-        showResult(selectedBranson);
+        if (branson) {
+            showResult(branson);
+        }
         return;
-    } 
+    }
 
     useAttempt();
 
@@ -114,7 +127,12 @@ function showFailure() {
 
 function showResult(branson) {
     gameFinished = true;
+
     clearInterval(timerInterval);
+    clearTimeout(failureTimeout);
+
+    timerInterval = null;
+    failureTimeout = null;
 
     gameFailure.hidden = true;
     gameResult.hidden = false;
@@ -128,15 +146,70 @@ function endGame() {
 
     gameFinished = true;
     clearInterval(timerInterval);
+    clearTimeout(failureTimeout);
+
+    timerInterval = null;
+    failureTimeout = null;
 
     gameFailure.hidden = true;
     gameOver.hidden = false;
 }
 
 
-
 playAgainBtn.addEventListener('click', startGame);
 restartGameBtn.addEventListener('click', startGame);
+
+
+document.addEventListener('machine:button-pressed', () => {
+    startTimer();
+});
+
+document.addEventListener('machine:branson-grabbed', (event) => {
+    if (gameFinished) {
+        return;
+    }
+
+    const branson = getBransonById(event.detail.id);
+
+    if (!branson) {
+        finishGrab(false);
+        return;
+    }
+
+    const isSuccess = checkClawSuccess(branson);
+
+    finishGrab(isSuccess);
+});
+
+document.addEventListener('machine:fail', () => {
+    if (gameFinished) {
+        return;
+    }
+
+    handleAttemptResult(false);
+});
+
+document.addEventListener('machine:empty', () => {
+    if (gameFinished) {
+        return;
+    }
+
+    handleAttemptResult(false);
+});
+
+document.addEventListener('machine:prize', (event) => {
+    if (gameFinished) {
+        return;
+    }
+
+    const branson = getBransonById(event.detail.id);
+
+    if (!branson) {
+        return;
+    }
+
+    handleAttemptResult(true, branson);
+});
 
 startGame();
 

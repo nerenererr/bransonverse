@@ -1,4 +1,3 @@
-/*persona 1*/
 import { jest } from '@jest/globals';
 
 let startGame;
