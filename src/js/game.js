@@ -9,6 +9,40 @@ import { renderBransons, finishGrab, resetMachine, setMachineEnabled } from "./m
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
 
+function getCustomNames() {
+    if (
+        typeof sessionStorage === 'undefined' ||
+        sessionStorage.getItem('gameMode') !== 'custom'
+    ) {
+        return null;
+    }
+
+    try {
+        const names = JSON.parse(sessionStorage.getItem('customNames') || '[]');
+
+        if (!Array.isArray(names) || names.length < 9 || names.length > 15) {
+            return null;
+        }
+
+        if (names.some(name => typeof name !== 'string' || !name.trim())) {
+            return null;
+        }
+
+        const cleanNames = names.map(name => name.trim());
+        const uniqueNames = new Set(
+            cleanNames.map(name => name.toLocaleLowerCase('es'))
+        );
+
+        if (uniqueNames.size !== cleanNames.length) {
+            return null;
+        }
+
+        return cleanNames;
+    } catch {
+        return null;
+    }
+}
+
 let attempts = MAX_ATTEMPTS;
 let timeLeft = GAME_TIME;
 let timerInterval = null;
@@ -16,6 +50,7 @@ let gameFinished = false;
 let failureTimeout = null;
 let timerStarted = false;
 let currentBransons = [];
+let isCustomGame = false;
 
 
 const attemptsCount = document.getElementById('attemptsCount');
@@ -53,9 +88,24 @@ function startGame() {
     gameResult.hidden = true;
     gameOver.hidden = true;
 
-    currentBransons = generateMachineBransons();
-    resetMachine(currentBransons);
-    setMachineEnabled(true);
+    const customNames = getCustomNames();
+
+isCustomGame = customNames !== null;
+
+const generatedBransons = generateMachineBransons();
+
+if (isCustomGame) {
+    currentBransons = customNames.map((name, index) => ({
+        ...generatedBransons[index],
+        id: 1000 + index,
+        name: name
+    }));
+} else {
+    currentBransons = generatedBransons;
+}
+
+resetMachine(currentBransons);
+setMachineEnabled(true);
 
     updateCounters();
 }
@@ -164,6 +214,13 @@ function endGame() {
 playAgainBtn.addEventListener('click', startGame);
 restartGameBtn.addEventListener('click', startGame);
 
+function getCurrentBransonById(id) {
+    if (isCustomGame) {
+        return currentBransons.find(branson => branson.id === id);
+    }
+
+    return getBransonById(id);
+}
 
 document.addEventListener('machine:interaction', () => {
     startTimer();
@@ -174,7 +231,7 @@ document.addEventListener('machine:branson-grabbed', (event) => {
         return;
     }
 
-    const branson = getBransonById(event.detail.id);
+    const branson = getCurrentBransonById(event.detail.id);
 
     if (!branson) {
         finishGrab(false);
@@ -207,7 +264,7 @@ document.addEventListener('machine:prize', (event) => {
         return;
     }
 
-    const branson = getBransonById(event.detail.id);
+    const branson = getCurrentBransonById(event.detail.id);
 
     if (!branson) {
         return;
