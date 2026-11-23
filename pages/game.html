@@ -7,8 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barrio&display=swap" rel="stylesheet">
-    <script type="module" src="/src/js/game.js"></script>
-    <script type="module" src="../src/js/machine.js"></script>
     <script type="module" src="../src/js/game.js"></script>
     <title>The Bransonverse | Game</title>
 </head>
@@ -56,12 +54,17 @@
             <h3>Has obtenido a</h3>
             <p id="obtainedBranson"></p>
             <img id="obtainedBransonImage" src="" alt="Branson obtenido">
-            <button id="playAgainBtn" type="button">Jugar otra vez</button>
-        </section>
+            <div class="gameOverActions">
+                <button id="playAgainBtn" type="button">Jugar otra vez</button>
+                <a href="../index.html">Volver al inicio</a>
+            </div>
+</section>
         <section id="gameOver" class="gameOver" hidden>
             <h3>¡Te has quedado sin intentos!</h3>
-            <button id="restartGameBtn" type="button">Jugar otra vez</button>
-            <a href="../index.html">Volver al inicio</a>
+            <div class="gameOverActions">
+                <button id="restartGameBtn" type="button">Jugar otra vez</button>
+                <a href="../index.html">Volver al inicio</a>
+            </div>
         </section>
     </main>
 </body>

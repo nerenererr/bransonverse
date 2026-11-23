@@ -139,54 +139,79 @@
     object-fit: contain;
 }
 
+
+.gameOverActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
 .gameResult button,
-.gameOver button {
-    padding: 0.3rem 0.8rem;
-    border: none;
-    background: none;
-    color: #d0a629;
-    font-family: inherit;
-    font-size: clamp(1rem, 2vw, 1.8rem);
-    font-weight: 400;
+.gameOver button,
+.gameOver a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0.7rem 1.5rem;
+    border: 2px solid #d0a629;
+    border-radius: 999px;
+    background-color: #d0a629;
+    color: #17120b;
+    font-family: "Baloo Da", sans-serif;
+    font-size: clamp(0.85rem, 1.5vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
     cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
+    box-shadow: 0 4px 0 #80621c;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.gameOverActions > * {
+    flex: 1;
+    max-width: 220px;
 }
 
 .gameResult button:hover,
-.gameOver button:hover {
-    color: #ffd45b;
-    transform: scale(1.08);
+.gameOver button:hover,
+.gameOver a:hover {
+    background-color: #ffd45b;
+    border-color: #ffd45b;
+    color: #17120b;
+    transform: translateY(-2px);
 }
 
 .gameResult button:active,
-.gameOver button:active {
-    transform: scale(0.96);
+.gameOver button:active,
+.gameOver a:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #80621c;
 }
 
 .gameResult button:focus-visible,
 .gameOver button:focus-visible,
 .gameOver a:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 3px solid #ffd45b;
     outline-offset: 4px;
 }
 
-.gameOver a {
-    color: #d0a629;
-    font-size: clamp(0.85rem, 1.4vw, 1.2rem);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    transition: color 0.2s ease;
-}
-
-.gameOver a:hover {
-    color: #ffd45b;
-}
-
-@media (max-width: 768px) {
-    .gameAttempts {
-        top: 4%;
-        left: 8%;
+@media (max-width: 480px) {
+    .gameOverActions {
+        gap: 0.5rem;
     }
+
+    .gameOverActions > * {
+        min-width: 0;
+        padding: 0.6rem 0.5rem;
+        font-size: 0.85rem;
+    }
+}
+
 
     .gameTimer {
         top: 4%;
@@ -222,7 +247,7 @@
         width: 40%;
         max-height: 30%;
     }
-}
+
 
 @media (max-width: 480px) {
     .gameAttempts {
