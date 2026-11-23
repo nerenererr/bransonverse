@@ -6,6 +6,7 @@ import {
 
 import { renderBransons, finishGrab, resetMachine, setMachineEnabled } from "./machine.js";
 
+
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
 
@@ -193,6 +194,10 @@ function showResult(branson) {
 
     obtainedBranson.textContent = branson.name;
     obtainedBransonImage.src = branson.image;
+
+    if (!isCustomGame) {
+        window.BransonCollection.unlock(branson.id);
+    }
 }
 
 function endGame() {
