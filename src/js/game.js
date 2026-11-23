@@ -1,10 +1,10 @@
 import {
     getBransonById,
-    selectRandomBranson,
     checkClawSuccess,
+    generateMachineBransons
 } from './random-selection.js';
 
-import { finishGrab, resetMachine, setMachineEnabled } from "./machine.js";
+import { renderBransons, finishGrab, resetMachine, setMachineEnabled } from "./machine.js";
 
 const MAX_ATTEMPTS = 3;
 const GAME_TIME = 90;
@@ -14,6 +14,8 @@ let timeLeft = GAME_TIME;
 let timerInterval = null;
 let gameFinished = false;
 let failureTimeout = null;
+let timerStarted = false;
+let currentBransons = [];
 
 
 const attemptsCount = document.getElementById('attemptsCount');
@@ -92,7 +94,7 @@ function useAttempt() {
 }
 
 
-function handleAttemptResult() {
+function handleAttemptResult(success, branson = null) {
     if (gameFinished) {
         return;
     }

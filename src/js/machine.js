@@ -58,6 +58,7 @@ const GRAB_TIME = 400;
 
 let clawPosition = 50;
 let isMachineBusy = false;
+let isMachineEnabled = true;
 let moveInterval = null;
 let grabbedBranson = null;
 let grabbedBransonOldPlace = null;
@@ -168,14 +169,6 @@ function renderBransons(items) {
 
         bransonsContainer.appendChild(branson);
     });
-}
-
-function renderDefaultBransons() {
-    const names = [];
-    for (let i = 0; i < BRANSON_IMAGES.length; i++) {
-        names.push("Branson " + (i + 1));
-    }
-    renderBransons(names);
 }
 
 function getBransonsWithPosition() {
@@ -293,11 +286,12 @@ function addTemporaryClass(element, className, time) {
 }
 
 function startMoving(direction) {
-    if (isMachineBusy) {
+    if (isMachineBusy || !isMachineEnabled) {
         return;
     }
     stopMoving();
     tiltJoystick(direction);
+    document.dispatchEvent(new CustomEvent("machine:interaction"));
     playSound("move");
     moveClaw(direction);
     moveInterval = setInterval(function () {
@@ -309,6 +303,14 @@ function stopMoving() {
     clearInterval(moveInterval);
     moveInterval = null;
     tiltJoystick(null);
+}
+
+function setMachineEnabled(enabled) {
+    isMachineEnabled = enabled;
+
+    if (!isMachineEnabled) {
+        stopMoving();
+    }
 }
 
 function dropBransonBack(branson, bransonsContainer, oldPlace) {
@@ -489,7 +491,7 @@ function resetMachine(items) {
 }
 
 function handleButtonClick() {
-    if (isMachineBusy) {
+    if (isMachineBusy || !isMachineEnabled) {
         return;
     }
     const button = document.querySelector(".machine__button");
@@ -499,6 +501,7 @@ function handleButtonClick() {
     }, 500);
     playSound("button");
 
+    document.dispatchEvent(new CustomEvent("machine:interaction"));
     document.dispatchEvent(new CustomEvent("machine:button-pressed"));
     dropClaw();
 }
@@ -553,7 +556,6 @@ function initMachine() {
     document.addEventListener("keyup", handleKeyUp);
 
     updateClawPosition(50);
-    renderDefaultBransons();
 }
 
 if (typeof document !== "undefined") {
@@ -564,6 +566,7 @@ export {
     renderBransons,
     finishGrab,
     resetMachine,
+    setMachineEnabled,
     clampPosition,
     getNextPosition,
     getBransonImage,
