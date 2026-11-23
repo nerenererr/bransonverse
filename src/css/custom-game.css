@@ -4,9 +4,9 @@
     z-index: 1;
     overflow: hidden;
     padding: clamp(0.75rem, 2.5vh, 1.5rem) clamp(1rem, 5vw, 4rem) 1.5rem;
-    background: linear-gradient(180deg, rgb(0 0 0 / 94%) 0%, rgb(0 0 0 / 75%) 45%, rgb(0 0 0 / 42%) 100%);
+    background: #050505 url("https://res.cloudinary.com/da9tytxsu/image/upload/v1795023127/bg-collection_ujfvwu.png") center / cover no-repeat;
     color: #fff;
-    font-family: Arial, sans-serif;
+    font-family: "Baloo Da 2", sans-serif;
 }
 
 .custom-game-screen[hidden] {

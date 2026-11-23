@@ -107,6 +107,13 @@ main {
     cursor: pointer;
 }
 
+.mode-menu-back svg,
+.custom-game-back svg {
+    display: block;
+    width: clamp(2.5rem, 4vw, 3.7rem);
+    height: auto;
+}
+
 .mode-menu-back:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 4px;
