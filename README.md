@@ -4,6 +4,12 @@ A claw machine game where luck decides who gets picked. Built with **HTML, CSS a
 
 ---
 
+## Live demo
+
+Play the game online: [The Bransonverse](https://nerenererr.github.io/bransonverse/).
+
+Hosted on **GitHub Pages**.
+
 ## Briefing
 
 **Sacrificios SA**, the association behind events like *The Purge*, *The Maze Runner*, *The Hunger Games*, *Battle Royale* and *Squid Game*, wants a web application for a new event: a **fair and random developer sacrifice**. The app has to receive a list of names and pick them one by one at random.
