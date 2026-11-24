@@ -40,11 +40,9 @@ Instead of a wheel, **The Bransonverse** is a **claw machine** full of clay figu
 | Claw machine | Hold the joystick, press the yellow button | `←` `→` to move, `↓` to drop |
 | Collection | Hover or click a card, back arrow | `↑` `↓` `←` `→` to move, `Backspace` to go back |
 
-## Mockups
+## Screenshots
 
 The design was made in **Figma** at 1440 × 1024.
-
-## Screenshots
 
 ### Main menu
 
@@ -83,7 +81,7 @@ The design was made in **Figma** at 1440 × 1024.
 | Notice for the last name | "¡Era el último!" message |
 | Back to the start after the last name | Automatic redirect to the main menu |
 | Responsive | Breakpoints for mobile, tablet and desktop, and phones in landscape |
-| Tested | 5 test suites with Jest |
+| Tested | 6 test suites with Jest |
 | Bonus: local storage | The collection remembers the Bransons you have caught |
 
 ## Technologies and tools
@@ -115,7 +113,7 @@ bransonverse/
 │   └── js/
 │       ├── main.js         Start screen and menu navigation
 │       ├── custom-game.js  Custom game form
-│       ├── music.js        Background music for every page
+│       ├── music.js        Background music
 │       ├── sound-effects.js Menu sounds
 │       ├── game.js         Game flow: attempts, timer and results
 │       ├── random-selection.js Bransons data and random logic
@@ -167,7 +165,7 @@ npm test
   - no empty fields;
   - no repeated names, ignoring upper and lower case.
 - The names are saved in `sessionStorage` and the game screen reads them.
-- `music.js` is loaded on every page. The music keeps playing from the same second when the player changes page, and starts again when the page is reloaded.
+- The game and the collection open inside the main page (in an `iframe`), so the background music never stops when the player changes screen. It starts again from the beginning when the page is reloaded.
 
 ## Game logic
 
@@ -279,6 +277,7 @@ All the tests run with `npm test`.
 | `tests/random-selection.test.js` | Random Branson selection and claw probabilities |
 | `tests/machine.test.js` | Claw limits, Branson under the claw, positions and images |
 | `tests/collection.test.js` | Initial Bransons, unlocking and saved progress |
+| `tests/navigation.test.js` | Opening and closing the game and the collection from the main menu |
 
 ## Credits
 

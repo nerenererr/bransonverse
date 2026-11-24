@@ -257,7 +257,6 @@ if (menuSection && primaryMenu && playMenu && modeMenuBack && customGameScreen) 
     modeMenuBack.addEventListener("click", returnToPrimaryMenu);
     customGameScreen.querySelector(".custom-game-back").addEventListener("click", returnToModeMenu);
     window.addEventListener("branson:start-game", openGame);
-    window.addEventListener("branson:start-game", openGame);
 
     window.addEventListener("message", (event) => {
         if (collectionFrame
