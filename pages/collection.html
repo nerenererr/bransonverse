@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Colección | Bransonverse</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barrio&family=Baloo+Da+2:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../src/css/collection.css">
+
+  <script defer src="../src/js/music.js"></script>
+  <script defer src="../src/js/collection-store.js"></script>
+  <script defer src="../src/js/collection.js"></script>
+</head>
+
+<body>
+
+  <main class="collection">
+
+    <div class="collection__frame">
+
+    <header class="collection__header">
+
+      <a
+        class="collection__back"
+        href="../index.html"
+        aria-label="Volver al menú principal"
+        title="Volver"
+      >
+        <svg
+          viewBox="0 0 64 56"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            fill="currentColor"
+            d="M28 5 4 24a6 6 0 0 0 0 9l24 18c4 3 9 0 9-4v-9h20a7 7 0 0 0 7-7V24a7 7 0 0 0-7-7H37V9c0-4-5-7-9-4Z"
+          />
+        </svg>
+      </a>
+
+      <h1 class="collection__title">
+        COLECCIÓN
+      </h1>
+
+    </header>
+
+    <section
+      class="collection__content"
+      aria-label="Colección de personajes"
+    >
+
+      <div
+        class="collection__information"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+
+        <h2 id="character-name">
+          standard branson
+        </h2>
+
+        <p id="character-description">Es la versión standard de Branson.
+El Branson de toda la vida que puedes
+encontrar a partir de las 9:00AM en
+cualquier CEI.</p>
+
+      </div>
+
+      <div
+        id="characters-grid"
+        class="collection__grid"
+        role="group"
+        aria-label="Seleccionar un personaje de Bransonverse"
+      ></div>
+
+    </section>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

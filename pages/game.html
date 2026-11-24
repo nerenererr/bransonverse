@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../src/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barrio&family=Baloo+Da+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="../src/js/music.js" defer></script>
+    <script src="../src/js/collection-store.js"></script>
+    <script type="module" src="../src/js/game.js"></script>
+    <title>The Bransonverse | Game</title>
+</head>
+<body>
+    <main class="game">
+        <section class="machine" aria-label="Máquina de gancho">
+            <div class="machine__lights" aria-hidden="true">
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+            </div>
+            <div class="machine__play-area">
+                <div class="claw">
+                    <img class="claw__image" src="https://res.cloudinary.com/da9tytxsu/image/upload/f_auto,q_auto/v1794919052/extended_claw_qmld36.png" alt="Garra de la máquina">
+                </div>
+                <div class="machine__bransons"></div>
+            </div>
+            <div class="machine__front-bar" aria-hidden="true"></div>
+            <div class="machine__joystick-cover" aria-hidden="true"></div>
+            <header class="gameHeader">
+                <div class="gameAttempts">
+                    <span>Intentos</span>
+                    <span id="attemptsCount">3</span>
+                </div>
+                <div class="gameTimer">
+                    <span>Tiempo</span>
+                    <span id="timeCount">90</span>
+                </div>
+            </header>
+
+            <button type="button" class="joystick" aria-label="Mover la garra (izquierda o derecha)"></button>
+            <button type="button" class="machine__button" aria-label="Soltar la garra"></button>
+        </section>
+        <section id="gameFailure" class="gameFailure" hidden>
+            <h3>Oh... ¡Se ha caído!</h3>
+            <p>Inténtalo de nuevo</p>
+        </section>
+        <section class="gameResult" id="gameResult" hidden>
+            <h3 id="resultTitle">Has obtenido a</h3>
+            <p id="obtainedBranson"></p>
+            <img id="obtainedBransonImage" src="" alt="Branson obtenido">
+            <div class="gameOverActions">
+                <button id="playAgainBtn" type="button">Jugar otra vez</button>
+                <a href="../index.html">Volver al inicio</a>
+            </div>
+        </section>
+        <section id="gameOver" class="gameOver" hidden>
+            <h3>¡Te has quedado sin intentos!</h3>
+            <div class="gameOverActions">
+                <button id="restartGameBtn" type="button">Jugar otra vez</button>
+                <a href="../index.html">Volver al inicio</a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

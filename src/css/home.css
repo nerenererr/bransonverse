@@ -1,0 +1,272 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    overflow: hidden;
+}
+
+main {
+    background: #000;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.collection-frame,
+.game-frame {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #050505;
+}
+
+.collection-frame[hidden],
+.game-frame[hidden] {
+    display: none;
+}
+
+/*.intro-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}*/
+
+.intro-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    height: 85%;
+    transform: translate(-50%, -50%);
+    object-fit: contain;
+}
+
+.start-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 1rem;
+    color: #d0a629;
+    font-family: "Barrio", sans-serif;
+    font-size: clamp(1.2rem, 3vw, 2.4rem);
+    text-align: center;
+    cursor: pointer;
+    animation: start-blink 1.4s ease-in-out infinite;
+}
+
+.start-screen[hidden] {
+    display: none;
+}
+
+@keyframes start-blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.main-menu {
+    position: absolute;
+    inset: 0;
+    color: #d0a629;
+}
+
+.main-menu-heading {
+    position: absolute;
+    top: 9%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: none;
+}
+
+.main-menu h1 {
+    margin: 0;
+    font-family: "Barrio", sans-serif;
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
+    font-weight: 400;
+    text-align: center;
+}
+
+.main-menu .mode-menu-back {
+    position: absolute;
+    top: 50%;
+    right: auto;
+    margin-right: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #d0a629;
+    font-size: 2rem;
+    line-height: 1;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.main-menu .mode-menu-back[hidden] {
+    display: none;
+}
+
+.mode-menu-back svg,
+.custom-game-back svg {
+    display: block;
+    width: clamp(2.5rem, 4vw, 3.7rem);
+    height: auto;
+}
+
+.mode-menu-back:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
+.main-menu-heading {
+    padding-inline: 0.5rem;
+}
+
+.main-menu h1 {
+    padding-inline: 2.25rem;
+}
+
+.main-menu .mode-menu-back {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    left: 0.5rem;
+}
+
+@media (min-width: 641px) {
+    .main-menu-heading {
+        width: fit-content;
+        max-width: 95%;
+        padding-inline: 0;
+    }
+
+    .main-menu h1 {
+        padding-inline: 0;
+        font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+    }
+
+    .main-menu .mode-menu-back {
+        display: inline-block;
+        place-items: normal;
+        width: auto;
+        height: auto;
+        right: 100%;
+        left: auto;
+        margin-right: 8rem;
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+    }
+}
+
+@media (max-height: 600px) {
+    .main-menu .mode-menu-back {
+        font-size: 1.8rem;
+    }
+}
+
+.main-menu nav {
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    transform: translateX(-50%);
+}
+
+.main-menu nav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.main-menu button {
+    position: relative;
+    padding: 0.2rem 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font-family: "Barrio", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.main-menu button:focus {
+    outline: none;
+}
+
+.primary-menu button[aria-pressed="true"]::before,
+.primary-menu button[aria-pressed="true"]::after,
+.play-menu button[aria-pressed="true"]::before,
+.play-menu button[aria-pressed="true"]::after {
+    position: absolute;
+    top: 50%;
+    width: clamp(4rem, 8vw, 6.5rem);
+    aspect-ratio: 1;
+    content: "";
+    transform: translateY(-50%);
+}
+
+.primary-menu button[aria-pressed="true"]::before,
+.primary-menu button[aria-pressed="true"]::after {
+    background: url("https://res.cloudinary.com/da9tytxsu/image/upload/v1794909672/brandonStandar_cflcns.png") center / contain no-repeat;
+}
+
+.branson-mode-button[aria-pressed="true"]::before,
+.branson-mode-button[aria-pressed="true"]::after {
+    background: url("https://res.cloudinary.com/da9tytxsu/image/upload/v1794911232/brandon_0005_lcpawf.png") center / contain no-repeat;
+}
+
+.custom-game-button[aria-pressed="true"]::before,
+.custom-game-button[aria-pressed="true"]::after {
+    background: url("https://res.cloudinary.com/da9tytxsu/image/upload/v1794911223/brandon_0002_s2bngb.png") center / contain no-repeat;
+}
+
+.primary-menu button[aria-pressed="true"]::before,
+.play-menu button[aria-pressed="true"]::before {
+    right: 100%;
+    margin-right: 0;
+}
+
+.primary-menu button[aria-pressed="true"]::after,
+.play-menu button[aria-pressed="true"]::after {
+    left: 100%;
+    margin-left: 0;
+}
+
+.play-button {
+    font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+}
+
+.collection-button {
+    font-size: clamp(1.2rem, 1.9vw, 1.9rem);
+}
+
+.branson-mode-button {
+    font-size: clamp(1.2rem, 1.9vw, 1.9rem);
+}
+
+.custom-game-button {
+    font-size: clamp(1.2rem, 1.9vw, 1.9rem);
+}
